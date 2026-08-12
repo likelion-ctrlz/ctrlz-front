@@ -1,0 +1,21 @@
+@import "tailwindcss";
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, "Malgun Gothic", sans-serif;
+  background-color: #e5e5e5; /* 바깥 배경 (모바일 프레임 밖) */
+  display: flex;
+  justify-content: center;
+}
+
+#root {
+  width: 390px;           /* 아이폰 폭 */
+  min-height: 100vh;
+  background-color: #fff;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
