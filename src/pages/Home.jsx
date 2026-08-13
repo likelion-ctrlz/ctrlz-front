@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
+import PrimaryButton from "../components/PrimaryButton";
 
 const STATS = [
   { label: "보유 토큰", value: "120" },
@@ -31,12 +32,7 @@ function Home() {
           <span className="text-xs bg-gray-100 px-3 py-1 rounded-full">난이도 하</span>
           <span className="text-xs bg-gray-100 px-3 py-1 rounded-full">토큰 +10</span>
         </div>
-        <button
-          onClick={() => navigate("/missions/1")}
-          className="w-full py-3 bg-black text-white rounded-lg text-sm"
-        >
-          미션 시작하기
-        </button>
+        <PrimaryButton text="미션 시작하기" onClick={() => navigate("/missions/1")} />
       </div>
 
       <div className="border border-gray-100 rounded-xl p-4">

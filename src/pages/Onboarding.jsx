@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import PrimaryButton from "../components/PrimaryButton";
 
 function Onboarding() {
   const navigate = useNavigate();
@@ -12,14 +13,9 @@ function Onboarding() {
         지금 이 순간, 작은 발걸음부터
       </p>
 
-      <button
-        onClick={() => navigate("/login")}
-        className="w-full p-4 bg-black text-white border-none rounded-[10px] text-base mb-3"
-      >
-        시작하기
-      </button>
+      <PrimaryButton text="시작하기" onClick={() => navigate("/profile-setup")} />
 
-      <p className="text-center text-[#999] text-[13px]">
+      <p className="text-center text-[#999] text-[13px] mt-3">
         이미 계정이 있어요
       </p>
     </div>

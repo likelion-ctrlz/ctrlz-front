@@ -1,50 +1,36 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
+import PrimaryButton from "../components/PrimaryButton";
 
-function HobbyDetail() {
+function MissionDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
 
   return (
     <div>
-      <Header title="한붓 그리기" />
+      <Header title="미션 상세" />
 
       <div className="px-6 pb-6">
-        <div className="h-40 bg-gray-100 rounded-xl mb-4" />
+        <div className="h-44 bg-gray-100 rounded-xl mb-4" />
 
-        <h2 className="text-lg mb-3">한붓 그리기</h2>
-        <div className="space-y-2 mb-6">
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400 w-14">난이도</span>
-            <div className="h-2 flex-1 bg-gray-100 rounded" />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400 w-14">소요시간</span>
-            <div className="h-2 flex-1 bg-gray-100 rounded" />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400 w-14">만족도</span>
-            <div className="h-2 flex-1 bg-gray-100 rounded" />
-          </div>
+        <h2 className="text-lg mb-3">근처 공원 다녀오기</h2>
+        <div className="flex gap-2 mb-6">
+          <span className="text-xs bg-gray-100 px-3 py-1 rounded-full">난이도 중</span>
+          <span className="text-xs bg-gray-100 px-3 py-1 rounded-full">토큰 +20</span>
         </div>
 
-        <div className="border border-gray-100 rounded-xl p-5 mb-6 text-sm space-y-1 text-gray-700">
-          <p>일시: 매주 수요일</p>
-          <p>장소: 동탄 2h</p>
-          <p>필요 토큰: 100</p>
-          <p>안내사항: ~~</p>
+        <div className="bg-gray-50 rounded-xl p-5 mb-6 min-h-[100px]">
+          <p className="text-xs text-gray-400">실시간으로 인증하고있다고 안내</p>
+          <p className="text-sm mt-2">근처 공원 산책이 얼마나 도움이 되는지 설명</p>
         </div>
 
-        <button
-          onClick={() => navigate("/hobbies")}
-          className="w-full py-4 bg-black text-white rounded-lg text-base"
-        >
-          미션 시작하기
-        </button>
+        <PrimaryButton
+          text="미션 시작하기"
+          onClick={() => navigate(`/missions/${id}/verify`)}
+        />
       </div>
     </div>
   );
 }
 
-export default HobbyDetail;
-
+export default MissionDetail;

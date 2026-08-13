@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import BottomTabBar from "../components/BottomTabBar";
+import PrimaryButton from "../components/PrimaryButton";
 
 function Diary() {
   const [mode, setMode] = useState("음성");
@@ -48,12 +49,7 @@ function Diary() {
           />
         )}
 
-        <button
-          onClick={() => navigate("/diary/report")}
-          className="w-full py-4 bg-black text-white rounded-lg text-base"
-        >
-          기록 완료
-        </button>
+        <PrimaryButton text="기록 완료" onClick={() => navigate("/diary/report")} />
       </div>
 
       <BottomTabBar />
