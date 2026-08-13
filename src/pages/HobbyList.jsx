@@ -9,10 +9,10 @@ function HobbyList() {
     { id: 3, title: "비누만들기" },
   ];
   return (
-    <div style={{ padding: 20 }}>
+    <div className="p-5">
       <h2>나에게 맞는 활동을 찾아보세요</h2>
       {hobbies.map((h) => (
-        <div key={h.id} onClick={() => navigate(`/hobbies/${h.id}`)} style={{ padding: 12, borderBottom: "1px solid #eee" }}>
+        <div key={h.id} onClick={() => navigate(`/hobbies/${h.id}`)} className="p-3 border-b border-[#eee] cursor-pointer">
           {h.title}
         </div>
       ))}

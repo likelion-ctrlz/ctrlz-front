@@ -17,38 +17,36 @@ function MissionList() {
   const navigate = useNavigate();
 
   return (
-    <div style={{ paddingBottom: 70 }}>
+    <div className="pb-[70px]">
       <Header title="미션" showBack={false} />
 
-      <div style={{ display: "flex", gap: 8, padding: "16px 24px" }}>
+      <div className="flex gap-2 py-4 px-6">
         {FILTERS.map((f) => (
           <span
             key={f}
             onClick={() => setFilter(f)}
-            style={{
-              padding: "6px 14px", borderRadius: 16, fontSize: 13, cursor: "pointer",
-              backgroundColor: filter === f ? "#000" : "#f2f2f2",
-              color: filter === f ? "#fff" : "#333"
-            }}
+            className={`px-3.5 py-1.5 rounded-2xl text-[13px] cursor-pointer ${
+              filter === f ? "bg-black text-white" : "bg-[#f2f2f2] text-[#333]"
+            }`}
           >
             {f}
           </span>
         ))}
       </div>
 
-      <div style={{ padding: "0 24px" }}>
+      <div className="px-6">
         {MISSIONS.map((m) => (
           <div
             key={m.id}
             onClick={() => navigate(`/missions/${m.id}`)}
-            style={{ display: "flex", gap: 12, padding: "12px 0", borderBottom: "1px solid #f0f0f0", cursor: "pointer" }}
+            className="flex gap-3 py-3 border-b border-[#f0f0f0] cursor-pointer"
           >
-            <div style={{ width: 56, height: 56, background: "#f2f2f2", borderRadius: 8, flexShrink: 0 }} />
+            <div className="w-14 h-14 bg-[#f2f2f2] rounded-lg shrink-0" />
             <div>
-              <p style={{ fontSize: 15, marginBottom: 4 }}>{m.title}</p>
-              <p style={{ fontSize: 12, color: "#999" }}>{m.level}</p>
+              <p className="text-[15px] mb-1">{m.title}</p>
+              <p className="text-xs text-[#999]">{m.level}</p>
             </div>
-            <span style={{ marginLeft: "auto", fontSize: 13, color: "#666", alignSelf: "center" }}>{m.token}</span>
+            <span className="ml-auto text-[13px] text-[#666] self-center">{m.token}</span>
           </div>
         ))}
       </div>

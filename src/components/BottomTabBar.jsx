@@ -11,9 +11,9 @@ function BottomTabBar() {
   ];
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-around", padding: "12px 0", borderTop: "1px solid #eee" }}>
+    <div className="flex justify-around py-3 border-t border-[#eee]">
       {tabs.map((tab) => (
-        <button key={tab.path} onClick={() => navigate(tab.path)} style={{ background: "none", border: "none" }}>
+        <button key={tab.path} onClick={() => navigate(tab.path)} className="bg-transparent border-none">
           {tab.label}
         </button>
       ))}

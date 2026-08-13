@@ -4,36 +4,21 @@ function Header({ title, showBack = true }) {
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "16px 20px",
-        borderBottom: "1px solid #eee",
-      }}
-    >
-      <div style={{ width: 24 }}>
+    <div className="flex items-center justify-between py-4 px-5 border-b border-[#eee]">
+      <div className="w-6">
         {showBack && (
           <button
             onClick={() => navigate(-1)}
-            style={{ background: "none", border: "none", fontSize: 20, padding: 0 }}
+            className="bg-transparent border-none text-xl p-0"
           >
             {"<"}
           </button>
         )}
       </div>
 
-      <h1 style={{ fontSize: 17, fontWeight: 600, margin: 0 }}>{title}</h1>
+      <h1 className="text-[17px] font-semibold m-0">{title}</h1>
 
-      <div
-        style={{
-          width: 24,
-          height: 24,
-          borderRadius: "50%",
-          border: "1px solid #ddd",
-        }}
-      />
+      <div className="w-6 h-6 rounded-full border border-[#ddd]" />
     </div>
   );
 }
