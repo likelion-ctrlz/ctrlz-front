@@ -19,24 +19,26 @@ import MyPage from "./pages/MyPage";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Onboarding />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile-setup" element={<ProfileSetup />} />
-        <Route path="/diagnosis" element={<SelfDiagnosis />} />
-        <Route path="/diagnosis/result" element={<DiagnosisResult />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/missions" element={<MissionList />} />
-        <Route path="/missions/:id" element={<MissionDetail />} />
-        <Route path="/missions/:id/verify" element={<MissionVerify />} />
-        <Route path="/hobbies" element={<HobbyList />} />
-        <Route path="/hobbies/:id" element={<HobbyDetail />} />
-        <Route path="/diary" element={<Diary />} />
-        <Route path="/diary/report" element={<DiaryReport />} />
-        <Route path="/programs" element={<ProgramList />} />
-        <Route path="/programs/:id" element={<ProgramDetail />} />
-        <Route path="/mypage" element={<MyPage />} />
-      </Routes>
+      <div className="mx-auto min-h-screen w-full max-w-[430px] bg-white">
+        <Routes>
+          <Route path="/" element={<Onboarding />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile-setup" element={<ProfileSetup />} />
+          <Route path="/diagnosis" element={<SelfDiagnosis />} />
+          <Route path="/diagnosis/result" element={<DiagnosisResult />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/missions" element={<MissionList />} />
+          <Route path="/missions/:id" element={<MissionDetail />} />
+          <Route path="/missions/:id/verify" element={<MissionVerify />} />
+          <Route path="/hobbies" element={<HobbyList />} />
+          <Route path="/hobbies/:id" element={<HobbyDetail />} />
+          <Route path="/diary" element={<Diary />} />
+          <Route path="/diary/report" element={<DiaryReport />} />
+          <Route path="/programs" element={<ProgramList />} />
+          <Route path="/programs/:id" element={<ProgramDetail />} />
+          <Route path="/mypage" element={<MyPage />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }
