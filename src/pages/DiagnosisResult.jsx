@@ -8,37 +8,29 @@ function DiagnosisResult() {
     <div>
       <Header title="진단 결과" showBack={false} />
 
-      <div style={{ padding: "4px 24px 0" }}>
-        <div style={{ height: 4, background: "#000", borderRadius: 2, marginBottom: 32 }} />
+      <div className="px-6 pt-1">
+        <div className="h-1 bg-black rounded-full mb-8" />
 
-        <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <span style={{
-            display: "inline-block", padding: "8px 20px",
-            backgroundColor: "#000", color: "#fff", borderRadius: 20, fontSize: 14
-          }}>
+        <div className="text-center mb-6">
+          <span className="inline-block px-5 py-2 bg-black text-white rounded-full text-sm">
             상태 레벨2
           </span>
         </div>
 
-        <div style={{
-          border: "1px solid #eee", borderRadius: 12, padding: 20, marginBottom: 32
-        }}>
-          <p style={{ color: "#999", fontSize: 13, marginBottom: 8 }}>첫 미션 제안</p>
-          <h3 style={{ fontSize: 18, marginBottom: 12 }}>창문 열고 3분 바람 쐬기</h3>
-          <div style={{ display: "flex", gap: 8 }}>
-            <span style={{ fontSize: 12, background: "#f2f2f2", padding: "4px 10px", borderRadius: 12 }}>난이도 하</span>
-            <span style={{ fontSize: 12, background: "#f2f2f2", padding: "4px 10px", borderRadius: 12 }}>토큰 +10</span>
+        <div className="border border-gray-100 rounded-xl p-5 mb-8">
+          <p className="text-xs text-gray-400 mb-2">첫 미션 제안</p>
+          <h3 className="text-lg mb-3">창문 열고 3분 바람 쐬기</h3>
+          <div className="flex gap-2">
+            <span className="text-xs bg-gray-100 px-2.5 py-1 rounded-full">난이도 하</span>
+            <span className="text-xs bg-gray-100 px-2.5 py-1 rounded-full">토큰 +10</span>
           </div>
         </div>
       </div>
 
-      <div style={{ padding: "0 24px 24px" }}>
+      <div className="px-6 pb-6">
         <button
           onClick={() => navigate("/home")}
-          style={{
-            width: "100%", padding: 16, backgroundColor: "#000",
-            color: "#fff", border: "none", borderRadius: 10, fontSize: 16
-          }}
+          className="w-full py-4 bg-black text-white rounded-lg text-base"
         >
           미션 시작하기
         </button>

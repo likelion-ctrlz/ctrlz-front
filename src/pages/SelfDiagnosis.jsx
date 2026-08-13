@@ -12,12 +12,12 @@ function SelfDiagnosis() {
     <div>
       <Header title="자기진단" />
 
-      <div style={{ padding: "4px 24px 0" }}>
-        <div style={{ height: 4, background: "#eee", borderRadius: 2, marginBottom: 24 }}>
-          <div style={{ width: "20%", height: "100%", background: "#000", borderRadius: 2 }} />
+      <div className="px-6 pt-1">
+        <div className="h-1 bg-gray-100 rounded-full mb-6">
+          <div className="w-1/5 h-full bg-black rounded-full" />
         </div>
 
-        <h2 style={{ fontSize: 19, lineHeight: 1.5, marginBottom: 32 }}>
+        <h2 className="text-lg leading-relaxed mb-8">
           최근 6개월간, 힘든 일이 생겼을 때<br />속마음을 털어놓을 사람이 있었나요?
         </h2>
 
@@ -25,29 +25,25 @@ function SelfDiagnosis() {
           <div
             key={option}
             onClick={() => setSelected(option)}
-            style={{
-              display: "flex", alignItems: "center", gap: 12,
-              padding: "16px 4px", borderBottom: "1px solid #f0f0f0", cursor: "pointer"
-            }}
+            className="flex items-center gap-3 py-4 border-b border-gray-100 cursor-pointer"
           >
-            <span style={{
-              width: 20, height: 20, borderRadius: "50%",
-              border: selected === option ? "6px solid #000" : "1px solid #ccc"
-            }} />
+            <span
+              className={`w-5 h-5 rounded-full ${
+                selected === option ? "border-[6px] border-black" : "border border-gray-300"
+              }`}
+            />
             {option}
           </div>
         ))}
       </div>
 
-      <div style={{ padding: 24 }}>
+      <div className="px-6 py-6">
         <button
           onClick={() => navigate("/diagnosis/result")}
           disabled={!selected}
-          style={{
-            width: "100%", padding: 16,
-            backgroundColor: selected ? "#000" : "#ccc",
-            color: "#fff", border: "none", borderRadius: 10, fontSize: 16
-          }}
+          className={`w-full py-4 rounded-lg text-base text-white ${
+            selected ? "bg-black" : "bg-gray-300"
+          }`}
         >
           다음
         </button>
