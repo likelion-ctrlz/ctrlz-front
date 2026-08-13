@@ -1,16 +1,58 @@
-# React + Vite
+# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+고립·은둔 청년을 위한 AI 기반 단계적 사회복귀 지원 앱 CtrlZ의 프론트엔드입니다.
 
-Currently, two official plugins are available:
+## 관련 레포
+- [Backend](https://github.com/likelion-ctrlz/ctrlz-back)
+- [AI](https://github.com/likelion-ctrlz/ctrlz-ai)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 기술 스택
+- React 19
+- Tailwind CSS
+- Vite
+- 배포: Vercel
 
-## React Compiler
+## 시작하기
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. 패키지 설치
+```bash
+npm install
+```
 
-## Expanding the Oxlint configuration
+### 2. 환경변수 설정
+```bash
+cp .env.example .env
+```
+`.env` 파일 열어서 값 채우기 (아래 환경변수 항목 참고)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### 3. 개발 서버 실행
+```bash
+npm run dev
+```
+앱 확인: http://localhost:5173
+
+## 디렉토리 구조
+```
+src/
+├── api/          # 백엔드 API 호출 함수 (예정)
+├── components/   # 공용 컴포넌트 (Header, BottomTabBar 등)
+├── pages/        # 라우트별 페이지
+├── hooks/        # 커스텀 훅 (예정)
+└── assets/       # 이미지, 폰트 등
+```
+
+## 환경변수
+`.env.example` 참고. `.env` 파일은 절대 커밋하지 않습니다.
+
+| 변수명 | 설명 | 예시 |
+|---|---|---|
+| `VITE_API_BASE_URL` | 백엔드 서버 주소 | `http://localhost:8000` |
+| `VITE_KAKAO_CLIENT_ID` | 카카오 REST API 키 | 카카오 디벨로퍼스에서 발급 |
+| `VITE_KAKAO_REDIRECT_URI` | 카카오 로그인 리다이렉트 URI | `http://localhost:5173/auth/kakao/callback` |
+| `VITE_GOOGLE_CLIENT_ID` | 구글 OAuth 클라이언트 ID | 구글 클라우드 콘솔에서 발급 |
+
+## 브랜치 · 커밋 규칙
+- 브랜치: `feat/frontend/기능명` (예: `feat/frontend/mission-card`)
+- 커밋: `[FE] feat: 미션 카드 컴포넌트 추가`
+- 타입: `feat` | `fix` | `refactor` | `docs` | `chore`
+- PR은 `dev` 브랜치로
