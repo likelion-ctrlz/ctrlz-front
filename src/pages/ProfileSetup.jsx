@@ -8,30 +8,24 @@ function ProfileSetup() {
     <div>
       <Header title="프로필 설정" />
 
-      <div style={{ padding: "24px", minHeight: "calc(100vh - 60px)", display: "flex", flexDirection: "column" }}>
-        <p style={{ color: "#999", fontSize: 13, marginBottom: 8 }}>●●●</p>
-        <h2 style={{ fontSize: 20, lineHeight: 1.4, marginBottom: 8 }}>
+      <div className="p-6 min-h-[calc(100vh-60px)] flex flex-col">
+        <p className="text-[#999] text-[13px] mb-2">●●●</p>
+        <h2 className="text-xl leading-[1.4] mb-2">
           실명 대신 사용할<br />닉네임을 정해주세요
         </h2>
-        <p style={{ color: "#888", fontSize: 14, marginBottom: 40 }}>
+        <p className="text-[#888] text-sm mb-10">
           닉네임은 마이페이지에서 언제든 바꿀 수 있어요
         </p>
 
         <input
           type="text"
           placeholder="닉네임 입력"
-          style={{
-            padding: 14, border: "1px solid #ddd", borderRadius: 10,
-            fontSize: 15, marginBottom: "auto"
-          }}
+          className="p-3.5 border border-[#ddd] rounded-[10px] text-[15px] mb-auto"
         />
 
         <button
           onClick={() => navigate("/diagnosis")}
-          style={{
-            width: "100%", padding: 16, backgroundColor: "#000",
-            color: "#fff", border: "none", borderRadius: 10, fontSize: 16, marginTop: 24
-          }}
+          className="w-full p-4 bg-black text-white border-none rounded-[10px] text-base mt-6"
         >
           다음
         </button>
