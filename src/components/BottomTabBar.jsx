@@ -13,7 +13,7 @@ function BottomTabBar() {
   const location = useLocation();
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white flex justify-around pt-3 pb-[calc(max(env(safe-area-inset-bottom),34px)+0.75rem)] border-t border-gray-100">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white flex justify-around py-3 border-t border-gray-100">
       {TABS.map((tab) => {
         const isActive = location.pathname.startsWith(tab.path);
         return (

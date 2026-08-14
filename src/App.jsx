@@ -18,7 +18,7 @@ import MyPage from "./pages/MyPage";
 function App() {
   return (
     <BrowserRouter>
-      <div className="mx-auto min-h-screen w-full max-w-[430px] bg-white">
+      <div className="mx-auto min-h-dvh w-full max-w-[430px] bg-white">
         <Routes>
           <Route path="/" element={<Onboarding />} />
       
