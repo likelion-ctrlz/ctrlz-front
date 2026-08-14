@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import PrimaryButton from "../components/PrimaryButton";
 
 function ProgramDetail() {
@@ -7,10 +7,8 @@ function ProgramDetail() {
   const { id } = useParams();
 
   return (
-    <div>
-      <Header title="서울 청년기지개 센터" />
-
-      <div className="px-6 pb-6">
+    <Layout title="서울 청년기지개 센터" showTabBar={false}>
+      <div>
         <div className="h-40 bg-gray-100 rounded-xl mb-4" />
 
         <h2 className="text-lg mb-4">서울 청년기지개 센터</h2>
@@ -35,7 +33,7 @@ function ProgramDetail() {
 
         <PrimaryButton text="신청하기" onClick={() => navigate("/programs")} />
       </div>
-    </div>
+    </Layout>
   );
 }
 

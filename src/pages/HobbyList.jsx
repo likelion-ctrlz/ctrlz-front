@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import BottomTabBar from "../components/BottomTabBar";
+import Layout from "../components/Layout";
 
 const HOBBIES = [
   { id: 1, title: "한붓 그리기", type: "1:1 지도", token: "토큰 100" },
@@ -13,10 +12,8 @@ function HobbyList() {
   const navigate = useNavigate();
 
   return (
-    <div className="pb-20">
-      <Header title="취미활동" showBack={false} />
-
-      <div className="px-6 pt-4">
+    <Layout title="취미활동" showBack={false}>
+      <div>
         <h2 className="text-lg mb-4">나에게 맞는 활동을 찾아보세요</h2>
 
         {HOBBIES.map((h) => (
@@ -34,9 +31,7 @@ function HobbyList() {
           </div>
         ))}
       </div>
-
-      <BottomTabBar />
-    </div>
+    </Layout>
   );
 }
 

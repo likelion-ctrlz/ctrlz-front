@@ -1,14 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 
 function Login() {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <Header title="시작하기" />
-
-      <div className="p-6">
+    <Layout title="시작하기" showTabBar={false}>
+      <div>
         <h2 className="text-xl leading-[1.4] mb-2">
           신청서 작성 없이,<br />지금 바로 시작해요
         </h2>
@@ -36,7 +34,7 @@ function Login() {
           계속 진행 시 이용약관 및 개인정보처리방침에 동의하게 됩니다
         </p>
       </div>
-    </div>
+    </Layout>
   );
 }
 

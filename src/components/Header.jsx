@@ -4,7 +4,7 @@ function Header({ title, showBack = true }) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-between py-4 px-5 border-b border-[#eee]">
+    <div className="flex items-center justify-between px-6 pb-4 pt-[calc(max(env(safe-area-inset-top),44px)+1rem)] border-b border-[#eee]">
       <div className="w-6">
         {showBack && (
           <button

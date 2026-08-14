@@ -1,15 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import PrimaryButton from "../components/PrimaryButton";
 
 function ProfileSetup() {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <Header title="프로필 설정" />
-
-      <div className="px-6 min-h-[calc(100vh-60px)] flex flex-col">
+    <Layout title="프로필 설정" showTabBar={false}>
+      <div className="flex-1 flex flex-col">
         <p className="text-gray-400 text-xs mb-2">●●●</p>
         <h2 className="text-xl leading-snug mb-2">
           실명 대신 사용할<br />닉네임을 정해주세요
@@ -28,7 +26,7 @@ function ProfileSetup() {
           <PrimaryButton text="다음" onClick={() => navigate("/diagnosis")} />
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

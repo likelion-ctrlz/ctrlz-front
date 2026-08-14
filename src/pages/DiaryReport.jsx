@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import PrimaryButton from "../components/PrimaryButton";
 
 const TAGS = ["약간의 긴장", "평온", "무기력"];
@@ -9,10 +9,8 @@ function DiaryReport() {
   const navigate = useNavigate();
 
   return (
-    <div className="px-6 pb-6">
-      <Header title="말하는 일기장" />
-
-      <div className="pt-4">
+    <Layout title="말하는 일기장" showTabBar={false}>
+      <div>
         <p className="text-sm text-gray-400 mb-2">AI요약</p>
         <div className="border border-gray-200 rounded-xl p-4 mb-8 space-y-2">
           <div className="h-2 bg-gray-100 rounded w-full" />
@@ -40,7 +38,7 @@ function DiaryReport() {
 
         <PrimaryButton text="저장하기" onClick={() => navigate("/diary")} />
       </div>
-    </div>
+    </Layout>
   );
 }
 

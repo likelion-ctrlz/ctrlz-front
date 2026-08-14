@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import PrimaryButton from "../components/PrimaryButton";
 
 const OPTIONS = ["전혀 없다", "가끔 있다", "자주 있다", "항상 있다"];
@@ -10,10 +10,8 @@ function SelfDiagnosis() {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <Header title="자기진단" />
-
-      <div className="px-6 pt-1">
+    <Layout title="자기진단" showTabBar={false}>
+      <div>
         <div className="h-1 bg-gray-100 rounded-full mb-6">
           <div className="w-1/5 h-full bg-black rounded-full" />
         </div>
@@ -38,14 +36,14 @@ function SelfDiagnosis() {
         ))}
       </div>
 
-      <div className="px-6 py-6">
+      <div className="pt-6">
         <PrimaryButton
           text="다음"
           disabled={!selected}
           onClick={() => navigate("/diagnosis/result")}
         />
       </div>
-    </div>
+    </Layout>
   );
 }
 

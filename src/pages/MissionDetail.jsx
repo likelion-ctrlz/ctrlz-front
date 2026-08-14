@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import PrimaryButton from "../components/PrimaryButton";
 
 function MissionDetail() {
@@ -7,10 +7,8 @@ function MissionDetail() {
   const { id } = useParams();
 
   return (
-    <div>
-      <Header title="미션 상세" />
-
-      <div className="px-6 pb-6">
+    <Layout title="미션 상세" showTabBar={false}>
+      <div>
         <div className="h-44 bg-gray-100 rounded-xl mb-4" />
 
         <h2 className="text-lg mb-3">근처 공원 다녀오기</h2>
@@ -29,7 +27,7 @@ function MissionDetail() {
           onClick={() => navigate(`/missions/${id}/verify`)}
         />
       </div>
-    </div>
+    </Layout>
   );
 }
 
