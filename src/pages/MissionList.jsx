@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import BottomTabBar from "../components/BottomTabBar";
+import Layout from "../components/Layout";
 
 const MISSIONS = [
   { id: 1, title: "창문 열고 3분 바람 쐬기", level: "난이도 하", token: "+10" },
@@ -17,10 +16,8 @@ function MissionList() {
   const navigate = useNavigate();
 
   return (
-    <div className="pb-[70px]">
-      <Header title="미션" showBack={false} />
-
-      <div className="flex gap-2 py-4 px-6">
+    <Layout title="미션" showBack={false}>
+      <div className="flex gap-2 pb-4">
         {FILTERS.map((f) => (
           <span
             key={f}
@@ -34,25 +31,21 @@ function MissionList() {
         ))}
       </div>
 
-      <div className="px-6">
-        {MISSIONS.map((m) => (
-          <div
-            key={m.id}
-            onClick={() => navigate(`/missions/${m.id}`)}
-            className="flex gap-3 py-3 border-b border-[#f0f0f0] cursor-pointer"
-          >
-            <div className="w-14 h-14 bg-[#f2f2f2] rounded-lg shrink-0" />
-            <div>
-              <p className="text-[15px] mb-1">{m.title}</p>
-              <p className="text-xs text-[#999]">{m.level}</p>
-            </div>
-            <span className="ml-auto text-[13px] text-[#666] self-center">{m.token}</span>
+      {MISSIONS.map((m) => (
+        <div
+          key={m.id}
+          onClick={() => navigate(`/missions/${m.id}`)}
+          className="flex gap-3 py-3 border-b border-[#f0f0f0] cursor-pointer"
+        >
+          <div className="w-14 h-14 bg-[#f2f2f2] rounded-lg shrink-0" />
+          <div>
+            <p className="text-[15px] mb-1">{m.title}</p>
+            <p className="text-xs text-[#999]">{m.level}</p>
           </div>
-        ))}
-      </div>
-
-      <BottomTabBar />
-    </div>
+          <span className="ml-auto text-[13px] text-[#666] self-center">{m.token}</span>
+        </div>
+      ))}
+    </Layout>
   );
 }
 

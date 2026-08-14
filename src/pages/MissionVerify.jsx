@@ -1,15 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import PrimaryButton from "../components/PrimaryButton";
 
 function MissionVerify() {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <Header title="미션 상세" />
-
-      <div className="px-6 pt-2">
+    <Layout title="미션 상세" showTabBar={false}>
+      <div>
         <div className="relative h-80 bg-neutral-900 rounded-xl mb-5 flex items-center justify-center">
           <div className="absolute top-4 left-4 w-7 h-7 border-t-[3px] border-l-[3px] border-white" />
           <div className="absolute top-4 right-4 w-7 h-7 border-t-[3px] border-r-[3px] border-white" />
@@ -26,7 +24,7 @@ function MissionVerify() {
 
         <PrimaryButton text="촬영하기" onClick={() => navigate("/home")} />
       </div>
-    </div>
+    </Layout>
   );
 }
 

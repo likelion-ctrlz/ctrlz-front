@@ -10,6 +10,17 @@
   --color-bg: #ffffff;
   --color-text: #111111;
   --color-border: #e5e5e5;
+
+  /*
+   * TODO: 페이지별 배경 그라데이션. 디자인 확정되면 여기에 추가.
+   * Tailwind v4는 config 파일이 아니라 --background-image-* 토큰으로 등록하면
+   * bg-{이름} 유틸리티가 자동 생성됨 (예: --background-image-gradient-onboarding
+   * 를 추가하면 bg-gradient-onboarding 클래스를 바로 쓸 수 있음).
+   * 등록 후 페이지에서 <Layout bg="bg-gradient-onboarding"> 처럼 넘기면 적용됨.
+   *
+   * --background-image-gradient-main: linear-gradient(135deg, #4ECFAA, #2DB88A);
+   * --background-image-gradient-onboarding: linear-gradient(180deg, #6EDBB8, #2DB88A);
+   */
 }
 
 body {

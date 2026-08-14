@@ -1,15 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import PrimaryButton from "../components/PrimaryButton";
 
 function DiagnosisResult() {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <Header title="진단 결과" showBack={false} />
-
-      <div className="px-6 pt-1">
+    <Layout title="진단 결과" showBack={false} showTabBar={false}>
+      <div>
         <div className="h-1 bg-black rounded-full mb-8" />
 
         <div className="text-center mb-6">
@@ -28,10 +26,10 @@ function DiagnosisResult() {
         </div>
       </div>
 
-      <div className="px-6 pb-6">
+      <div>
         <PrimaryButton text="미션 시작하기" onClick={() => navigate("/home")} />
       </div>
-    </div>
+    </Layout>
   );
 }
 

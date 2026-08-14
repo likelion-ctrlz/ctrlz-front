@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import BottomTabBar from "../components/BottomTabBar";
+import Layout from "../components/Layout";
 import PrimaryButton from "../components/PrimaryButton";
 
 function Diary() {
@@ -10,10 +9,8 @@ function Diary() {
   const today = new Date().toISOString().slice(0, 10).replace(/-/g, ". ");
 
   return (
-    <div className="pb-20">
-      <Header title="말하는 일기장" />
-
-      <div className="px-6 pt-4">
+    <Layout title="말하는 일기장">
+      <div>
         <p className="text-sm text-gray-400 mb-4">{today}</p>
 
         <div className="flex bg-gray-100 rounded-full p-1 mb-10">
@@ -51,9 +48,7 @@ function Diary() {
 
         <PrimaryButton text="기록 완료" onClick={() => navigate("/diary/report")} />
       </div>
-
-      <BottomTabBar />
-    </div>
+    </Layout>
   );
 }
 

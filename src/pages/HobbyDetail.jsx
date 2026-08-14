@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import PrimaryButton from "../components/PrimaryButton";
 
 function HobbyDetail() {
@@ -7,10 +7,8 @@ function HobbyDetail() {
   const { id } = useParams();
 
   return (
-    <div>
-      <Header title="한붓 그리기" />
-
-      <div className="px-6 pb-6">
+    <Layout title="한붓 그리기" showTabBar={false}>
+      <div>
         <div className="h-40 bg-gray-100 rounded-xl mb-4" />
 
         <h2 className="text-lg mb-3">한붓 그리기</h2>
@@ -38,7 +36,7 @@ function HobbyDetail() {
 
         <PrimaryButton text="미션 시작하기" onClick={() => navigate("/hobbies")} />
       </div>
-    </div>
+    </Layout>
   );
 }
 

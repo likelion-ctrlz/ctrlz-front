@@ -1,5 +1,4 @@
-import Header from "../components/Header";
-import BottomTabBar from "../components/BottomTabBar";
+import Layout from "../components/Layout";
 
 const MENU = [
   { title: "계정 정보", desc: "닉네임, 소셜 로그인 연결" },
@@ -11,10 +10,8 @@ const MENU = [
 
 function MyPage() {
   return (
-    <div className="pb-20">
-      <Header title="마이페이지" />
-
-      <div className="px-6 pt-4">
+    <Layout title="마이페이지">
+      <div>
         <div className="flex items-center gap-4 mb-8">
           <div className="w-14 h-14 rounded-full bg-gray-200" />
           <div>
@@ -40,9 +37,7 @@ function MyPage() {
           </div>
         ))}
       </div>
-
-      <BottomTabBar />
-    </div>
+    </Layout>
   );
 }
 
