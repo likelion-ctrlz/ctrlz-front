@@ -14,7 +14,7 @@ function Layout({
       {showHeader && <Header title={title} showBack={showBack} />}
 
       <main
-        className={`flex-1 flex flex-col px-6 ${
+        className={`flex-1 flex flex-col px-5 ${
           showHeader ? "pt-8" : "pt-[calc(max(env(safe-area-inset-top),44px)+2rem)]"
         } ${
           showTabBar ? "pb-[104px]" : "pb-[calc(max(env(safe-area-inset-bottom),34px)+2rem)]"
