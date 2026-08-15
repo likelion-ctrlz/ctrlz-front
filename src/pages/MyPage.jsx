@@ -1,4 +1,7 @@
-import Layout from "../components/Layout";
+import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import BottomTabBar from "../components/BottomTabBar";
+import { logout } from "../api/authApi";
 
 const MENU = [
   { title: "계정 정보", desc: "닉네임, 소셜 로그인 연결" },
@@ -9,9 +12,23 @@ const MENU = [
 ];
 
 function MyPage() {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (err) {
+      console.error("로그아웃 실패", err);
+    } finally {
+      navigate("/");
+    }
+  };
+
   return (
-    <Layout title="마이페이지">
-      <div>
+    <div className="pb-20">
+      <Header title="마이페이지" />
+
+      <div className="px-6 pt-4">
         <div className="flex items-center gap-4 mb-8">
           <div className="w-14 h-14 rounded-full bg-gray-200" />
           <div>
@@ -36,8 +53,17 @@ function MyPage() {
             )}
           </div>
         ))}
+
+        <button
+          onClick={handleLogout}
+          className="w-full text-center text-red-500 text-sm py-4 mt-6"
+        >
+          로그아웃
+        </button>
       </div>
-    </Layout>
+
+      <BottomTabBar />
+    </div>
   );
 }
 
