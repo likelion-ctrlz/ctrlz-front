@@ -16,7 +16,11 @@ import DiaryRecord from "./pages/DiaryRecord";
 import DiaryReport from "./pages/DiaryReport";
 import DiaryHelp from "./pages/DiaryHelp";
 import ProgramList from "./pages/ProgramList";
+import ProgramLocal from "./pages/ProgramLocal";
+import ProgramLocalDetail from "./pages/ProgramLocalDetail";
+import ProgramLocalComplete from "./pages/ProgramLocalComplete";
 import ProgramDetail from "./pages/ProgramDetail";
+import ProgramComplete from "./pages/ProgramComplete";
 import MyPage from "./pages/MyPage";
 
 function App() {
@@ -54,7 +58,11 @@ function App() {
 
           {/* Program */}
           <Route path="/programs" element={<ProgramList />} />
+          <Route path="/programs/local" element={<ProgramLocal />} />
+          <Route path="/programs/local/:id" element={<ProgramLocalDetail />} />
+          <Route path="/programs/local/:id/complete" element={<ProgramLocalComplete />} />
           <Route path="/programs/:id" element={<ProgramDetail />} />
+          <Route path="/programs/:id/complete" element={<ProgramComplete />} />
 
           {/* My Page */}
           <Route path="/mypage" element={<MyPage />} />
