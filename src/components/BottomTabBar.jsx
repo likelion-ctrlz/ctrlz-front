@@ -114,7 +114,7 @@ function BottomTabBar() {
   const location = useLocation();
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-[#00CB93] pb-[env(safe-area-inset-bottom)]">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-[#00CB93] pb-[env(safe-area-inset-bottom)] z-50">
       <div className="flex justify-around items-center pt-2 pb-2">
         {TABS.map((tab) => {
           const isActive = location.pathname.startsWith(tab.path);

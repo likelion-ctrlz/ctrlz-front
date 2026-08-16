@@ -12,7 +12,9 @@ import MissionResult from "./pages/MissionResult";
 import HobbyList from "./pages/HobbyList";
 import HobbyDetail from "./pages/HobbyDetail";
 import Diary from "./pages/Diary";
+import DiaryRecord from "./pages/DiaryRecord";
 import DiaryReport from "./pages/DiaryReport";
+import DiaryHelp from "./pages/DiaryHelp";
 import ProgramList from "./pages/ProgramList";
 import ProgramDetail from "./pages/ProgramDetail";
 import MyPage from "./pages/MyPage";
@@ -46,7 +48,9 @@ function App() {
 
           {/* Diary */}
           <Route path="/diary" element={<Diary />} />
+          <Route path="/diary/record" element={<DiaryRecord />} />
           <Route path="/diary/report" element={<DiaryReport />} />
+          <Route path="/diary/help" element={<DiaryHelp />} />
 
           {/* Program */}
           <Route path="/programs" element={<ProgramList />} />
