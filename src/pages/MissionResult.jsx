@@ -14,10 +14,7 @@ function MissionResult() {
   // 미션 완료
   if (step === "complete") {
     return (
-      <div
-        className="relative flex min-h-dvh flex-col"
-        style={{ background: "linear-gradient(180deg, #E6FFF8 0%, #FFFFFF 100%)" }}
-      >
+      <div className="relative flex min-h-dvh flex-col bg-mint-fade">
 
         {/* Header */}
         <header className="relative flex items-center h-[53px] px-5">
@@ -89,10 +86,7 @@ function MissionResult() {
   // 레벨업
   if (step === "levelup") {
     return (
-      <div
-        className="relative flex min-h-dvh flex-col"
-        style={{ background: "linear-gradient(180deg, #E6FFF8 0%, #FFFFFF 100%)" }}
-      >
+      <div className="relative flex min-h-dvh flex-col bg-mint-fade">
 
         <header className="relative flex items-center h-[53px] px-5">
           <button onClick={() => setStep("complete")} className="w-[34px] h-[34px] flex items-center justify-center">
@@ -144,10 +138,7 @@ function MissionResult() {
   // 보너스 토큰
   if (step === "bonus") {
     return (
-      <div
-        className="relative flex min-h-dvh flex-col overflow-hidden"
-        style={{ background: "linear-gradient(180deg, #E6FFF8 0%, #FFFFFF 100%)" }}
-      >
+      <div className="relative flex min-h-dvh flex-col overflow-hidden bg-mint-fade">
         {/* 배경 이미지 — 전체 씬 */}
         <img
           src={bgTokenScene}

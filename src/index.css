@@ -26,9 +26,7 @@
   --color-gray-500: #9E9E9E;
 
   /* Background gradients */
-  --background-image-gradient-home: linear-gradient(180deg, #C6F3E7 0%, #ffffff 60%);
-  --background-image-gradient-main: linear-gradient(180deg, #00CB93 0%, #71E2C3 50%, #C6F3E7 100%);
-  --background-image-gradient-onboarding: linear-gradient(180deg, #00CB93 0%, #39D7AB 40%, #AAEEDB 100%);
+  --background-image-mint-fade: linear-gradient(180deg, #E6FFF8 0%, #FFFFFF 100%);
 }
 
 body {
