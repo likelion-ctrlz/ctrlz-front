@@ -22,6 +22,10 @@ import ProgramLocalComplete from "./pages/ProgramLocalComplete";
 import ProgramDetail from "./pages/ProgramDetail";
 import ProgramComplete from "./pages/ProgramComplete";
 import MyPage from "./pages/MyPage";
+import ImprovementPlan from "./pages/ImprovementPlan";
+import PrivacySettings from "./pages/PrivacySettings";
+import ProfileEdit from "./pages/ProfileEdit";
+import TokenInsufficient from "./pages/TokenInsufficient";
 
 function App() {
   return (
@@ -66,6 +70,10 @@ function App() {
 
           {/* My Page */}
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/improvement" element={<ImprovementPlan />} />
+          <Route path="/mypage/privacy" element={<PrivacySettings />} />
+          <Route path="/mypage/edit" element={<ProfileEdit />} />
+          <Route path="/token-insufficient" element={<TokenInsufficient />} />
         </Routes>
       </div>
     </BrowserRouter>

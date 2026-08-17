@@ -1,16 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import moroLv2 from "../assets/moro-lv2.png";
 import chevronLeft from "../assets/icon/chevron-left.png";
+import ellipseBg from "../assets/mypage/Ellipse.svg";
+import intersectIcon from "../assets/mypage/Intersect.svg";
+import iconScore from "../assets/mypage/Frame 32.svg";
+import iconDiagnosis from "../assets/mypage/Frame 33.svg";
+import iconImprove from "../assets/mypage/Frame 34.svg";
+import iconNotify from "../assets/mypage/Frame 35.svg";
 
 function MyPage() {
   const navigate = useNavigate();
 
   const MENU_ITEMS = [
-    { label: "점수 분석", icon: "📊", path: "/mypage/score" },
-    { label: "자가진단 다시하기", icon: "📋", path: "/diagnosis" },
-    { label: "개선 방안", icon: "📈", path: "/diagnosis/result" },
-    { label: "알림 설정", icon: "🔔", path: "/mypage/notifications" },
+    { label: "점수 분석", icon: iconScore, path: "/diagnosis/result" },
+    { label: "자가진단 다시하기", icon: iconDiagnosis, path: "/diagnosis?skip=intro" },
+    { label: "개선 방안", icon: iconImprove, path: "/mypage/improvement" },
+    { label: "알림 설정", icon: iconNotify, path: "/mypage/notifications" },
   ];
 
   return (
@@ -30,8 +35,9 @@ function MyPage() {
         {/* 프로필 영역 */}
         <div className="flex items-center mt-[22px]">
           {/* 아바타 */}
-          <div className="w-[68px] h-[68px] rounded-full bg-mint-light border border-primary overflow-hidden flex items-center justify-center shrink-0">
-            <img src={moroLv2} alt="프로필" className="w-[60px] h-[58px] object-contain" />
+          <div className="relative w-[70px] h-[70px] shrink-0">
+            <img src={ellipseBg} alt="" className="w-full h-full" />
+            <img src={intersectIcon} alt="프로필" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[65px] h-[65px]" />
           </div>
 
           {/* 이름 + 상태 */}
@@ -40,14 +46,14 @@ function MyPage() {
               사용자1
             </p>
             <p className="text-[10px] font-medium text-gray-muted tracking-[-0.25px] leading-[25px]">
-              상태 레벨 2 ･ 회복 중
+              진단 레벨 2 ･ 회복 중
             </p>
           </div>
 
           {/* 내 정보 수정 */}
-          <p className="ml-auto text-[12px] font-medium text-gray-muted tracking-[-0.3px]">
+          <button onClick={() => navigate("/mypage/edit")} className="ml-auto text-[12px] font-medium text-gray-muted tracking-[-0.3px]">
             내 정보 수정
-          </p>
+          </button>
         </div>
 
         {/* 스탯 카드 */}
@@ -64,7 +70,7 @@ function MyPage() {
           {/* 현재 레벨 */}
           <div className="flex-1 flex flex-col items-center justify-center">
             <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">LV 2</p>
-            <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">현재 레벨</p>
+            <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">모로 성장 레벨</p>
           </div>
 
           {/* 구분선 */}
@@ -81,9 +87,12 @@ function MyPage() {
         <div className="w-full h-[1px] bg-border mt-[24px]" />
 
         {/* 개인정보 설정 카드 */}
-        <div className="h-[66px] bg-gray-panel rounded-[12px] mt-[24px] flex items-center px-[19px]">
+        <button
+          onClick={() => navigate("/mypage/privacy")}
+          className="h-[66px] bg-gray-panel rounded-[12px] mt-[24px] flex items-center px-[19px] w-full"
+        >
           <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px]">개인정보 설정</p>
-        </div>
+        </button>
 
         {/* 메뉴 리스트 */}
         <div className="mt-[35px] flex flex-col gap-[26px]">
@@ -95,7 +104,7 @@ function MyPage() {
             >
               <div className="flex items-center gap-[28px]">
                 <div className="w-[40px] h-[37px] flex items-center justify-center">
-                  <span className="text-[24px]">{item.icon}</span>
+                  <img src={item.icon} alt="" className="w-[40px] h-[37px]" />
                 </div>
                 <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px]">
                   {item.label}

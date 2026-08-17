@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import chevronLeft from "../assets/icon/chevron-left.png";
 import QUESTIONS from "../data/selfDiagnosisQuestions";
 
 function SelfDiagnosis() {
-  const [step, setStep] = useState("intro"); // intro | guide | questions
+  const [searchParams] = useSearchParams();
+  const skipIntro = searchParams.get("skip") === "intro";
+  const [step, setStep] = useState(skipIntro ? "guide" : "intro"); // intro | guide | questions
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState({});
   const [selected, setSelected] = useState(null);

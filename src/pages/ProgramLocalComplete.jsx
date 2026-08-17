@@ -34,7 +34,7 @@ function ProgramLocalComplete() {
         {/* White card with decorative background */}
         <div className="relative w-full max-w-[273px]">
           {/* Triangle decoration at top-left (page fold effect) */}
-          <img src={cardTriangle} alt="" className="absolute -top-2 -left-2 w-[81px] h-[77px] z-20" style={{ filter: "drop-shadow(0px 5px 14.5px rgba(0, 204, 147, 0.4))" }} />
+          <img src={cardTriangle} alt="" className="absolute -top-[12px] -left-[14px] w-[81px] h-[77px] z-20 rotate-[4deg]" style={{ filter: "drop-shadow(0px 5px 14.5px rgba(0, 204, 147, 0.4))" }} />
           
           {/* Card */}
           <div className="relative px-6 py-7" style={{ filter: "drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.08))" }}>
