@@ -54,7 +54,7 @@ function Home() {
         <img
           src={groundBg}
           alt=""
-          className="absolute top-[-214px] left-1/2 -translate-x-1/2 h-[760px] w-auto max-w-none object-cover pointer-events-none select-none"
+          className="absolute top-[-218px] left-1/2 -translate-x-1/2 h-[760px] w-auto max-w-none object-cover pointer-events-none select-none"
         />
         {/* ground.png 하단부터는 같은 색으로 화면 끝까지 이어서 채움 (기종 달라도 끊김 없이) */}
         <div
