@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import cardBg from "../assets/card-bg.svg";
 import cardTriangle from "../assets/card-triangle.svg";
+import logoGray from "../assets/logo/logo_gray.png";
 
 function ProgramComplete() {
   const navigate = useNavigate();
@@ -84,9 +85,9 @@ function ProgramComplete() {
               </div>
 
               <div className="border-t border-[#E8E8E8] mt-2" />
-              <p className="text-[12px] text-[#CACACA] text-center mt-5 m-0" style={{ fontFamily: "'Neuropolitical', sans-serif" }}>
-                Morrow
-              </p>
+              <div className="flex justify-center mt-5">
+                <img src={logoGray} alt="Morrow" className="h-[10px] w-auto" />
+              </div>
             </div>
           </div>
         </div>

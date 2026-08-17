@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo/onboarding_logo.png";
 
 const SLIDES = [
   "내일은 작은 시작에서부터",
@@ -62,12 +63,7 @@ function Onboarding() {
 
         {/* Morrow 로고 */}
         <main className="flex-1 flex flex-col items-center justify-center px-5">
-          <h1
-            className="text-[48px] text-white whitespace-nowrap"
-            style={{ fontFamily: "'Neuropolitical', sans-serif" }}
-          >
-            Morrow
-          </h1>
+          <img src={logo} alt="Morrow" className="h-[36px] w-auto" />
         </main>
 
         {/* 시작하기 버튼 — 흰색 배경 */}

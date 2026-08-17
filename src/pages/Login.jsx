@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo/onboarding_logo.png";
 
-// 그라디언트 모션 / 버튼 색상 전환 애니메이션 시간
-const TRANSITION_MS = 700;
+// 그라디언트 모션 / 버튼 색상 전환 애니메이션 시간 — 감성적으로 천천히 번지듯
+const TRANSITION_MS = 2200;
+const TRANSITION_EASE = "cubic-bezier(0.45, 0, 0.15, 1)";
 
 // Figma 두 Log in 프레임의 배경 그라디언트 (중심/방향이 서로 다름)
 const bgSvg = (gradientTransform) =>
@@ -25,12 +27,24 @@ function Login() {
     <div className="relative isolate flex min-h-dvh flex-col overflow-hidden">
       {/* 그라디언트 모션 배경 — 두 상태를 겹쳐 opacity 크로스페이드 */}
       <div
-        className="absolute inset-0 -z-10 transition-opacity ease-in-out"
-        style={{ backgroundImage: BG_BEFORE, backgroundSize: "cover", opacity: pressed ? 0 : 1, transitionDuration: `${TRANSITION_MS}ms` }}
+        className="absolute inset-0 -z-10 transition-opacity"
+        style={{
+          backgroundImage: BG_BEFORE,
+          backgroundSize: "cover",
+          opacity: pressed ? 0 : 1,
+          transitionDuration: `${TRANSITION_MS}ms`,
+          transitionTimingFunction: TRANSITION_EASE,
+        }}
       />
       <div
-        className="absolute inset-0 -z-10 transition-opacity ease-in-out"
-        style={{ backgroundImage: BG_AFTER, backgroundSize: "cover", opacity: pressed ? 1 : 0, transitionDuration: `${TRANSITION_MS}ms` }}
+        className="absolute inset-0 -z-10 transition-opacity"
+        style={{
+          backgroundImage: BG_AFTER,
+          backgroundSize: "cover",
+          opacity: pressed ? 1 : 0,
+          transitionDuration: `${TRANSITION_MS}ms`,
+          transitionTimingFunction: TRANSITION_EASE,
+        }}
       />
 
       {/* Status bar spacer */}
@@ -38,12 +52,7 @@ function Login() {
 
       {/* Content — centered */}
       <main className="flex-1 flex flex-col items-center justify-center px-5">
-        <h1
-          className="text-[48px] text-white whitespace-nowrap"
-          style={{ fontFamily: "'Neuropolitical', sans-serif" }}
-        >
-          Morrow
-        </h1>
+        <img src={logo} alt="Morrow" className="h-[36px] w-auto" />
         <p className="text-[16px] text-white mt-2 tracking-[-0.4px]">
           오늘보다 조금 더 가까울 내일
         </p>
@@ -54,12 +63,15 @@ function Login() {
         <button
           onClick={handleStart}
           disabled={pressed}
-          className={`w-full h-[68px] rounded-[16px] border text-[20px] font-bold tracking-[-0.5px] flex items-center justify-center transition-colors ease-in-out ${
+          className={`w-full h-[68px] rounded-[16px] border text-[20px] font-bold tracking-[-0.5px] flex items-center justify-center transition-colors ${
             pressed
               ? "bg-[#00CB93] border-[#00CB93] text-white"
               : "bg-white border-[#00CB93] text-[#00CB93]"
           }`}
-          style={{ transitionDuration: `${TRANSITION_MS}ms` }}
+          style={{
+            transitionDuration: `${TRANSITION_MS}ms`,
+            transitionTimingFunction: TRANSITION_EASE,
+          }}
         >
           시작하기
         </button>

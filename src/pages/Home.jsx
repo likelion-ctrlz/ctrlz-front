@@ -6,6 +6,7 @@ import moroLv2 from "../assets/moro-lv2.png";
 import moroLv3 from "../assets/moro-lv3.png";
 import moroLv4 from "../assets/moro-lv4.png";
 import moroLv5 from "../assets/moro-lv5.png";
+import mainLogo from "../assets/logo/main_logo.png";
 
 const MORO_IMAGES = [moroLv1, moroLv2, moroLv3, moroLv4, moroLv5];
 
@@ -30,12 +31,7 @@ function Home() {
 
       {/* Header — Morrow */}
       <header className="h-[53px] flex items-center px-6">
-        <h1
-          className="text-[24px] text-[#00CB93]"
-          style={{ fontFamily: "'Neuropolitical', sans-serif" }}
-        >
-          Morrow
-        </h1>
+        <img src={mainLogo} alt="Morrow" className="h-[19px] w-auto" />
       </header>
 
       {/* 인사 배너 */}
