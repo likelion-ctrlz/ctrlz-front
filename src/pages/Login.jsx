@@ -64,8 +64,8 @@ function Login() {
           disabled={pressed}
           className={`w-full h-[68px] rounded-[16px] border text-[20px] font-bold tracking-[-0.5px] flex items-center justify-center transition-colors ${
             pressed
-              ? "bg-[#00CB93] border-[#00CB93] text-white"
-              : "bg-white border-[#00CB93] text-[#00CB93]"
+              ? "bg-primary border-primary text-white"
+              : "bg-white border-primary text-primary"
           }`}
           style={{
             transitionDuration: `${TRANSITION_MS}ms`,

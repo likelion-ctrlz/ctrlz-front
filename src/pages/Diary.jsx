@@ -26,7 +26,7 @@ function Diary() {
     <div className="relative flex min-h-dvh flex-col bg-white">
       {/* Green background */}
       <div
-        className={`absolute top-0 left-0 w-full bg-[#00CB93] transition-all duration-300 ${
+        className={`absolute top-0 left-0 w-full bg-primary transition-all duration-300 ${
           calendarOpen ? "h-[307px]" : "h-[178px]"
         }`}
       />
@@ -46,21 +46,21 @@ function Diary() {
       <main className="flex-1 flex flex-col px-5 pb-[130px] z-10">
         {/* Calendar card */}
         <div
-          className={`w-full bg-white border border-[#00CB93] rounded-[16px] mt-[6px] px-5 pt-[13px] transition-all duration-300 ${
+          className={`w-full bg-white border border-primary rounded-[16px] mt-[6px] px-5 pt-[13px] transition-all duration-300 ${
             calendarOpen ? "pb-[20px]" : "pb-[15px]"
           }`}
         >
           {/* Day of week header */}
           <div className="flex justify-between items-center px-[2px]">
             {DAYS.map((day, i) => (
-              <span key={i} className="text-[14px] font-medium text-[#00CB93] tracking-[-0.35px] leading-[25px] w-[20px] text-center">
+              <span key={i} className="text-[14px] font-medium text-primary tracking-[-0.35px] leading-[25px] w-[20px] text-center">
                 {day}
               </span>
             ))}
           </div>
 
           {/* Separator */}
-          <div className="w-full h-[1px] bg-[#F0F0F0] mt-[8px] mb-[12px]" />
+          <div className="w-full h-[1px] bg-border mt-[8px] mb-[12px]" />
 
           {calendarOpen ? (
             /* Monthly calendar */
@@ -76,10 +76,10 @@ function Diary() {
                         key={di}
                         className={`w-[31px] h-[26px] rounded-[17px] flex items-center justify-center text-[14px] tracking-[-0.35px] ${
                           isToday
-                            ? "bg-[#00CB93] text-white font-semibold"
+                            ? "bg-primary text-white font-semibold"
                             : isRecorded
-                            ? "bg-[rgba(0,203,147,0.45)] text-[#00CB93] font-medium"
-                            : "text-[#CACACA] font-medium"
+                            ? "bg-[rgba(0,203,147,0.45)] text-primary font-medium"
+                            : "text-gray-icon font-medium"
                         }`}
                       >
                         {day}
@@ -99,8 +99,8 @@ function Diary() {
                     key={i}
                     className={`w-[31px] h-[26px] rounded-[17px] flex items-center justify-center text-[14px] tracking-[-0.35px] ${
                       isToday
-                        ? "bg-[#00CB93] text-white font-semibold"
-                        : "text-[#CACACA] font-medium"
+                        ? "bg-primary text-white font-semibold"
+                        : "text-gray-icon font-medium"
                     }`}
                   >
                     {day}
@@ -115,7 +115,7 @@ function Diary() {
             onClick={() => setCalendarOpen(!calendarOpen)}
             className="w-full flex justify-center pt-[12px]"
           >
-            <div className="w-[90px] h-[2px] bg-[#CACACA] rounded-full" />
+            <div className="w-[90px] h-[2px] bg-gray-icon rounded-full" />
           </button>
         </div>
 
@@ -123,7 +123,7 @@ function Diary() {
         <h3 className="text-[16px] font-semibold text-black tracking-[-0.4px] leading-[30px] mt-[24px]">
           오늘 어떤 하루였나요?
         </h3>
-        <p className="text-[14px] font-medium text-[#949494] tracking-[-0.35px] leading-[30px]">
+        <p className="text-[14px] font-medium text-gray-muted tracking-[-0.35px] leading-[30px]">
           오늘 느낀 감정이나 있었던 일을 자유롭게 표현해주세요
         </p>
 
@@ -131,17 +131,17 @@ function Diary() {
         <div className="flex gap-[15px] mt-[20px]">
           <button
             onClick={() => navigate("/diary/record")}
-            className="flex-1 h-[105px] rounded-[16px] bg-[#E8FFF8] border border-[#00CB93] px-[14px] pt-[11px] text-left"
+            className="flex-1 h-[105px] rounded-[16px] bg-mint-pale border border-primary px-[14px] pt-[11px] text-left"
           >
-            <p className="text-[16px] font-bold text-[#00CB93] tracking-[-0.4px] leading-[30px]">
+            <p className="text-[16px] font-bold text-primary tracking-[-0.4px] leading-[30px]">
               녹음으로 기록하기
             </p>
           </button>
           <button
             onClick={() => navigate("/diary/write")}
-            className="flex-1 h-[105px] rounded-[16px] bg-[#E8FFF8] border border-[#00CB93] px-[14px] pt-[11px] text-left"
+            className="flex-1 h-[105px] rounded-[16px] bg-mint-pale border border-primary px-[14px] pt-[11px] text-left"
           >
-            <p className="text-[16px] font-bold text-[#00CB93] tracking-[-0.4px] leading-[30px]">
+            <p className="text-[16px] font-bold text-primary tracking-[-0.4px] leading-[30px]">
               직접 기록하기
             </p>
           </button>

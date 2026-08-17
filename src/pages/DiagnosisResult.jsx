@@ -121,7 +121,7 @@ function DiagnosisResult() {
   // 진단 결과
   if (step === "result") {
     return (
-      <div className="relative flex min-h-dvh flex-col bg-[#E6FFF8]">
+      <div className="relative flex min-h-dvh flex-col bg-mint-light">
         {/* Header */}
         <header className="relative flex items-center h-[53px] px-5">
           <button
@@ -130,14 +130,14 @@ function DiagnosisResult() {
           >
             <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
           </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-[#00CB93] tracking-[-0.45px] leading-[44px]">
+          <p className="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-primary tracking-[-0.45px] leading-[44px]">
             내 진단 확인
           </p>
         </header>
 
         {/* 카드 */}
         <main className="flex-1 flex flex-col px-5 pt-[49px]">
-          <div className="w-full flex-1 bg-white border border-[#39D7AB] rounded-[12px] px-4 pt-[25px] pb-6">
+          <div className="w-full flex-1 bg-white border border-primary-sub1 rounded-[12px] px-4 pt-[25px] pb-6">
             {/* 게이지 영역 — Figma 벡터 원본(웨지 2개 + 물결 캡) 그대로 재현, 326x145 기준 */}
             <div className="relative w-[326px] h-[145px] mx-auto mb-[54px]">
               <svg
@@ -146,15 +146,15 @@ function DiagnosisResult() {
               >
                 {/* 왼쪽 웨지 (정상, 연초록) — 오른쪽 웨지를 좌우 반전 */}
                 <g transform="translate(98,55) scale(-1,1)">
-                  <path d={GAUGE_WEDGE_PATH} fill="#AAEEDB" />
+                  <path d={GAUGE_WEDGE_PATH} fill="var(--color-primary-sub3)" />
                 </g>
                 {/* 오른쪽 웨지 (위험, 빨강) */}
                 <g transform="translate(228,55)">
-                  <path d={GAUGE_WEDGE_PATH} fill="#FF627E" />
+                  <path d={GAUGE_WEDGE_PATH} fill="var(--color-danger)" />
                 </g>
                 {/* 중앙 물결 캡 (초록) */}
                 <g transform="translate(59,0)">
-                  <path d={GAUGE_WAVE_PATH} fill="#00CB93" />
+                  <path d={GAUGE_WAVE_PATH} fill="var(--color-primary)" />
                 </g>
                 {/* 포인터 — 점수(0~10)에 따라 작은 원을 따라 위치·각도·색이 바뀜 */}
                 <g
@@ -163,7 +163,7 @@ function DiagnosisResult() {
                   <path
                     d={GAUGE_POINTER_PATH}
                     transform="translate(-9.96,-8.625)"
-                    fill={MOCK_ASSESSMENT.score < 5 ? "#00CB93" : "#FF627E"}
+                    fill={MOCK_ASSESSMENT.score < 5 ? "var(--color-primary)" : "var(--color-danger)"}
                   />
                 </g>
               </svg>
@@ -175,25 +175,25 @@ function DiagnosisResult() {
 
               {/* 점수 — 자릿수와 무관하게 항상 가운데 정렬 */}
               <p className="absolute left-[163px] top-[97px] -translate-x-1/2 whitespace-nowrap">
-                <span className="text-[40px] font-semibold text-[#00CB93]">
+                <span className="text-[40px] font-semibold text-primary">
                   {MOCK_ASSESSMENT.score}
                 </span>
                 <span className="text-[16px] text-[#606060]">점</span>
               </p>
 
               {/* 정상 / 위험 라벨 */}
-              <span className="absolute left-0 top-[115px] text-[12px] font-semibold text-[#AAEEDB] tracking-[-0.3px]">
+              <span className="absolute left-0 top-[115px] text-[12px] font-semibold text-primary-sub3 tracking-[-0.3px]">
                 정상
               </span>
-              <span className="absolute right-0 top-[115px] text-[12px] font-semibold text-[#FF627E] tracking-[-0.3px]">
+              <span className="absolute right-0 top-[115px] text-[12px] font-semibold text-danger tracking-[-0.3px]">
                 위험
               </span>
             </div>
 
             {/* 설명 — 유형·레벨별 상세 설명, 마지막 문장만 강조. whitespace-pre-line으로 문장 내 \n을 줄바꿈으로 렌더링 */}
-            <p className="text-[14px] font-medium text-[#74767A] tracking-[-0.35px] leading-[25px] whitespace-pre-line">
+            <p className="text-[14px] font-medium text-gray-detail tracking-[-0.35px] leading-[25px] whitespace-pre-line">
               {content.description.slice(0, -1).join("")}
-              <span className="text-[#00CB93] font-semibold">
+              <span className="text-primary font-semibold">
                 {content.description[content.description.length - 1]}
               </span>
             </p>
@@ -202,7 +202,7 @@ function DiagnosisResult() {
           {/* 다시 진단하기 */}
           <button
             onClick={() => navigate("/diagnosis")}
-            className="text-[16px] font-medium text-[#949494] tracking-[-0.4px] text-center mt-5 mb-[16px]"
+            className="text-[16px] font-medium text-gray-muted tracking-[-0.4px] text-center mt-5 mb-[16px]"
           >
             다시 진단하기
           </button>
@@ -210,7 +210,7 @@ function DiagnosisResult() {
           {/* 다음 버튼 */}
           <button
             onClick={() => setStep("improvement")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-[#00CB93] text-[#00CB93] text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
           >
             다음
           </button>
@@ -222,7 +222,7 @@ function DiagnosisResult() {
   // 개선 방안
   if (step === "improvement") {
     return (
-      <div className="relative flex min-h-dvh flex-col bg-[#E6FFF8]">
+      <div className="relative flex min-h-dvh flex-col bg-mint-light">
         <header className="relative flex items-center h-[53px] px-5">
           <button
             onClick={() => setStep("result")}
@@ -230,7 +230,7 @@ function DiagnosisResult() {
           >
             <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
           </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-[#00CB93] tracking-[-0.45px] leading-[44px]">
+          <p className="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-primary tracking-[-0.45px] leading-[44px]">
             나를 위한 개선 방안
           </p>
         </header>
@@ -240,32 +240,32 @@ function DiagnosisResult() {
             {/* 테두리를 네이티브 border 대신 내부 레이어로 그림 — overflow-hidden은 자신의 border까지
                 padding box 기준으로 잘라내서, border 밖으로 오버레이를 빼는 방식은 클리핑돼 버림.
                 border를 카드 안쪽 레이어로 옮기고 그 위에 그라데이션을 그려야 테두리도 함께 흐려짐 */}
-            <div className="absolute inset-0 rounded-[12px] border border-[#39D7AB] pointer-events-none" />
+            <div className="absolute inset-0 rounded-[12px] border border-primary-sub1 pointer-events-none" />
 
             {/* 왜 개선해야 할까요? */}
-            <h3 className="text-[20px] font-semibold text-[#00CB93] tracking-[-0.5px] leading-[25px] text-center">
+            <h3 className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px] text-center">
               왜 개선해야 할까요?
             </h3>
-            <p className="text-[14px] font-medium text-[#74767A] tracking-[-0.35px] leading-[25px] mt-[20px]">
+            <p className="text-[14px] font-medium text-gray-detail tracking-[-0.35px] leading-[25px] mt-[20px]">
               {improvement.why}
             </p>
 
             {/* 어떻게 개선해야 할까요? */}
-            <h3 className="text-[20px] font-semibold text-[#00CB93] tracking-[-0.5px] leading-[25px] text-center mt-[30px]">
+            <h3 className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px] text-center mt-[30px]">
               어떻게 개선해야 할까요?
             </h3>
 
             <div className="mt-[20px] space-y-[12px]">
               {improvement.steps.map((improvementStep, i) => (
                 <div key={i} className="flex items-start gap-3">
-                  <div className="w-[36px] h-[36px] rounded-full bg-[#AAEEDB] border border-[#00CB93] flex items-center justify-center shrink-0">
-                    <span className="text-[16px] font-medium text-[#00CB93]">{i + 1}</span>
+                  <div className="w-[36px] h-[36px] rounded-full bg-primary-sub3 border border-primary flex items-center justify-center shrink-0">
+                    <span className="text-[16px] font-medium text-primary">{i + 1}</span>
                   </div>
                   <div>
-                    <p className="text-[14px] font-medium text-[#00CB93] tracking-[-0.35px] leading-[25px]">
+                    <p className="text-[14px] font-medium text-primary tracking-[-0.35px] leading-[25px]">
                       {improvementStep.title}
                     </p>
-                    <p className="text-[10px] font-medium text-[#74767A] tracking-[-0.25px] leading-[25px]">
+                    <p className="text-[10px] font-medium text-gray-detail tracking-[-0.25px] leading-[25px]">
                       {improvementStep.desc}
                     </p>
                   </div>
@@ -287,13 +287,13 @@ function DiagnosisResult() {
           <div className="flex-1" />
 
           {/* 하단 안내 */}
-          <p className="text-[16px] font-medium text-[#949494] tracking-[-0.4px] text-center mb-[16px]">
+          <p className="text-[16px] font-medium text-gray-muted tracking-[-0.4px] text-center mb-[16px]">
             자세한 내용은 마이페이지에서 확인 할 수 있어요
           </p>
 
           <button
             onClick={() => setStep("character")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-[#00CB93] text-[#00CB93] text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
           >
             다음
           </button>
@@ -305,7 +305,7 @@ function DiagnosisResult() {
   // 캐릭터 소개 1 — 격려
   if (step === "character") {
     return (
-      <div className="relative flex min-h-dvh flex-col bg-[#00CB93]">
+      <div className="relative flex min-h-dvh flex-col bg-primary">
         <header className="relative flex items-center h-[53px] px-5">
           <button
             onClick={() => setStep("improvement")}
@@ -326,7 +326,7 @@ function DiagnosisResult() {
           </h2>
 
           {/* 부제 */}
-          <div className="text-[14px] font-medium text-[#C6F3E7] text-center leading-normal mt-[26px]">
+          <div className="text-[14px] font-medium text-primary-sub4 text-center leading-normal mt-[26px]">
             {content.summary.map((line, i) => (
               <p key={i}>{line}</p>
             ))}
@@ -354,7 +354,7 @@ function DiagnosisResult() {
         <div className="px-5 pb-[66px]">
           <button
             onClick={() => setStep("character2")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-[#00CB93] text-[#00CB93] text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center"
           >
             시작하기
           </button>
@@ -366,7 +366,7 @@ function DiagnosisResult() {
   // 캐릭터 소개 2 — 미션 시작
   if (step === "character2") {
     return (
-      <div className="relative flex min-h-dvh flex-col bg-[#00CB93]">
+      <div className="relative flex min-h-dvh flex-col bg-primary">
         <header className="relative flex items-center h-[53px] px-5">
           <button
             onClick={() => setStep("character")}
@@ -413,7 +413,7 @@ function DiagnosisResult() {
         <div className="px-5 pb-[66px]">
           <button
             onClick={() => navigate("/home")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-[#00CB93] text-[#00CB93] text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center"
           >
             시작하기
           </button>

@@ -151,7 +151,7 @@ function Onboarding() {
 
         {/* 마지막 화면 — Morrow 단색 배경 + 흰색 버튼 */}
         <div
-          className="relative h-full shrink-0 flex flex-col bg-[#00CB93]"
+          className="relative h-full shrink-0 flex flex-col bg-primary"
           style={{ width: `${100 / TOTAL_STEPS}%` }}
         >
           {/* Morrow 로고 */}
@@ -166,7 +166,7 @@ function Onboarding() {
                 e.stopPropagation();
                 navigate("/profile-setup");
               }}
-              className="w-full h-[68px] rounded-[16px] bg-white border border-[#00CB93] text-[#00CB93] text-[20px] font-bold tracking-[-0.5px] flex items-center justify-center"
+              className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-bold tracking-[-0.5px] flex items-center justify-center"
             >
               시작하기
             </button>
@@ -178,7 +178,7 @@ function Onboarding() {
       <div className="absolute top-[60px] left-0 w-full flex justify-center pt-[18px] pb-[18px] pointer-events-none">
         <div className="relative w-[82px] h-[10px] bg-white rounded-[40px] overflow-hidden">
           <div
-            className="absolute top-0 h-[10px] bg-[#AAEEDB] rounded-[40px] transition-all duration-300"
+            className="absolute top-0 h-[10px] bg-primary-sub3 rounded-[40px] transition-all duration-300"
             style={{
               left: `${indicatorLeft}px`,
               width: `${INDICATOR_WIDTH}px`,

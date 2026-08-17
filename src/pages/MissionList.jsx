@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import chevronLeft from "../assets/icon/chevron-left.png";
-import MISSIONS from "../data/missions";
+import MISSIONS, { getMissionImage } from "../data/missions";
+
+// 피그마 미션 카드별 아이콘 실측 크기(1,2번 카드=75px, 3,4번 카드=82px)
+const ICON_SIZES = [75, 75, 82, 82];
+// 아이콘 뒤 은은한 그라데이션 글로우 — 아이콘 중심에 맞춰 배치
+const GLOW_SIZE = 120;
 
 function MissionList() {
   const navigate = useNavigate();
@@ -14,7 +19,7 @@ function MissionList() {
         <button onClick={() => navigate("/home")} className="w-[34px] h-[34px] flex items-center justify-center">
           <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
         </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-[#00CB93] tracking-[-0.5px] leading-[44px]">
+        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
           미션
         </p>
       </header>
@@ -27,32 +32,46 @@ function MissionList() {
       {/* Mission Cards */}
       <main className="flex-1 px-5 pt-4 pb-[130px]">
         <div className="flex flex-col gap-[19px]">
-          {MISSIONS.map((mission) => (
+          {MISSIONS.map((mission, i) => (
             <button
               key={mission.id}
               onClick={() => navigate(`/missions/${mission.id}`)}
-              className="relative w-full h-[122px] rounded-[16px] border border-[#00CB93] text-left px-4"
+              className="relative w-full h-[122px] rounded-[16px] border border-primary text-left px-4"
               style={{ backgroundColor: "rgba(255,255,255,0.76)" }}
             >
-              {/* 이모지 아이콘 영역 */}
-              <div className="absolute left-[27px] top-[24px] w-[75px] h-[75px] flex items-center justify-center">
-                <span className="text-[32px]">{mission.emoji}</span>
+              {/* 아이콘 뒤 글로우 */}
+              <div
+                className="absolute rounded-full pointer-events-none"
+                style={{
+                  left: 27 + ICON_SIZES[i % ICON_SIZES.length] / 2 - GLOW_SIZE / 2,
+                  top: 20 + ICON_SIZES[i % ICON_SIZES.length] / 2 - GLOW_SIZE / 2,
+                  width: GLOW_SIZE,
+                  height: GLOW_SIZE,
+                  background:
+                    "radial-gradient(circle, rgba(0,203,147,0.45) 0%, rgba(0,203,147,0.15) 45%, rgba(0,203,147,0) 75%)",
+                }}
+              />
+
+              {/* 미션 아이콘 */}
+              <div
+                className="absolute left-[27px] top-[20px] flex items-center justify-center"
+                style={{ width: ICON_SIZES[i % ICON_SIZES.length], height: ICON_SIZES[i % ICON_SIZES.length] }}
+              >
+                <img src={getMissionImage(mission)} alt="" className="max-w-full max-h-full object-contain" />
               </div>
 
               {/* 내용 */}
-              <div className="ml-[110px] pt-[20px]">
-                <p className="text-[16px] font-semibold text-[#00946B] tracking-[-0.4px] leading-[25px]">
-                  {mission.title}
-                </p>
-                <p className="text-[10px] font-medium text-[#CACACA] tracking-[-0.25px] leading-[25px]">
-                  {mission.desc}
-                </p>
-              </div>
+              <p className="absolute left-[148px] top-[20px] whitespace-nowrap text-[16px] font-semibold text-black tracking-[-0.4px] leading-[25px]">
+                {mission.title}
+              </p>
+              <p className="absolute left-[148px] top-[45px] whitespace-nowrap text-[10px] font-medium text-gray-icon tracking-[-0.25px] leading-[25px]">
+                {mission.desc}
+              </p>
 
               {/* 포인트/XP */}
               <div className="absolute right-4 bottom-[16px] flex gap-3">
-                <span className="text-[16px] font-semibold text-[#00CB93] tracking-[-0.4px]">+ {mission.token}P</span>
-                <span className="text-[16px] font-semibold text-[#00CB93] tracking-[-0.4px]">+ {mission.xp} XP</span>
+                <span className="text-[16px] font-semibold text-primary tracking-[-0.4px]">+ {mission.token}P</span>
+                <span className="text-[16px] font-semibold text-primary tracking-[-0.4px]">+ {mission.xp} XP</span>
               </div>
             </button>
           ))}
@@ -60,7 +79,6 @@ function MissionList() {
       </main>
 
       <BottomTabBar />
-      <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
     </div>
   );
 }

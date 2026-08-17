@@ -43,7 +43,7 @@ function ProgramComplete() {
         <p className="text-[24px] font-bold text-white m-0 mb-2 text-center">
           참여 신청이 완료됐어요!
         </p>
-        <p className="text-[14px] text-[#C6F3E7] m-0 mb-8 text-center">
+        <p className="text-[14px] text-primary-sub4 m-0 mb-8 text-center">
           토큰을 사용하여 활동이 예약되었어요
         </p>
 
@@ -56,35 +56,35 @@ function ProgramComplete() {
           <div className="relative px-6 py-7" style={{ filter: "drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.08))" }}>
             <img src={cardBg} alt="" className="absolute inset-0 w-full h-full" />
             <div className="relative z-10">
-              <p className="text-[24px] font-bold text-[#00CB93] text-center m-0 mb-6">
+              <p className="text-[24px] font-bold text-primary text-center m-0 mb-6">
                 신청 내역
               </p>
 
-              <div className="border-t border-[#E8E8E8]" />
+              <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-[#949494] underline decoration-dotted underline-offset-4">활동명</span>
+                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">활동명</span>
                 <span className="text-[13px] text-black font-semibold">도자기 원데이클래스</span>
               </div>
 
-              <div className="border-t border-[#E8E8E8]" />
+              <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-[#949494] underline decoration-dotted underline-offset-4">일시</span>
+                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">일시</span>
                 <span className="text-[13px] text-black font-semibold">2026년 8월 30일 (일) 오후 2시</span>
               </div>
 
-              <div className="border-t border-[#E8E8E8]" />
+              <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-[#949494] underline decoration-dotted underline-offset-4">장소</span>
+                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">장소</span>
                 <span className="text-[13px] text-black font-semibold">서울 마포구 모로 공방 스튜디오</span>
               </div>
 
-              <div className="border-t border-[#E8E8E8]" />
+              <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-[#949494] underline decoration-dotted underline-offset-4">사용 토큰</span>
+                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">사용 토큰</span>
                 <span className="text-[13px] text-black font-semibold">5 토큰</span>
               </div>
 
-              <div className="border-t border-[#E8E8E8] mt-2" />
+              <div className="border-t border-gray-dot mt-2" />
               <div className="flex justify-center mt-5">
                 <img src={logoGray} alt="Morrow" className="h-[10px] w-auto" />
               </div>

@@ -27,7 +27,7 @@ function ProgramList() {
             />
           </svg>
         </button>
-        <h1 className="flex-1 text-center text-[17px] font-semibold text-[#00CB93] m-0">
+        <h1 className="flex-1 text-center text-[17px] font-semibold text-primary m-0">
           프로그램
         </h1>
         <div className="w-6" />
@@ -40,36 +40,36 @@ function ProgramList() {
           <p className="text-[16px] font-semibold text-black m-0">
             나에게 맞는 취미를 찾아봐요
           </p>
-          <div className="flex items-center bg-[#F5F5F5] rounded-full p-[2px]">
+          <div className="flex items-center bg-gray-100 rounded-full p-[2px]">
             <button
               onClick={() => setActiveTab("취미")}
               className={`px-3 py-1 rounded-full text-[12px] border-none cursor-pointer ${
                 activeTab === "취미"
-                  ? "bg-[#00CB93] text-white font-semibold"
-                  : "bg-transparent text-[#949494]"
+                  ? "bg-primary text-white font-semibold"
+                  : "bg-transparent text-gray-muted"
               }`}
             >
               취미
             </button>
             <button
               onClick={() => navigate("/programs/local")}
-              className="px-3 py-1 rounded-full text-[12px] border-none cursor-pointer bg-transparent text-[#949494]"
+              className="px-3 py-1 rounded-full text-[12px] border-none cursor-pointer bg-transparent text-gray-muted"
             >
               지역연계
             </button>
           </div>
         </div>
 
-        <p className="text-[14px] text-[#949494] mb-4 mt-1">
+        <p className="text-[14px] text-gray-muted mb-4 mt-1">
           관심사와 지금 상태에 맞게 추천해드려요
         </p>
 
         {/* Search bar */}
         <div className="relative mb-4">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#949494]">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-muted">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <circle cx="11" cy="11" r="7" stroke="#949494" strokeWidth="2" />
-              <path d="M20 20L16.5 16.5" stroke="#949494" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="11" cy="11" r="7" stroke="var(--color-gray-muted)" strokeWidth="2" />
+              <path d="M20 20L16.5 16.5" stroke="var(--color-gray-muted)" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </div>
           <input
@@ -77,7 +77,7 @@ function ProgramList() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="활동 검색"
-            className="w-full h-[44px] rounded-[15px] border border-[#00CB93] pl-10 pr-4 text-[14px] outline-none"
+            className="w-full h-[44px] rounded-[15px] border border-primary pl-10 pr-4 text-[14px] outline-none"
           />
         </div>
 
@@ -89,8 +89,8 @@ function ProgramList() {
               onClick={() => setActiveCategory(cat)}
               className={`flex-shrink-0 h-[30px] px-[20px] rounded-[15px] text-[13px] border cursor-pointer ${
                 activeCategory === cat
-                  ? "bg-[#00CB93] text-white border-[#00CB93]"
-                  : "bg-white text-[#00CB93] border-[#00CB93]"
+                  ? "bg-primary text-white border-primary"
+                  : "bg-white text-primary border-primary"
               }`}
             >
               {cat}
@@ -107,12 +107,12 @@ function ProgramList() {
             <div
               key={activity.id}
               onClick={() => navigate(`/programs/${activity.id}`)}
-              className="rounded-[16px] border border-[#00CB93] overflow-hidden cursor-pointer"
+              className="rounded-[16px] border border-primary overflow-hidden cursor-pointer"
             >
               {/* Image area with gradient overlay */}
               <div className="relative h-[194px] rounded-[14px] m-[15px] overflow-hidden">
                 <img src={activity.image} alt={activity.title} className="absolute inset-0 w-full h-full object-cover" />
-                <div className="absolute inset-0 rounded-[14px] bg-gradient-to-b from-transparent from-45% to-[#007C57]" />
+                <div className="absolute inset-0 rounded-[14px] bg-gradient-to-b from-transparent from-45% to-primary-deep" />
                 <p className="absolute bottom-4 left-4 text-[24px] font-bold text-white m-0">
                   {activity.title}
                 </p>
@@ -123,7 +123,7 @@ function ProgramList() {
                 {activity.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="border border-[#00CB93] rounded-[15px] px-[12px] h-[23px] flex items-center text-[11px] text-[#00CB93]"
+                    className="border border-primary rounded-[15px] px-[12px] h-[23px] flex items-center text-[11px] text-primary"
                   >
                     {tag}
                   </span>
@@ -131,7 +131,7 @@ function ProgramList() {
               </div>
 
               {/* Description */}
-              <p className="px-4 pt-2 pb-4 text-[14px] text-[#949494] m-0">
+              <p className="px-4 pt-2 pb-4 text-[14px] text-gray-muted m-0">
                 {activity.description}
               </p>
             </div>

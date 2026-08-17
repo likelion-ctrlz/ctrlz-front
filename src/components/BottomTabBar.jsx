@@ -18,7 +18,7 @@ function BottomTabBar() {
   const location = useLocation();
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-[#00CB93] pb-[env(safe-area-inset-bottom)] z-50">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-primary pb-[env(safe-area-inset-bottom)] z-50">
       <div className="flex items-center px-4 pt-4 pb-2">
         {TABS.map((tab) => {
           const isActive = location.pathname.startsWith(tab.path);
@@ -31,7 +31,7 @@ function BottomTabBar() {
               <span
                 className="block w-6 h-6"
                 style={{
-                  backgroundColor: isActive ? "#00CB93" : "#CACACA",
+                  backgroundColor: isActive ? "var(--color-primary)" : "var(--color-gray-icon)",
                   WebkitMaskImage: `url(${tab.icon})`,
                   maskImage: `url(${tab.icon})`,
                   WebkitMaskSize: "contain",
@@ -42,7 +42,7 @@ function BottomTabBar() {
                   maskPosition: "center",
                 }}
               />
-              <span className={`text-[11px] ${isActive ? "text-[#00CB93] font-semibold" : "text-[#CACACA]"}`}>
+              <span className={`text-[11px] ${isActive ? "text-primary font-semibold" : "text-gray-icon"}`}>
                 {tab.label}
               </span>
             </button>

@@ -54,7 +54,7 @@ function DiaryRecord() {
           <h2 className="text-[24px] font-bold text-white text-center leading-normal mb-[12px]">
             오늘 많이 힘들었겠어요
           </h2>
-          <p className="text-[14px] font-medium text-[#C6F3E7] text-center leading-normal mb-[60px]">
+          <p className="text-[14px] font-medium text-primary-sub4 text-center leading-normal mb-[60px]">
             그 감정을 솔직하게 말해준 것만으로도<br/>충분히 잘 하셨어요
           </p>
 
@@ -66,7 +66,7 @@ function DiaryRecord() {
             <div className="absolute inset-[62px] rounded-full border-2 border-white/20" />
             <div className="absolute inset-[87px] rounded-full bg-white/10" />
             {/* 중앙 원 */}
-            <div className="w-[161px] h-[161px] rounded-full bg-[#00CB93] flex items-center justify-center shadow-lg">
+            <div className="w-[161px] h-[161px] rounded-full bg-primary flex items-center justify-center shadow-lg">
               {/* 마이크 아이콘 */}
               <svg width="40" height="56" viewBox="0 0 40 56" fill="none">
                 <rect x="12" y="0" width="16" height="36" rx="8" fill="white"/>
@@ -113,7 +113,7 @@ function DiaryRecord() {
         {status === "recording" && (
           <p className="text-[18px] font-medium text-white text-center mb-[60px]">
             듣고 있어요...<br/>
-            <span className="text-[14px] text-[#C6F3E7]">{formatTime(seconds)}</span>
+            <span className="text-[14px] text-primary-sub4">{formatTime(seconds)}</span>
           </p>
         )}
         {status === "analyzing" && (
@@ -137,13 +137,13 @@ function DiaryRecord() {
               status === "recording"
                 ? "bg-white"
                 : status === "analyzing"
-                ? "bg-[#00CB93] opacity-50"
-                : "bg-[#00CB93]"
+                ? "bg-primary opacity-50"
+                : "bg-primary"
             }`}
           >
             {status === "recording" ? (
               /* 정지 아이콘 */
-              <div className="w-[36px] h-[36px] bg-[#00CB93] rounded-[6px]" />
+              <div className="w-[36px] h-[36px] bg-primary rounded-[6px]" />
             ) : (
               /* 마이크 아이콘 */
               <svg width="40" height="56" viewBox="0 0 40 56" fill="none">

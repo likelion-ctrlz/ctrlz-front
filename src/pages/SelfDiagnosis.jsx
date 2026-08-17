@@ -39,12 +39,12 @@ function SelfDiagnosis() {
         {/* Content */}
         <main className="flex-1 flex flex-col px-[34px]">
           {/* 제목 */}
-          <h2 className="text-[20px] font-semibold text-[#00CB93] tracking-[-0.5px] leading-[25px] mt-[125px] whitespace-pre-line">
+          <h2 className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px] mt-[125px] whitespace-pre-line">
             {"오늘보다 조금 더 가까운 내일을 위해,\n지금의 나부터 만나볼까요?"}
           </h2>
 
           {/* 부제 */}
-          <p className="text-[16px] font-medium text-[#949494] tracking-[-0.4px] leading-[25px] mt-[22px]">
+          <p className="text-[16px] font-medium text-gray-muted tracking-[-0.4px] leading-[25px] mt-[22px]">
             최근의 일상을 떠올리며 나와 가까운 답을 골라주세요
           </p>
 
@@ -53,7 +53,7 @@ function SelfDiagnosis() {
           {/* 건너뛰기 */}
           <button
             onClick={() => navigate("/home")}
-            className="text-[16px] font-medium text-[#949494] tracking-[-0.4px] text-center mb-[16px]"
+            className="text-[16px] font-medium text-gray-muted tracking-[-0.4px] text-center mb-[16px]"
           >
             건너뛰기
           </button>
@@ -61,7 +61,7 @@ function SelfDiagnosis() {
           {/* 시작 버튼 */}
           <button
             onClick={() => setStep("guide")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-[#00CB93] text-[#00CB93] text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
           >
             자가진단 시작하기
           </button>
@@ -82,7 +82,7 @@ function SelfDiagnosis() {
           >
             <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
           </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-bold text-[#00CB93] tracking-[-0.35px] leading-[44px]">
+          <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-bold text-primary tracking-[-0.35px] leading-[44px]">
             자가진단 전 안내사항
           </p>
         </header>
@@ -95,26 +95,26 @@ function SelfDiagnosis() {
           </p>
 
           {/* 안내 카드 1 */}
-          <div className="rounded-[12px] bg-[#EFFFFB] border border-[#39D7AB] py-[32px] mt-[29px]">
-            <p className="text-[14px] font-medium text-[#74767A] tracking-[-0.35px] leading-[25px] text-center">
+          <div className="rounded-[12px] bg-mint-pale2 border border-primary-sub1 py-[32px] mt-[29px]">
+            <p className="text-[14px] font-medium text-gray-detail tracking-[-0.35px] leading-[25px] text-center">
               본 진단은 질문에 대한 답변을 바탕으로 진행됩니다.
               <br />
               각 질문에 대해 본인의 현재 상태를 가장 정확하게 알려주세요.
               <br />
-              <span className="font-semibold text-[#00CB93] leading-[35px]">
+              <span className="font-semibold text-primary leading-[35px]">
                 답변하기 어려운 경우는 마음 가는 쪽으로 선택해도 괜찮아요.
               </span>
             </p>
           </div>
 
           {/* 안내 카드 2 */}
-          <div className="rounded-[12px] bg-[#EFFFFB] border border-[#39D7AB] py-[32px] mt-[29px]">
-            <p className="text-[14px] font-medium text-[#74767A] tracking-[-0.35px] leading-[25px] text-center">
+          <div className="rounded-[12px] bg-mint-pale2 border border-primary-sub1 py-[32px] mt-[29px]">
+            <p className="text-[14px] font-medium text-gray-detail tracking-[-0.35px] leading-[25px] text-center">
               본 평가의 결과는 현재의 상태를 이해하고
               <br />
               맞춤 활동을 추천하기 위한 참고 자료로 활용되며,
               <br />
-              <span className="font-semibold text-[#00CB93]">
+              <span className="font-semibold text-primary">
                 의학적 진단을 대신하지 않습니다.
               </span>
             </p>
@@ -123,14 +123,14 @@ function SelfDiagnosis() {
           <div className="flex-1" />
 
           {/* 하단 안내 */}
-          <p className="text-[16px] font-medium text-[#949494] tracking-[-0.4px] leading-[25px] text-center mb-[16px]">
+          <p className="text-[16px] font-medium text-gray-muted tracking-[-0.4px] leading-[25px] text-center mb-[16px]">
             위의 내용을 확인했다면 진단을 시작해볼까요?
           </p>
 
           {/* 시작 버튼 */}
           <button
             onClick={() => setStep("questions")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-[#00CB93] text-[#00CB93] text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
           >
             자가진단 시작하기
           </button>
@@ -152,10 +152,10 @@ function SelfDiagnosis() {
         >
           <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
         </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-medium text-[#00CB93] tracking-[-0.35px] leading-[44px]">
+        <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-medium text-primary tracking-[-0.35px] leading-[44px]">
           총 8문항이에요!
         </p>
-        <p className="absolute left-[calc(50%+156px)] -translate-x-1/2 text-[14px] font-medium text-[#00CB93] tracking-[-0.35px] leading-[44px]">
+        <p className="absolute left-[calc(50%+156px)] -translate-x-1/2 text-[14px] font-medium text-primary tracking-[-0.35px] leading-[44px]">
           {currentQ + 1}/{QUESTIONS.length}
         </p>
       </header>
@@ -177,8 +177,8 @@ function SelfDiagnosis() {
                 onClick={() => setSelected(idx)}
                 className={`w-full h-[46px] rounded-[10px] border text-[16px] tracking-[-0.4px] flex items-center justify-center transition-all ${
                   isSelected
-                    ? "bg-[#00CB93] border-[#00CB93] text-white font-semibold"
-                    : "bg-white border-[#00CB93] text-[#00CB93] font-medium"
+                    ? "bg-primary border-primary text-white font-semibold"
+                    : "bg-white border-primary text-primary font-medium"
                 }`}
               >
                 {option}
@@ -195,8 +195,8 @@ function SelfDiagnosis() {
           disabled={selected === null}
           className={`w-full h-[68px] rounded-[16px] border text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px] transition-all ${
             selected !== null
-              ? "bg-white border-[#00CB93] text-[#00CB93]"
-              : "bg-white border-[#E0E0E0] text-[#BDBDBD]"
+              ? "bg-white border-primary text-primary"
+              : "bg-white border-gray-300 text-gray-400"
           }`}
         >
           다음

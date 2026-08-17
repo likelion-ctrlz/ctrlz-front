@@ -33,7 +33,7 @@ function ProfileSetup() {
         <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
           <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
         </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-bold text-[#00CB93] tracking-[-0.35px] leading-[44px]">
+        <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-bold text-primary tracking-[-0.35px] leading-[44px]">
           닉네임 설정
         </p>
       </header>
@@ -41,12 +41,12 @@ function ProfileSetup() {
       {/* Content */}
       <main className="flex-1 flex flex-col px-5">
         {/* 제목 */}
-        <h2 className="text-[20px] font-semibold text-[#00CB93] tracking-[-0.5px] leading-[25px] mt-[103px]">
+        <h2 className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px] mt-[103px]">
           닉네임을 알려주세요
         </h2>
 
         {/* 부제 */}
-        <p className="text-[16px] font-medium text-[#949494] tracking-[-0.4px] leading-[25px] mt-[16px]">
+        <p className="text-[16px] font-medium text-gray-muted tracking-[-0.4px] leading-[25px] mt-[16px]">
           실명 없이 사용할 닉네임을 적어주세요
         </p>
 
@@ -57,19 +57,19 @@ function ProfileSetup() {
           onChange={(e) => setNickname(e.target.value)}
           placeholder="이름을 입력하세요"
           maxLength={12}
-          className={`w-full h-[46px] mt-[26px] px-4 rounded-[12px] border text-[14px] tracking-[-0.35px] placeholder-[#D5D5D5] outline-none ${
-            errorMessage ? "border-[#FF4444] focus:border-[#FF4444]" : "border-[#CACACA] focus:border-[#00CB93]"
+          className={`w-full h-[46px] mt-[26px] px-4 rounded-[12px] border text-[14px] tracking-[-0.35px] placeholder-gray-input outline-none ${
+            errorMessage ? "border-danger-strong focus:border-danger-strong" : "border-gray-icon focus:border-primary"
           }`}
         />
 
         {/* 글자수 안내 */}
-        <p className="text-[12px] font-medium text-[#949494] tracking-[-0.3px] leading-[25px] mt-[10px]">
+        <p className="text-[12px] font-medium text-gray-muted tracking-[-0.3px] leading-[25px] mt-[10px]">
           2글자 ~ 12글자, 특수문자 제외
         </p>
 
         {/* 형식 오류 안내 */}
         {errorMessage && (
-          <p className="text-[12px] font-medium text-[#FF4444] tracking-[-0.3px] leading-[17px] mt-[4px]">
+          <p className="text-[12px] font-medium text-danger-strong tracking-[-0.3px] leading-[17px] mt-[4px]">
             {errorMessage}
           </p>
         )}
@@ -83,8 +83,8 @@ function ProfileSetup() {
           disabled={!isValid}
           className={`w-full h-[68px] rounded-[16px] border text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px] transition-all ${
             isValid
-              ? "bg-white border-[#00CB93] text-[#00CB93]"
-              : "bg-white border-[#E0E0E0] text-[#BDBDBD]"
+              ? "bg-white border-primary text-primary"
+              : "bg-white border-gray-300 text-gray-400"
           }`}
         >
           자가진단 시작하기

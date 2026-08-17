@@ -1,135 +1,109 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import moroLv1 from "../assets/moro-lv1.png";
 import chevronLeft from "../assets/icon/chevron-left.png";
 
+// 로딩/완료 화면 배경 — 피그마의 방사형 그라데이션(중심 50%,59% / #00CB93 → 외곽 #C6F3E7)을
+// 실측 픽셀 색상으로 검증해서 재현 (타원 반경이 화면보다 훨씬 커서 완만하게 퍼짐)
+const RADIAL_BG =
+  "radial-gradient(1281px 977px at 50% 59%, #00CB93 0%, #0CCE98 6.25%, #19D09E 12.5%, #32D5A8 25%, #4ADAB3 37.5%, #63DFBD 50%, #95E9D2 75%, #C6F3E7 100%)";
+
 function MissionVerify() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [photo, setPhoto] = useState(null);
-  const [uploading, setUploading] = useState(false);
+  const [searchParams] = useSearchParams();
+  // 실제 AI 인증 로직이 붙기 전까지, ?fail=1 로 실패 화면을 확인할 수 있게 함
+  const forceFail = searchParams.get("fail") === "1";
+  // idle: 촬영 대기 | loading: 달그락 달그락 | done: 미션 완료! 전환 화면
+  const [stage, setStage] = useState("idle");
 
   const handleCapture = (e) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPhoto(url);
+    if (!file) return;
+    if (forceFail) {
+      navigate(`/missions/${id}/result`, { state: { success: false } });
+      return;
     }
+    setStage("loading");
+    // 달그락 달그락... 잠시 대기 후 "미션 완료!" 전환을 보여주고 결과 페이지로 이동
+    setTimeout(() => {
+      setStage("done");
+      setTimeout(() => {
+        navigate(`/missions/${id}/result`, { state: { success: true } });
+      }, 900);
+    }, 2200);
   };
 
-  const handleSubmit = () => {
-    setUploading(true);
-    // 3초 대기 후 완료 (달그락 모션 보여주기)
-    setTimeout(() => {
-      setUploading(false);
-      navigate(`/missions/${id}/result`, { state: { success: true } });
-    }, 3000);
-  };
+  if (stage === "loading" || stage === "done") {
+    return (
+      <div className="relative flex min-h-dvh flex-col" style={{ background: RADIAL_BG }}>
+        <header className="relative flex items-center h-[53px] px-5">
+          <button className="w-[34px] h-[34px] flex items-center justify-center">
+            <img src={chevronLeft} alt="" className="w-[34px] h-[34px] brightness-0 invert" />
+          </button>
+          <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-white tracking-[-0.5px] leading-[44px]">
+            미션
+          </p>
+        </header>
+
+        <main className="flex-1 flex flex-col items-center justify-center">
+          <div className="w-[250px] h-[250px] rounded-full border-[3px] border-white/30 flex items-center justify-center">
+            <img
+              src={moroLv1}
+              alt="모로 알"
+              className={`w-[146px] h-auto object-contain ${stage === "loading" ? "animate-wobble" : ""}`}
+            />
+          </div>
+          <p className="text-[24px] font-semibold text-white tracking-[-0.5px] mt-[40px]">
+            {stage === "loading" ? "달그락 달그락..." : "미션 완료!"}
+          </p>
+        </main>
+      </div>
+    );
+  }
 
   return (
-    <div className={`relative flex min-h-dvh flex-col ${uploading ? "bg-[#00CB93]" : "bg-white"}`}>
-
+    <div className="relative flex min-h-dvh flex-col bg-white">
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">
         <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img
-            src={chevronLeft}
-            alt=""
-            className={`w-[34px] h-[34px] ${uploading ? "brightness-0 invert" : ""}`}
-          />
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
         </button>
-        <p className={`absolute left-1/2 -translate-x-1/2 text-[20px] font-medium tracking-[-0.5px] leading-[44px] ${uploading ? "text-white" : "text-[#00CB93]"}`}>
+        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
           미션
         </p>
       </header>
 
-      <main className="flex-1 flex flex-col px-5 pb-[130px]">
-        {/* 달그락 모션 — 인증 대기 중 */}
-        {uploading ? (
-          <div className="flex-1 flex flex-col items-center justify-center -mt-[53px]">
-            {/* 원형 배경 */}
-            <div className="w-[250px] h-[250px] rounded-full border-[3px] border-white/30 flex items-center justify-center">
-              <img
-                src={moroLv1}
-                alt="모로 알"
-                className="w-[146px] h-auto object-contain animate-wobble"
-              />
-            </div>
-            <p className="text-[20px] font-semibold text-white tracking-[-0.5px] mt-[40px]">
-              달그락 달그락...
-            </p>
-          </div>
-        ) : !photo ? (
-          <>
-            {/* 카메라 영역 */}
-            <div className="w-full aspect-square bg-[#F5F5F5] rounded-[16px] mt-[19px] flex items-center justify-center">
-              <div className="w-[80px] h-[80px] rounded-full border-2 border-[#CACACA]" />
-            </div>
+      <main className="flex-1 flex flex-col pb-[130px]">
+        {/* 카메라 영역 — 탭하면 바로 촬영 (피그마와 동일하게 화면 폭 전체, 모서리 없음) */}
+        <label className="relative w-full h-[363px] bg-[rgba(0,0,0,0.5)] border-t border-b border-primary flex items-center justify-center cursor-pointer">
+          <div className="w-[80px] h-[80px] rounded-full border-2 border-white/70" />
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleCapture}
+            className="hidden"
+          />
+        </label>
 
-            {/* 안내 텍스트 */}
-            <h3 className="text-[20px] font-semibold text-black tracking-[-0.5px] mt-[28px]">
-              미션 인증 사진을 찍어주세요
-            </h3>
-            <p className="text-[14px] font-medium text-[#949494] tracking-[-0.35px] leading-[25px] mt-[8px]">
-              촬영 시각과 위치가 자동으로 첨부 돼요
-            </p>
+        {/* 안내 텍스트 */}
+        <h3 className="px-5 text-[24px] font-semibold text-black tracking-[-0.6px] leading-[30px] mt-[28px]">
+          미션 인증 사진을 찍어주세요
+        </h3>
+        <p className="px-5 text-[16px] font-semibold text-gray-detail tracking-[-0.4px] leading-[30px] mt-[6px]">
+          촬영 시각과 위치가 자동으로 첨부 돼요
+        </p>
 
-            <div className="flex-1" />
+        <div className="flex-1" />
 
-            <p className="text-[12px] font-medium text-[#CACACA] tracking-[-0.3px] text-center mb-[16px]">
-              갤러리 업로드는 지원하지 않아요. 실시간 촬영만 인증에 사용 됩니다
-            </p>
-
-            {/* 촬영 버튼 */}
-            <label className="w-full h-[68px] rounded-[16px] bg-white border border-[#00CB93] text-[#00CB93] text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center cursor-pointer">
-              사진 촬영하기
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                onChange={handleCapture}
-                className="hidden"
-              />
-            </label>
-          </>
-        ) : (
-          <>
-            {/* 미리보기 */}
-            <div className="w-full aspect-square rounded-[16px] mt-[19px] overflow-hidden">
-              <img src={photo} alt="촬영된 사진" className="w-full h-full object-cover" />
-            </div>
-
-            <h3 className="text-[20px] font-semibold text-black tracking-[-0.5px] mt-[28px]">
-              이 사진으로 인증할까요?
-            </h3>
-            <p className="text-[14px] font-medium text-[#949494] tracking-[-0.35px] leading-[25px] mt-[8px]">
-              촬영 시각과 위치가 자동으로 첨부됩니다
-            </p>
-
-            <div className="flex-1" />
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setPhoto(null)}
-                className="flex-1 h-[68px] rounded-[16px] border border-[#CACACA] text-[#949494] text-[16px] font-semibold"
-              >
-                다시 촬영
-              </button>
-              <button
-                onClick={handleSubmit}
-                disabled={uploading}
-                className="flex-1 h-[68px] rounded-[16px] bg-white border border-[#00CB93] text-[#00CB93] text-[16px] font-semibold"
-              >
-                {uploading ? "인증 중..." : "인증하기"}
-              </button>
-            </div>
-          </>
-        )}
+        <p className="px-5 text-[12px] font-medium text-gray-muted tracking-[-0.3px] text-center mb-[16px]">
+          갤러리 업로드는 지원하지 않아요. 실시간 촬영만 인증에 사용 됩니다
+        </p>
       </main>
 
-      {!uploading && <BottomTabBar />}
-      <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
+      <BottomTabBar />
     </div>
   );
 }
