@@ -1,40 +1,45 @@
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
 
 function Login() {
   const navigate = useNavigate();
 
   return (
-    <Layout title="시작하기" showTabBar={false}>
-      <div>
-        <h2 className="text-xl leading-[1.4] mb-2">
-          신청서 작성 없이,<br />지금 바로 시작해요
-        </h2>
-        <p className="text-[#888] text-sm mb-[60px]">
-          전화방문 심사 없이 소셜로그인 한 번이면 충분해요
-        </p>
+    <div
+      className="relative flex min-h-dvh flex-col"
+      style={{
+        backgroundImage: `url("data:image/svg+xml;utf8,<svg viewBox='0 0 402 874' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='1'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(-51.75 54.611 -54.611 -51.75 491.5 179.39)'><stop stop-color='rgba(0,203,147,1)' offset='0'/><stop stop-color='rgba(16,206,154,1)' offset='0.0625'/><stop stop-color='rgba(32,210,161,1)' offset='0.125'/><stop stop-color='rgba(64,216,174,1)' offset='0.25'/><stop stop-color='rgba(96,223,188,1)' offset='0.375'/><stop stop-color='rgba(128,229,201,1)' offset='0.5'/><stop stop-color='rgba(191,242,228,1)' offset='0.75'/><stop stop-color='rgba(255,255,255,1)' offset='1'/></radialGradient></defs></svg>")`,
+        backgroundSize: "cover",
+      }}
+    >
+      {/* Status bar spacer */}
+      <div className="h-[44px]" />
 
-        <div className="w-20 h-20 rounded-full bg-[#f2f2f2] mx-auto mb-[60px]" />
-
-        <button
-          onClick={() => navigate("/profile-setup")}
-          className="w-full p-4 bg-[#FEE500] border-none rounded-[10px] text-[15px] mb-3"
+      {/* Content — centered */}
+      <main className="flex-1 flex flex-col items-center justify-center px-5">
+        <h1
+          className="text-[48px] text-white whitespace-nowrap"
+          style={{ fontFamily: "'Neuropolitical', sans-serif" }}
         >
-          카카오로 시작하기
-        </button>
-
-        <button
-          onClick={() => navigate("/profile-setup")}
-          className="w-full p-4 bg-white border border-[#ddd] rounded-[10px] text-[15px] mb-6"
-        >
-          구글로 시작하기
-        </button>
-
-        <p className="text-center text-[#999] text-xs">
-          계속 진행 시 이용약관 및 개인정보처리방침에 동의하게 됩니다
+          Morrow
+        </h1>
+        <p className="text-[16px] text-white mt-2 tracking-[-0.4px]">
+          오늘보다 조금 더 가까울 내일
         </p>
+      </main>
+
+      {/* 시작하기 버튼 */}
+      <div className="px-5 pb-[66px]">
+        <button
+          onClick={() => navigate("/onboarding")}
+          className="w-full h-[68px] rounded-[16px] bg-[#00CB93] border border-[#00CB93] text-white text-[20px] font-bold tracking-[-0.5px] flex items-center justify-center"
+        >
+          시작하기
+        </button>
       </div>
-    </Layout>
+
+      {/* Home indicator */}
+      <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-white rounded-[100px]" />
+    </div>
   );
 }
 
