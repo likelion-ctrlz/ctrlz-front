@@ -1,11 +1,27 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// 완성 음절(가-힣)뿐 아니라 타이핑 중간에 생기는 한글 낱자(ㄱ-ㅎ, ㅏ-ㅣ)도 허용,
+// 영문/숫자만 허용하고 특수문자·공백·이모지는 제외
+const NICKNAME_PATTERN = /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/;
+
 function ProfileSetup() {
   const [nickname, setNickname] = useState("");
   const navigate = useNavigate();
 
-  const isValid = nickname.length >= 2 && nickname.length <= 12;
+  const hasInvalidChars = nickname.length > 0 && !NICKNAME_PATTERN.test(nickname);
+  const isTooShort = nickname.length > 0 && nickname.length < 2;
+  const isTooLong = nickname.length > 12;
+  const isValid = nickname.length >= 2 && nickname.length <= 12 && !hasInvalidChars;
+
+  let errorMessage = "";
+  if (hasInvalidChars) {
+    errorMessage = "특수문자는 사용할 수 없어요";
+  } else if (isTooShort) {
+    errorMessage = "2글자 이상 입력해주세요";
+  } else if (isTooLong) {
+    errorMessage = "12글자 이하로 입력해주세요";
+  }
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
@@ -26,7 +42,7 @@ function ProfileSetup() {
       {/* Content */}
       <main className="flex-1 flex flex-col px-5">
         {/* 제목 */}
-        <h2 className="text-[20px] font-semibold text-[#00CB93] tracking-[-0.5px] leading-[25px] mt-[53px]">
+        <h2 className="text-[20px] font-semibold text-[#00CB93] tracking-[-0.5px] leading-[25px] mt-[103px]">
           닉네임을 알려주세요
         </h2>
 
@@ -42,7 +58,9 @@ function ProfileSetup() {
           onChange={(e) => setNickname(e.target.value)}
           placeholder="이름을 입력하세요"
           maxLength={12}
-          className="w-full h-[46px] mt-[35px] px-4 rounded-[12px] border border-[#CACACA] text-[14px] tracking-[-0.35px] placeholder-[#D5D5D5] outline-none focus:border-[#00CB93]"
+          className={`w-full h-[46px] mt-[26px] px-4 rounded-[12px] border text-[14px] tracking-[-0.35px] placeholder-[#D5D5D5] outline-none ${
+            errorMessage ? "border-[#FF4444] focus:border-[#FF4444]" : "border-[#CACACA] focus:border-[#00CB93]"
+          }`}
         />
 
         {/* 글자수 안내 */}
@@ -50,13 +68,15 @@ function ProfileSetup() {
           2글자 ~ 12글자, 특수문자 제외
         </p>
 
+        {/* 형식 오류 안내 */}
+        {errorMessage && (
+          <p className="text-[12px] font-medium text-[#FF4444] tracking-[-0.3px] leading-[17px] mt-[4px]">
+            {errorMessage}
+          </p>
+        )}
+
         {/* 빈 공간 */}
         <div className="flex-1" />
-
-        {/* 하단 안내 */}
-        <p className="text-[16px] font-medium text-[#949494] tracking-[-0.4px] leading-[25px] text-center mb-[16px]">
-          위의 내용을 확인했다면 진단을 시작해볼까요?
-        </p>
 
         {/* 버튼 */}
         <button
