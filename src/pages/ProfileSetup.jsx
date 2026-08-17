@@ -72,9 +72,6 @@ function ProfileSetup() {
           자가진단 시작하기
         </button>
       </main>
-
-      {/* Home indicator */}
-      <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
     </div>
   );
 }

@@ -76,9 +76,6 @@ function Login() {
           시작하기
         </button>
       </div>
-
-      {/* Home indicator */}
-      <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-white rounded-[100px]" />
     </div>
   );
 }
