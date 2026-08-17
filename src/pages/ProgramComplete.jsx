@@ -3,6 +3,7 @@ import BottomTabBar from "../components/BottomTabBar";
 import cardBg from "../assets/card-bg.svg";
 import cardTriangle from "../assets/card-triangle.svg";
 import logoGray from "../assets/logo/logo_gray.png";
+import chevronLeft from "../assets/icon/chevron-left.png";
 
 function ProgramComplete() {
   const navigate = useNavigate();
@@ -16,26 +17,14 @@ function ProgramComplete() {
       }}
     >
       {/* Header */}
-      <div className="flex items-center px-5 py-4">
-        <button
-          onClick={() => navigate("/programs")}
-          className="bg-transparent border-none p-0"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M15 18L9 12L15 6"
-              stroke="white"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+      <header className="relative flex items-center h-[53px] px-5">
+        <button onClick={() => navigate("/programs")} className="w-[34px] h-[34px] flex items-center justify-center">
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px] brightness-0 invert" />
         </button>
-        <h1 className="flex-1 text-center text-[17px] font-semibold text-white m-0">
+        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-white tracking-[-0.5px] leading-[44px]">
           프로그램
-        </h1>
-        <div className="w-6" />
-      </div>
+        </p>
+      </header>
 
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-5 pb-[130px]">
@@ -62,26 +51,26 @@ function ProgramComplete() {
 
               <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">활동명</span>
-                <span className="text-[13px] text-black font-semibold">도자기 원데이클래스</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">활동명</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">도자기 원데이클래스</span>
               </div>
 
               <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">일시</span>
-                <span className="text-[13px] text-black font-semibold">2026년 8월 30일 (일) 오후 2시</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">일시</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">2026년 8월 30일 (일) 오후 2시</span>
               </div>
 
               <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">장소</span>
-                <span className="text-[13px] text-black font-semibold">서울 마포구 모로 공방 스튜디오</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">장소</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">서울 마포구 모로 공방 스튜디오</span>
               </div>
 
               <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">사용 토큰</span>
-                <span className="text-[13px] text-black font-semibold">5 토큰</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">사용 토큰</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">5 토큰</span>
               </div>
 
               <div className="border-t border-gray-dot mt-2" />

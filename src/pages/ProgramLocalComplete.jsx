@@ -3,6 +3,7 @@ import BottomTabBar from "../components/BottomTabBar";
 import cardBg from "../assets/card-bg.svg";
 import cardTriangle from "../assets/card-triangle.svg";
 import logoGray from "../assets/logo/logo_gray.png";
+import chevronLeft from "../assets/icon/chevron-left.png";
 
 function ProgramLocalComplete() {
   const navigate = useNavigate();
@@ -16,20 +17,19 @@ function ProgramLocalComplete() {
       }}
     >
       {/* Header */}
-      <div className="flex items-center px-5 py-4">
-        <button onClick={() => navigate("/programs/local")} className="bg-transparent border-none p-0">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18L9 12L15 6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+      <header className="relative flex items-center h-[53px] px-5">
+        <button onClick={() => navigate("/programs/local")} className="w-[34px] h-[34px] flex items-center justify-center">
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px] brightness-0 invert" />
         </button>
-        <h1 className="flex-1 text-center text-[17px] font-semibold text-white m-0">프로그램</h1>
-        <div className="w-6" />
-      </div>
+        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-white tracking-[-0.5px] leading-[44px]">
+          프로그램
+        </p>
+      </header>
 
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-5 pb-[130px]">
         <p className="text-[24px] font-bold text-white m-0 mb-2 text-center">참여 신청이 완료됐어요!</p>
-        <p className="text-[14px] text-primary-sub4 m-0 mb-8 text-center">토큰을 사용하여 활동이 예약되었어요</p>
+        <p className="text-[14px] text-primary-sub4 m-0 mb-8 text-center">지역 연계 프로그램으로 토큰이 소모되지 않아요</p>
 
         {/* White card with decorative background */}
         <div className="relative w-full max-w-[273px]">
@@ -44,26 +44,20 @@ function ProgramLocalComplete() {
 
               <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">활동명</span>
-                <span className="text-[13px] text-black font-semibold">서예 입문 클래스</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">활동명</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">서예 입문 클래스</span>
               </div>
 
               <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">일시</span>
-                <span className="text-[13px] text-black font-semibold">매주 토요일 10:00</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">일시</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">매주 토요일 10:00</span>
               </div>
 
               <div className="border-t border-gray-dot" />
               <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">장소</span>
-                <span className="text-[13px] text-black font-semibold">강동구 문화예술회관</span>
-              </div>
-
-              <div className="border-t border-gray-dot" />
-              <div className="py-4 flex justify-between items-center">
-                <span className="text-[13px] text-gray-muted underline decoration-dotted underline-offset-4">사용 토큰</span>
-                <span className="text-[13px] text-black font-semibold">5 토큰</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">장소</span>
+                <span className="text-[11px] font-medium text-gray-muted tracking-[-0.275px]">강동구 문화예술회관</span>
               </div>
 
               <div className="border-t border-gray-dot mt-2" />

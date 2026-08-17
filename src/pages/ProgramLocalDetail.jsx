@@ -32,11 +32,11 @@ function ProgramLocalDetail() {
         </div>
 
         {/* Tags */}
-        <div className="flex gap-2 px-5 mt-4">
+        <div className="flex gap-[6px] px-5 mt-4">
           {["강동구", "문화 ･ 예술", "성인 누구나"].map((tag) => (
             <span
               key={tag}
-              className="border border-primary rounded-[15px] px-[20px] h-[30px] flex items-center text-[12px] text-primary font-medium"
+              className="bg-[rgba(255,255,255,0.1)] border border-primary rounded-[15px] px-[20px] h-[30px] flex items-center text-[12px] text-primary tracking-[-0.3px]"
             >
               {tag}
             </span>
