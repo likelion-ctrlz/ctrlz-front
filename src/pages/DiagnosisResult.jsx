@@ -1,22 +1,134 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import moroLv1 from "../assets/moro-lv1.png";
+import characterShadow from "../assets/character-shadow.svg";
+import chevronLeft from "../assets/icon/chevron-left.png";
+import RESULT_CONTENT from "../data/diagnosisResultContent";
+import IMPROVEMENT_CONTENT from "../data/improvementContent";
+
+// Figma 원본 벡터 경로 (점수 게이지) — Vector 44/46(웨지), Vector 45(물결 캡), Polygon 1(포인터)
+const GAUGE_WEDGE_PATH =
+  "M42 0L0 41.7391C8.05 54.2609 10.3542 72.4638 10.5 80H70C68.95 39.6522 50.8958 9.85507 42 0Z";
+const GAUGE_WAVE_PATH =
+  "M209 49.6579L166.588 92C114.469 33.3322 60.9219 67.5551 40.6632 92L0 49.6579C84.8243 -42.0094 179.705 14.7365 209 49.6579Z";
+const GAUGE_POINTER_PATH = "M9.95929 0L19.9186 17.25H0L9.95929 0Z";
+
+// TODO: API 연동 후 GET /assessment/result 응답으로 교체
+// (assessment_type, assessment_level, assessment_score)
+const MOCK_ASSESSMENT = {
+  type: "은둔형", // 은둔형 | 고립형 | 관찰군 | 복합형
+  level: 2, // 1~4 (1=가장 심각). 관찰군은 항상 4
+  score: 6, // 0~10, 높을수록 심각(위험 쪽)
+};
+
+// 게이지 배지 문구 — 유형이 아니라 점수(0~10, 높을수록 위험) 구간별로 분기
+function getBadgeByScore(score) {
+  if (score >= 7.5) return "함께 이겨내요!";
+  if (score >= 5) return "같이 극복해요!";
+  if (score >= 2.5) return "같이 나아가요!";
+  return "잘 하고 있어요!";
+}
+
+function getResultContent({ type, level }) {
+  const byType = RESULT_CONTENT[type] ?? RESULT_CONTENT["은둔형"];
+  if (byType.flat) return byType.flat;
+  return level <= 2 ? byType.lv12 : byType.lv34;
+}
+
+function getImprovementContent(type) {
+  return IMPROVEMENT_CONTENT[type] ?? IMPROVEMENT_CONTENT["은둔형"];
+}
+
+// 게이지 밴드의 "안쪽" 경계선(점수 숫자와 맞닿는 쪽) 좌표를 실제 렌더링 결과에서 픽셀 단위로
+// 측정한 값 (좌우 대칭이라 왼쪽만 측정하고 오른쪽은 반사). 웨지 구간은 평평(y≈134), 중앙 물결
+// 캡 구간은 부드러운 곡선으로 y≈58까지 올라옴 — 포인터가 이 선을 그대로 따라가게 함.
+const GAUGE_INNER_ARC_POINTS = [
+  [0, 124],
+  [20, 121],
+  [40, 134],
+  [60, 134],
+  [80, 134],
+  [88, 126],
+  [92, 108],
+  [100, 91],
+  [108, 82],
+  [116, 76],
+  [124, 70],
+  [132, 66],
+  [152, 60],
+  [163, 58],
+  [174, 60],
+  [194, 66],
+  [202, 70],
+  [210, 76],
+  [218, 82],
+  [226, 91],
+  [234, 108],
+  [238, 126],
+  [246, 134],
+  [266, 134],
+  [286, 134],
+  [306, 121],
+  [326, 124],
+];
+
+// GAUGE_INNER_ARC_POINTS를 선형보간해서 임의의 x에서의 y를 구함
+function interpolateInnerArcY(x) {
+  let i = 0;
+  while (
+    i < GAUGE_INNER_ARC_POINTS.length - 2 &&
+    GAUGE_INNER_ARC_POINTS[i + 1][0] < x
+  ) {
+    i++;
+  }
+  const [x1, y1] = GAUGE_INNER_ARC_POINTS[i];
+  const [x2, y2] = GAUGE_INNER_ARC_POINTS[i + 1];
+  const localT = x2 === x1 ? 0 : (x - x1) / (x2 - x1);
+  return y1 + (y2 - y1) * localT;
+}
+
+// score(0~10) → 밴드 안쪽 경계선 위 좌표(선형보간) + 그 지점의 접선 방향 회전각.
+// 접선은 x 좌우로 같은 거리(±5px) 떨어진 두 점(centered difference)으로 계산 —
+// 한쪽 구간의 기울기만 쓰면 정중앙(5점)처럼 대칭인 지점에서도 살짝 기울어져 보이는 문제가 있었음.
+function getPointerTransform(score) {
+  const t = Math.min(Math.max(score / 10, 0), 1);
+  const x = t * 326;
+  const y = interpolateInnerArcY(x);
+
+  const delta = 5;
+  const xLo = Math.max(x - delta, 0);
+  const xHi = Math.min(x + delta, 326);
+  const dx = xHi - xLo;
+  const dy = interpolateInnerArcY(xHi) - interpolateInnerArcY(xLo);
+  const normalX = dy;
+  const normalY = -dx;
+  const rotationDeg = (Math.atan2(normalX, -normalY) * 180) / Math.PI;
+
+  return { x, y, rotationDeg };
+}
 
 function DiagnosisResult() {
-  const [step, setStep] = useState("result"); // result | improvement | character
+  const [step, setStep] = useState("result"); // result | improvement | character | character2
   const navigate = useNavigate();
+  const content = getResultContent(MOCK_ASSESSMENT);
+  const improvement = getImprovementContent(MOCK_ASSESSMENT.type);
+  const {
+    x: pointerX,
+    y: pointerY,
+    rotationDeg: pointerRotationDeg,
+  } = getPointerTransform(MOCK_ASSESSMENT.score);
 
   // 진단 결과
   if (step === "result") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-[#E6FFF8]">
-
         {/* Header */}
         <header className="relative flex items-center h-[53px] px-5">
-          <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-            <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-              <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <button
+            onClick={() => navigate(-1)}
+            className="w-[34px] h-[34px] flex items-center justify-center"
+          >
+            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
           </button>
           <p className="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-[#00CB93] tracking-[-0.45px] leading-[44px]">
             내 진단 확인
@@ -25,70 +137,72 @@ function DiagnosisResult() {
 
         {/* 카드 */}
         <main className="flex-1 flex flex-col px-5 pt-[49px]">
-          <div className="w-full bg-white border border-[#39D7AB] rounded-[12px] px-4 pt-6 pb-6">
-            {/* 게이지 영역 */}
-            <div className="flex flex-col items-center mb-4">
-              {/* "같이 극복해요!" */}
-              <p className="text-[16px] font-semibold text-white tracking-[-0.4px] bg-[#00CB93] px-4 py-1 rounded-full mb-4">
-                같이 극복해요!
+          <div className="w-full flex-1 bg-white border border-[#39D7AB] rounded-[12px] px-4 pt-[25px] pb-6">
+            {/* 게이지 영역 — Figma 벡터 원본(웨지 2개 + 물결 캡) 그대로 재현, 326x145 기준 */}
+            <div className="relative w-[326px] h-[145px] mx-auto mb-[54px]">
+              <svg
+                viewBox="0 0 326 145"
+                className="absolute inset-0 w-full h-full"
+              >
+                {/* 왼쪽 웨지 (정상, 연초록) — 오른쪽 웨지를 좌우 반전 */}
+                <g transform="translate(98,55) scale(-1,1)">
+                  <path d={GAUGE_WEDGE_PATH} fill="#AAEEDB" />
+                </g>
+                {/* 오른쪽 웨지 (위험, 빨강) */}
+                <g transform="translate(228,55)">
+                  <path d={GAUGE_WEDGE_PATH} fill="#FF627E" />
+                </g>
+                {/* 중앙 물결 캡 (초록) */}
+                <g transform="translate(59,0)">
+                  <path d={GAUGE_WAVE_PATH} fill="#00CB93" />
+                </g>
+                {/* 포인터 — 점수(0~10)에 따라 작은 원을 따라 위치·각도·색이 바뀜 */}
+                <g
+                  transform={`translate(${pointerX},${pointerY}) rotate(${pointerRotationDeg})`}
+                >
+                  <path
+                    d={GAUGE_POINTER_PATH}
+                    transform="translate(-9.96,-8.625)"
+                    fill={MOCK_ASSESSMENT.score < 5 ? "#00CB93" : "#FF627E"}
+                  />
+                </g>
+              </svg>
+
+              {/* 배지 — 점수 구간별 문구, 글자수와 무관하게 항상 가운데 정렬 */}
+              <p className="absolute left-[163px] top-[21px] -translate-x-1/2 text-[16px] font-semibold text-white tracking-[-0.4px] whitespace-nowrap">
+                {getBadgeByScore(MOCK_ASSESSMENT.score)}
               </p>
 
-              {/* 반원 게이지 */}
-              <div className="relative w-[240px] h-[120px] mb-2">
-                <svg viewBox="0 0 240 120" className="w-full h-full">
-                  {/* 초록 영역 (왼쪽) */}
-                  <path
-                    d="M 20 115 A 100 100 0 0 1 120 15"
-                    fill="none"
-                    stroke="#00CB93"
-                    strokeWidth="14"
-                    strokeLinecap="round"
-                  />
-                  {/* 빨간 영역 (오른쪽) */}
-                  <path
-                    d="M 120 15 A 100 100 0 0 1 220 115"
-                    fill="none"
-                    stroke="#FF627E"
-                    strokeWidth="14"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                {/* 삼각형 포인터 */}
-                <div className="absolute top-[55px] left-1/2 -translate-x-1/2">
-                  <svg width="16" height="14" viewBox="0 0 16 14" fill="none">
-                    <polygon points="8,0 16,14 0,14" fill="#00CB93"/>
-                  </svg>
-                </div>
-              </div>
-
-              {/* 점수 */}
-              <p className="mb-1">
-                <span className="text-[40px] font-semibold text-[#00CB93]">10</span>
+              {/* 점수 — 자릿수와 무관하게 항상 가운데 정렬 */}
+              <p className="absolute left-[163px] top-[97px] -translate-x-1/2 whitespace-nowrap">
+                <span className="text-[40px] font-semibold text-[#00CB93]">
+                  {MOCK_ASSESSMENT.score}
+                </span>
                 <span className="text-[16px] text-[#606060]">점</span>
               </p>
 
               {/* 정상 / 위험 라벨 */}
-              <div className="flex justify-between w-full px-2">
-                <span className="text-[12px] font-semibold text-[#AAEEDB] tracking-[-0.3px]">정상</span>
-                <span className="text-[12px] font-semibold text-[#FF627E] tracking-[-0.3px]">위험</span>
-              </div>
+              <span className="absolute left-0 top-[115px] text-[12px] font-semibold text-[#AAEEDB] tracking-[-0.3px]">
+                정상
+              </span>
+              <span className="absolute right-0 top-[115px] text-[12px] font-semibold text-[#FF627E] tracking-[-0.3px]">
+                위험
+              </span>
             </div>
 
-            {/* 설명 */}
-            <p className="text-[14px] font-medium text-[#74767A] tracking-[-0.35px] leading-[25px] mt-4">
-              은둔형은 관계 자체보다 "물리적으로 밖에 나가지 않는 것"이 핵심 특징으로 나타나는 유형입니다. 가족 외의 사람과 연락하거나 마음을 나눌 상대는 어느 정도 남아있지만, 최근 한 달간 집 밖으로 나간 날은 손에 꼽을 만큼 줄어든 상태예요.
-            </p>
-            <p className="text-[14px] font-medium text-[#74767A] tracking-[-0.35px] leading-[25px] mt-2">
-              지금은 Lv.1~2 단계로, 이런 생활이 시작된 지 얼마 되지 않았고 관계망도 아직 유지되고 있어 비교적 회복이 수월한 이른 시기에 해당합니다. 다만 이 상태가 길어질수록 외출 자체에 대한 심리적 장벽이 점점 높아질 수 있어, 지금처럼 이른 단계에서 <span className="text-[#00CB93]">집 앞을 나서는 작은 외출부터 다시 습관화하는 것이 중요해요.</span>
+            {/* 설명 — 유형·레벨별 상세 설명, 마지막 문장만 강조. whitespace-pre-line으로 문장 내 \n을 줄바꿈으로 렌더링 */}
+            <p className="text-[14px] font-medium text-[#74767A] tracking-[-0.35px] leading-[25px] whitespace-pre-line">
+              {content.description.slice(0, -1).join("")}
+              <span className="text-[#00CB93] font-semibold">
+                {content.description[content.description.length - 1]}
+              </span>
             </p>
           </div>
-
-          <div className="flex-1" />
 
           {/* 다시 진단하기 */}
           <button
             onClick={() => navigate("/diagnosis")}
-            className="text-[16px] font-medium text-[#949494] tracking-[-0.4px] text-center mb-[16px]"
+            className="text-[16px] font-medium text-[#949494] tracking-[-0.4px] text-center mt-5 mb-[16px]"
           >
             다시 진단하기
           </button>
@@ -101,8 +215,6 @@ function DiagnosisResult() {
             다음
           </button>
         </main>
-
-        <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
       </div>
     );
   }
@@ -111,12 +223,12 @@ function DiagnosisResult() {
   if (step === "improvement") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-[#E6FFF8]">
-
         <header className="relative flex items-center h-[53px] px-5">
-          <button onClick={() => setStep("result")} className="w-[34px] h-[34px] flex items-center justify-center">
-            <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-              <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <button
+            onClick={() => setStep("result")}
+            className="w-[34px] h-[34px] flex items-center justify-center"
+          >
+            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
           </button>
           <p className="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-[#00CB93] tracking-[-0.45px] leading-[44px]">
             나를 위한 개선 방안
@@ -124,13 +236,18 @@ function DiagnosisResult() {
         </header>
 
         <main className="flex-1 flex flex-col px-5 pt-[49px]">
-          <div className="w-full bg-white border border-[#39D7AB] rounded-[12px] px-4 pt-[30px] pb-6 relative">
+          <div className="relative w-full h-[544px] bg-white rounded-[12px] px-4 pt-[30px] pb-6 overflow-hidden">
+            {/* 테두리를 네이티브 border 대신 내부 레이어로 그림 — overflow-hidden은 자신의 border까지
+                padding box 기준으로 잘라내서, border 밖으로 오버레이를 빼는 방식은 클리핑돼 버림.
+                border를 카드 안쪽 레이어로 옮기고 그 위에 그라데이션을 그려야 테두리도 함께 흐려짐 */}
+            <div className="absolute inset-0 rounded-[12px] border border-[#39D7AB] pointer-events-none" />
+
             {/* 왜 개선해야 할까요? */}
             <h3 className="text-[20px] font-semibold text-[#00CB93] tracking-[-0.5px] leading-[25px] text-center">
               왜 개선해야 할까요?
             </h3>
             <p className="text-[14px] font-medium text-[#74767A] tracking-[-0.35px] leading-[25px] mt-[20px]">
-              은둔 성향은 주로 외부 자극이나 사람과의 접촉을 줄이면서 심리적인 안정을 찾으려는 특성입니다. 이는 처음에는 지친 마음을 회복하기 위한 자연스러운 반응처럼 느껴지지만, 이 상태가 길어질수록 외출이나 낯선 상황 자체에 대한 심리적 장벽이 점점 높아지는 경향이 있습니다. 결국 몸을 움직이는 것 자체가 부담스러워지고, 일상적인 사회 활동이나 관계 형성에도 점차 어려움을 느끼게 되어, 스스로 다시 밖으로 나가는 것이 더욱 더 어렵게 느껴질 수 있습니다.
+              {improvement.why}
             </p>
 
             {/* 어떻게 개선해야 할까요? */}
@@ -139,37 +256,32 @@ function DiagnosisResult() {
             </h3>
 
             <div className="mt-[20px] space-y-[12px]">
-              {/* 1 */}
-              <div className="flex items-start gap-3">
-                <div className="w-[36px] h-[36px] rounded-full bg-[#00CB93] flex items-center justify-center shrink-0">
-                  <span className="text-[16px] font-medium text-white">1</span>
+              {improvement.steps.map((improvementStep, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="w-[36px] h-[36px] rounded-full bg-[#AAEEDB] border border-[#00CB93] flex items-center justify-center shrink-0">
+                    <span className="text-[16px] font-medium text-[#00CB93]">{i + 1}</span>
+                  </div>
+                  <div>
+                    <p className="text-[14px] font-medium text-[#00CB93] tracking-[-0.35px] leading-[25px]">
+                      {improvementStep.title}
+                    </p>
+                    <p className="text-[10px] font-medium text-[#74767A] tracking-[-0.25px] leading-[25px]">
+                      {improvementStep.desc}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-[14px] font-medium text-[#00CB93] tracking-[-0.35px] leading-[25px]">하루 3분, 창문 열고 바람 쐬기</p>
-                  <p className="text-[10px] font-medium text-[#74767A] tracking-[-0.25px] leading-[25px]">가장 작지만 확실한 첫 걸음</p>
-                </div>
-              </div>
-              {/* 2 */}
-              <div className="flex items-start gap-3">
-                <div className="w-[36px] h-[36px] rounded-full bg-[#00CB93] flex items-center justify-center shrink-0">
-                  <span className="text-[16px] font-medium text-white">2</span>
-                </div>
-                <div>
-                  <p className="text-[14px] font-medium text-[#00CB93] tracking-[-0.35px] leading-[25px]">주 2회, 짧은 외출 미션</p>
-                  <p className="text-[10px] font-medium text-[#74767A] tracking-[-0.25px] leading-[25px]">편의점, 근처 공원처럼 가까운 곳부터 천천히 반경을 넓혀가요</p>
-                </div>
-              </div>
-              {/* 3 */}
-              <div className="flex items-start gap-3">
-                <div className="w-[36px] h-[36px] rounded-full bg-[#00CB93] flex items-center justify-center shrink-0">
-                  <span className="text-[16px] font-medium text-white">3</span>
-                </div>
-                <div>
-                  <p className="text-[14px] font-medium text-[#00CB93] tracking-[-0.35px] leading-[25px]">말하는 일기장으로 마음 기록하기</p>
-                  <p className="text-[10px] font-medium text-[#74767A] tracking-[-0.25px] leading-[25px]">변화를 스스로 확인할수록 다음 걸음이 쉬워져요</p>
-                </div>
-              </div>
+              ))}
             </div>
+
+            {/* 하단 페이드 — Figma 실측 그라데이션. 위에서 border를 내부 레이어로 옮겼기 때문에
+                이 오버레이가 같은 레이어 순서상 border 레이어 위에 그려져 테두리도 함께 흐려짐 */}
+            <div
+              className="absolute inset-x-0 bottom-0 h-[207px] pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(230,255,248,0.07) 0%, rgb(230,255,248) 79%)",
+              }}
+            />
           </div>
 
           <div className="flex-1" />
@@ -186,8 +298,6 @@ function DiagnosisResult() {
             다음
           </button>
         </main>
-
-        <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
       </div>
     );
   }
@@ -196,40 +306,46 @@ function DiagnosisResult() {
   if (step === "character") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-[#00CB93]">
-
         <header className="relative flex items-center h-[53px] px-5">
-          <button onClick={() => setStep("improvement")} className="w-[34px] h-[34px] flex items-center justify-center">
-            <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-              <path d="M7 1L1 7.5L7 14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <button
+            onClick={() => setStep("improvement")}
+            className="w-[34px] h-[34px] flex items-center justify-center"
+          >
+            <img
+              src={chevronLeft}
+              alt=""
+              className="w-[34px] h-[34px] brightness-0 invert"
+            />
           </button>
         </header>
 
         <main className="flex-1 flex flex-col px-[37px] pt-[146px]">
           {/* 제목 */}
           <h2 className="text-[20px] font-extrabold text-white leading-normal">
-            요즘 밖으로 나가는 게 조금 망설여지셨죠?
+            {content.title}
           </h2>
 
           {/* 부제 */}
           <div className="text-[14px] font-medium text-[#C6F3E7] text-center leading-normal mt-[26px]">
-            <p>그럴 수 있어요</p>
-            <p>누구에게나 잠시 멈춰있는 시기가 필요하니까요</p>
-            <p>지금은 집 안에서부터 아주 작은 걸음을 시작해볼 때예요</p>
+            {content.summary.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
           </div>
 
           <div className="flex-1" />
 
-          {/* 캐릭터 */}
-          <div className="flex flex-col items-center mb-[20px]">
+          {/* 캐릭터 — Figma 실측: 그림자가 이미지 박스 기준 left-62px, top-214px에 겹쳐 위치.
+              그림자를 먼저 그려서 뒤에 깔리고, 캐릭터 이미지가 그 위에 오도록 함 */}
+          <div className="relative w-[192px] h-[288px] mx-auto mb-[20px]">
+            <img
+              src={characterShadow}
+              alt=""
+              className="absolute w-[183px] h-[47px] left-[62px] top-[214px]"
+            />
             <img
               src={moroLv1}
               alt="모로 알"
-              className="w-[192px] h-[288px] object-contain"
-            />
-            <div
-              className="w-[183px] h-[47px] -mt-3"
-              style={{ background: "rgba(0,0,0,0.08)", borderRadius: "50%" }}
+              className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
         </main>
@@ -243,8 +359,6 @@ function DiagnosisResult() {
             시작하기
           </button>
         </div>
-
-        <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
       </div>
     );
   }
@@ -253,33 +367,44 @@ function DiagnosisResult() {
   if (step === "character2") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-[#00CB93]">
-
         <header className="relative flex items-center h-[53px] px-5">
-          <button onClick={() => setStep("character")} className="w-[34px] h-[34px] flex items-center justify-center">
-            <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-              <path d="M7 1L1 7.5L7 14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <button
+            onClick={() => setStep("character")}
+            className="w-[34px] h-[34px] flex items-center justify-center"
+          >
+            <img
+              src={chevronLeft}
+              alt=""
+              className="w-[34px] h-[34px] brightness-0 invert"
+            />
           </button>
         </header>
 
         <main className="flex-1 flex flex-col items-center px-5 pt-[143px]">
           {/* 제목 */}
           <h2 className="text-[20px] font-extrabold text-white text-center leading-normal">
-            모로와 함께 첫 미션부터<br/>가볍게 시작해볼까요?
+            {content.cta.split("\n").map((line, i, arr) => (
+              <span key={i}>
+                {line}
+                {i < arr.length - 1 && <br />}
+              </span>
+            ))}
           </h2>
 
           <div className="flex-1" />
 
-          {/* 캐릭터 */}
-          <div className="flex flex-col items-center mb-[20px]">
+          {/* 캐릭터 — Figma 실측: 그림자가 이미지 박스 기준 left-62px, top-214px에 겹쳐 위치.
+              그림자를 먼저 그려서 뒤에 깔리고, 캐릭터 이미지가 그 위에 오도록 함 */}
+          <div className="relative w-[192px] h-[288px] mx-auto mb-[20px]">
+            <img
+              src={characterShadow}
+              alt=""
+              className="absolute w-[183px] h-[47px] left-[62px] top-[214px]"
+            />
             <img
               src={moroLv1}
               alt="모로 알"
-              className="w-[192px] h-[288px] object-contain"
-            />
-            <div
-              className="w-[183px] h-[47px] -mt-3"
-              style={{ background: "rgba(0,0,0,0.08)", borderRadius: "50%" }}
+              className="absolute inset-0 w-full h-full object-cover animate-wobble-once"
             />
           </div>
         </main>
@@ -293,8 +418,6 @@ function DiagnosisResult() {
             시작하기
           </button>
         </div>
-
-        <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
       </div>
     );
   }

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo/onboarding_logo.png";
-import onboarding1 from "../assets/onboarding/onboading1.png";
-import onboarding2 from "../assets/onboarding/onboading2.png";
+import onboarding1 from "../assets/onboarding/onboarding1.png";
+import onboarding2 from "../assets/onboarding/onboarding2.png";
 import onboarding3 from "../assets/onboarding/onboarding3.png";
 import onboarding4 from "../assets/onboarding/onboarding4.png";
 
@@ -84,7 +84,8 @@ function Onboarding() {
   };
 
   // Figma 원본 기준: 마지막(Morrow) 화면은 첫 슬라이드와 동일한 위치(0)로 표시
-  const indicatorLeft = (current === SLIDES.length ? 0 : current) * INDICATOR_STEP;
+  const indicatorLeft =
+    (current === SLIDES.length ? 0 : current) * INDICATOR_STEP;
 
   return (
     <div
@@ -108,10 +109,16 @@ function Onboarding() {
             style={{ width: `${100 / TOTAL_STEPS}%`, background: slide.bg }}
           >
             {/* 캡션 */}
-            <div className="absolute left-0 w-full px-5 text-center" style={{ top: `${slide.top}px` }}>
+            <div
+              className="absolute left-0 w-full px-5 text-center"
+              style={{ top: `${slide.top}px` }}
+            >
               <p
                 className="font-bold text-white tracking-[-0.6px] m-0"
-                style={{ fontSize: `${slide.fontSize}px`, lineHeight: "normal" }}
+                style={{
+                  fontSize: `${slide.fontSize}px`,
+                  lineHeight: "normal",
+                }}
               >
                 {slide.lines.map((line, j) => (
                   <span key={j} className="block">
@@ -123,7 +130,11 @@ function Onboarding() {
 
             {/* 폰 목업 스크린샷 — Figma 스펙: 283x587, top 266px(상태바 44px 제외), 가로 중앙 정렬 */}
             <div className="absolute left-1/2 -translate-x-1/2 top-[266px] w-[283px] h-[587px]">
-              <img src={slide.image} alt={`온보딩 화면 ${i + 1}`} className="w-full h-full object-contain" />
+              <img
+                src={slide.image}
+                alt={`온보딩 화면 ${i + 1}`}
+                className="w-full h-full object-contain"
+              />
             </div>
 
             {/* 하단 그라디언트 페이드 — 화면 높이에 상관없이 항상 바닥까지 닿도록 top을 비율로 지정 */}
@@ -131,7 +142,8 @@ function Onboarding() {
               className="absolute left-0 right-0 bottom-0 pointer-events-none"
               style={{
                 top: "65%",
-                background: "linear-gradient(to bottom, rgba(170,238,219,0) 31.25%, rgba(170,238,219,0.84) 81.908%)",
+                background:
+                  "linear-gradient(to bottom, rgba(170,238,219,0) 31.25%, rgba(170,238,219,0.84) 81.908%)",
               }}
             />
           </div>
@@ -167,7 +179,10 @@ function Onboarding() {
         <div className="relative w-[82px] h-[10px] bg-white rounded-[40px] overflow-hidden">
           <div
             className="absolute top-0 h-[10px] bg-[#AAEEDB] rounded-[40px] transition-all duration-300"
-            style={{ left: `${indicatorLeft}px`, width: `${INDICATOR_WIDTH}px` }}
+            style={{
+              left: `${indicatorLeft}px`,
+              width: `${INDICATOR_WIDTH}px`,
+            }}
           />
         </div>
       </div>

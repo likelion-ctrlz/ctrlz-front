@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import moroLv2 from "../assets/moro-lv2.png";
-import bgTokenScene from "../assets/bg-token-scene.png";
+import bgTokenScene from "../assets/home/ground.png";
 import tokenCoinLarge from "../assets/token-coin-large.png";
+import chevronLeft from "../assets/icon/chevron-left.png";
 
 function MissionResult() {
   const navigate = useNavigate();
@@ -15,13 +16,13 @@ function MissionResult() {
   if (step === "complete") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-mint-fade">
-
         {/* Header */}
         <header className="relative flex items-center h-[53px] px-5">
-          <button onClick={() => navigate("/missions")} className="w-[34px] h-[34px] flex items-center justify-center">
-            <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-              <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <button
+            onClick={() => navigate("/missions")}
+            className="w-[34px] h-[34px] flex items-center justify-center"
+          >
+            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
           </button>
           <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-[#00CB93] tracking-[-0.5px] leading-[44px]">
             미션
@@ -39,7 +40,9 @@ function MissionResult() {
 
           {/* 인증 사진 영역 */}
           <div className="w-full h-[202px] mt-[25px] rounded-none bg-[rgba(0,0,0,0.5)] border-t border-b border-[#00CB93] flex items-center justify-center">
-            <p className="text-[24px] font-semibold text-[#00CB93]">인증 사진</p>
+            <p className="text-[24px] font-semibold text-[#00CB93]">
+              인증 사진
+            </p>
           </div>
 
           {/* 보상 카드 */}
@@ -47,14 +50,24 @@ function MissionResult() {
             className="w-full h-[122px] rounded-[16px] border border-[#00CB93] mt-[24px] px-4 pt-[17px]"
             style={{ backgroundColor: "rgba(255,255,255,0.76)" }}
           >
-            <p className="text-[16px] font-semibold text-[#00946B] tracking-[-0.4px] leading-[25px]">오늘의 보상</p>
+            <p className="text-[16px] font-semibold text-[#00946B] tracking-[-0.4px] leading-[25px]">
+              오늘의 보상
+            </p>
             <div className="flex justify-between items-center mt-[14px]">
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">경험치</span>
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">+ 20P</span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                경험치
+              </span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                + 20P
+              </span>
             </div>
             <div className="flex justify-between items-center mt-[4px]">
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">토큰</span>
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">+ 30 XP</span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                토큰
+              </span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                + 30 XP
+              </span>
             </div>
           </div>
 
@@ -87,12 +100,12 @@ function MissionResult() {
   if (step === "levelup") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-mint-fade">
-
         <header className="relative flex items-center h-[53px] px-5">
-          <button onClick={() => setStep("complete")} className="w-[34px] h-[34px] flex items-center justify-center">
-            <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-              <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <button
+            onClick={() => setStep("complete")}
+            className="w-[34px] h-[34px] flex items-center justify-center"
+          >
+            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
           </button>
           <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-[#00CB93] tracking-[-0.5px] leading-[44px]">
             미션
@@ -109,7 +122,11 @@ function MissionResult() {
 
           {/* 캐릭터 */}
           <div className="flex-1 flex items-center justify-center">
-            <img src={moroLv2} alt="모로" className="w-[200px] h-auto object-contain" />
+            <img
+              src={moroLv2}
+              alt="모로"
+              className="w-[200px] h-auto object-contain"
+            />
           </div>
 
           {/* 보상 정보 */}
@@ -117,14 +134,24 @@ function MissionResult() {
             className="w-full h-[122px] rounded-[16px] border border-[#00CB93] px-4 pt-[17px]"
             style={{ backgroundColor: "rgba(255,255,255,0.76)" }}
           >
-            <p className="text-[16px] font-semibold text-[#00946B] tracking-[-0.4px] leading-[25px]">LV 5 달성</p>
+            <p className="text-[16px] font-semibold text-[#00946B] tracking-[-0.4px] leading-[25px]">
+              LV 5 달성
+            </p>
             <div className="flex justify-between items-center mt-[14px]">
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">획득 경험치</span>
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">+ 30 XP</span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                획득 경험치
+              </span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                + 30 XP
+              </span>
             </div>
             <div className="flex justify-between items-center mt-[4px]">
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">앞으로 남은 경험치</span>
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">300 XP</span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                앞으로 남은 경험치
+              </span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                300 XP
+              </span>
             </div>
           </div>
         </main>
@@ -147,12 +174,12 @@ function MissionResult() {
           style={{ objectPosition: "center" }}
         />
 
-
         <header className="relative flex items-center h-[53px] px-5 z-10">
-          <button onClick={() => setStep("complete")} className="w-[34px] h-[34px] flex items-center justify-center">
-            <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-              <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <button
+            onClick={() => setStep("complete")}
+            className="w-[34px] h-[34px] flex items-center justify-center"
+          >
+            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
           </button>
           <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-[#00CB93] tracking-[-0.5px] leading-[44px]">
             미션
@@ -188,14 +215,24 @@ function MissionResult() {
 
           {/* 정보 카드 */}
           <div className="w-full h-[122px] rounded-[16px] bg-white border border-[#00CB93] px-4 pt-[17px]">
-            <p className="text-[16px] font-semibold text-[#00946B] tracking-[-0.4px] leading-[25px]">현재 보유 토큰</p>
+            <p className="text-[16px] font-semibold text-[#00946B] tracking-[-0.4px] leading-[25px]">
+              현재 보유 토큰
+            </p>
             <div className="flex justify-between items-center mt-[14px]">
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">획득 보너스 토큰</span>
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">+ 5P</span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                획득 보너스 토큰
+              </span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                + 5P
+              </span>
             </div>
             <div className="flex justify-between items-center mt-[4px]">
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">현재 보유 토큰</span>
-              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">35P</span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                현재 보유 토큰
+              </span>
+              <span className="text-[12px] font-medium text-[#00CB93] tracking-[-0.3px]">
+                35P
+              </span>
             </div>
           </div>
         </main>
@@ -210,12 +247,12 @@ function MissionResult() {
   if (step === "fail") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-white">
-
         <header className="relative flex items-center h-[53px] px-5">
-          <button onClick={() => navigate("/missions")} className="w-[34px] h-[34px] flex items-center justify-center">
-            <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-              <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+          <button
+            onClick={() => navigate("/missions")}
+            className="w-[34px] h-[34px] flex items-center justify-center"
+          >
+            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
           </button>
           <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-[#00CB93] tracking-[-0.5px] leading-[44px]">
             미션

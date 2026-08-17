@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import chevronLeft from "../assets/icon/chevron-left.png";
 
 // 완성 음절(가-힣)뿐 아니라 타이핑 중간에 생기는 한글 낱자(ㄱ-ㅎ, ㅏ-ㅣ)도 허용,
 // 영문/숫자만 허용하고 특수문자·공백·이모지는 제외
@@ -30,9 +31,7 @@ function ProfileSetup() {
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">
         <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-            <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
         </button>
         <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-bold text-[#00CB93] tracking-[-0.35px] leading-[44px]">
           닉네임 설정

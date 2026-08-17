@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import programCalligraphy from "../assets/program-calligraphy.png";
+import chevronLeft from "../assets/icon/chevron-left.png";
 
 function ProgramLocalDetail() {
   const navigate = useNavigate();
@@ -12,9 +13,7 @@ function ProgramLocalDetail() {
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">
         <button onClick={() => navigate("/programs/local")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-            <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
         </button>
         <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-[#00CB93] tracking-[-0.5px] leading-[44px]">
           지역연계 프로그램

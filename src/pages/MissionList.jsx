@@ -1,12 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-
-const MISSIONS = [
-  { id: 1, title: "근처에서 즉석 복권 구매해보기", desc: "혹시 알아요? 오늘 당신에게 행운이 찾아올지", token: 20, xp: 30, emoji: "🎟️" },
-  { id: 2, title: "베스킨라빈스 이달의 맛 도전", desc: "이번 달은 무슨 맛인지 저에게 알려주세요!", token: 20, xp: 10, emoji: "🍦" },
-  { id: 3, title: "오늘의 편의점 신상 리뷰어", desc: "집 앞 편의점에서 나온 이번 달 신상을 리뷰해봐요", token: 30, xp: 20, emoji: "🏪" },
-  { id: 4, title: "무인 아이스크림 정복", desc: "근처 무인 아이스크림 가게를 정복해봐요", token: 20, xp: 10, emoji: "🧊" },
-];
+import chevronLeft from "../assets/icon/chevron-left.png";
+import MISSIONS from "../data/missions";
 
 function MissionList() {
   const navigate = useNavigate();
@@ -17,9 +12,7 @@ function MissionList() {
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">
         <button onClick={() => navigate("/home")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-            <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
         </button>
         <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-[#00CB93] tracking-[-0.5px] leading-[44px]">
           미션

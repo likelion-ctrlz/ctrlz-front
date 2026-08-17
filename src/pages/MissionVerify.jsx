@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import moroLv1 from "../assets/moro-lv1.png";
+import chevronLeft from "../assets/icon/chevron-left.png";
 
 function MissionVerify() {
   const navigate = useNavigate();
@@ -32,9 +33,11 @@ function MissionVerify() {
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">
         <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-            <path d="M7 1L1 7.5L7 14" stroke={uploading ? "white" : "#111"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <img
+            src={chevronLeft}
+            alt=""
+            className={`w-[34px] h-[34px] ${uploading ? "brightness-0 invert" : ""}`}
+          />
         </button>
         <p className={`absolute left-1/2 -translate-x-1/2 text-[20px] font-medium tracking-[-0.5px] leading-[44px] ${uploading ? "text-white" : "text-[#00CB93]"}`}>
           미션

@@ -1,20 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import programCalligraphy from "../assets/program-calligraphy.png";
-
-const CATEGORIES = ["전체", "문화", "스포츠", "요리", "심리", "상담"];
-
-const LOCAL_PROGRAMS = [
-  {
-    id: 1,
-    title: "서예 입문 클래스",
-    tags: ["강동구", "문화 ･ 예술", "성인 누구나"],
-    description: "한국문화원 ･ 매주 화요일 오전",
-    available: true,
-    image: programCalligraphy,
-  },
-];
+import chevronLeft from "../assets/icon/chevron-left.png";
+import { CATEGORIES, LOCAL_PROGRAMS } from "../data/localPrograms";
 
 function ProgramLocal() {
   const navigate = useNavigate();
@@ -28,9 +16,7 @@ function ProgramLocal() {
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">
         <button onClick={() => navigate("/programs")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-            <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
         </button>
         <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-[#00CB93] tracking-[-0.5px] leading-[44px]">
           지역연계 프로그램

@@ -46,4 +46,12 @@ body {
 
 .animate-wobble {
   animation: wobble 1.2s ease-in-out infinite;
+  /* 알은 무게중심이 아래에 있어서 아래쪽을 축으로 흔들려야 자연스러움 (위쪽이 더 크게 움직임) */
+  transform-origin: 50% 85%;
+}
+
+/* 페이지 진입 시 두어 번만 흔들리고 멈추는 버전 */
+.animate-wobble-once {
+  animation: wobble 2s ease-in-out 2;
+  transform-origin: 50% 85%;
 }

@@ -1,31 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-
-const CRISIS_LINES = [
-  {
-    title: "자살예방상담전화 109",
-    desc: "24시간 운영 ･ 무료 ･ 익명 가능",
-  },
-  {
-    title: "정신건강 위기상담전화 1577-0199",
-    desc: "24시간 운영 ･ 무료",
-  },
-  {
-    title: "청소년상담 1388",
-    desc: "24시간 운영 ･ 문자･카카오 상담 가능",
-  },
-];
-
-const ONLINE_COUNSELING = [
-  {
-    title: "마음이음 온라인 상담",
-    desc: "정신건강복지센터 운영 ･ 채팅･이메일 상담 신청 가능",
-  },
-  {
-    title: "청년 마음건강 지원사업",
-    desc: "전국 정신건강복지센터 연계 ･ 무료 심리상담 제공",
-  },
-];
+import chevronLeft from "../assets/icon/chevron-left.png";
+import { CRISIS_LINES, ONLINE_COUNSELING } from "../data/crisisSupport";
 
 function DiaryHelp() {
   const navigate = useNavigate();
@@ -37,9 +13,7 @@ function DiaryHelp() {
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">
         <button onClick={() => navigate("/diary/report")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-            <path d="M7 1L1 7.5L7 14" stroke="#111" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
         </button>
         <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-[#00CB93] tracking-[-0.5px] leading-[44px]">
           전문 도움 요청하기
