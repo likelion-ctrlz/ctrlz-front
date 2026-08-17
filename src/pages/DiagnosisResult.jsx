@@ -10,7 +10,6 @@ function DiagnosisResult() {
   if (step === "result") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-[#E6FFF8]">
-        <div className="h-[44px]" />
 
         {/* Header */}
         <header className="relative flex items-center h-[53px] px-5">
@@ -112,7 +111,6 @@ function DiagnosisResult() {
   if (step === "improvement") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-[#E6FFF8]">
-        <div className="h-[44px]" />
 
         <header className="relative flex items-center h-[53px] px-5">
           <button onClick={() => setStep("result")} className="w-[34px] h-[34px] flex items-center justify-center">
@@ -198,7 +196,6 @@ function DiagnosisResult() {
   if (step === "character") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-[#00CB93]">
-        <div className="h-[44px]" />
 
         <header className="relative flex items-center h-[53px] px-5">
           <button onClick={() => setStep("improvement")} className="w-[34px] h-[34px] flex items-center justify-center">
@@ -256,7 +253,6 @@ function DiagnosisResult() {
   if (step === "character2") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-[#00CB93]">
-        <div className="h-[44px]" />
 
         <header className="relative flex items-center h-[53px] px-5">
           <button onClick={() => setStep("character")} className="w-[34px] h-[34px] flex items-center justify-center">

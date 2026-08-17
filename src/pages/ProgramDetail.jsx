@@ -9,7 +9,6 @@ function ProgramDetail() {
   return (
     <div className="flex min-h-dvh flex-col bg-white">
       {/* Status bar spacer */}
-      <div className="h-[44px]" />
 
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">

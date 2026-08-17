@@ -22,28 +22,28 @@ const SLIDES = [
     bg: radial(217, 100, 50, 0),
     lines: ["지금, 나는 세상과 얼마나 가까이 있을까요?"],
     fontSize: 20,
-    top: 226,
+    top: 182,
   },
   {
     image: onboarding2,
     bg: radial(184, 85, 50, 38),
     lines: ["레벨 맞춤 미션으로 ", "모로를 성장시켜보세요"],
     fontSize: 24,
-    top: 210,
+    top: 166,
   },
   {
     image: onboarding3,
     bg: radial(319, 112, 50, 59),
     lines: ["매일 나의 마음을 말하고,", "나의 감정을 돌아보세요"],
     fontSize: 24,
-    top: 210,
+    top: 166,
   },
   {
     image: onboarding4,
     bg: radial(436, 153, 50, 100),
     lines: ["모은 토큰으로 지역 프로그램과", "다양한 취미를 만나보세요"],
     fontSize: 24,
-    top: 210,
+    top: 166,
   },
 ];
 
@@ -121,8 +121,8 @@ function Onboarding() {
               </p>
             </div>
 
-            {/* 폰 목업 스크린샷 — Figma 스펙: 283x587, top 310px, 가로 중앙 정렬 */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-[310px] w-[283px] h-[587px]">
+            {/* 폰 목업 스크린샷 — Figma 스펙: 283x587, top 266px(상태바 44px 제외), 가로 중앙 정렬 */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-[266px] w-[283px] h-[587px]">
               <img src={slide.image} alt={`온보딩 화면 ${i + 1}`} className="w-full h-full object-contain" />
             </div>
 
@@ -162,8 +162,8 @@ function Onboarding() {
         </div>
       </div>
 
-      {/* 프로그레스 바 — 트랙 위에 고정 */}
-      <div className="absolute top-[44px] left-0 w-full flex justify-center pt-[18px] pb-[18px] pointer-events-none">
+      {/* 프로그레스 바 — 트랙 위에 고정 (Figma 스펙 top-104px에서 상태바 44px 제외) */}
+      <div className="absolute top-[60px] left-0 w-full flex justify-center pt-[18px] pb-[18px] pointer-events-none">
         <div className="relative w-[82px] h-[10px] bg-white rounded-[40px] overflow-hidden">
           <div
             className="absolute top-0 h-[10px] bg-[#AAEEDB] rounded-[40px] transition-all duration-300"

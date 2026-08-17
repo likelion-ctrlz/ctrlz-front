@@ -18,7 +18,6 @@ function MissionResult() {
         className="relative flex min-h-dvh flex-col"
         style={{ background: "linear-gradient(180deg, #E6FFF8 0%, #FFFFFF 100%)" }}
       >
-        <div className="h-[44px]" />
 
         {/* Header */}
         <header className="relative flex items-center h-[53px] px-5">
@@ -94,7 +93,6 @@ function MissionResult() {
         className="relative flex min-h-dvh flex-col"
         style={{ background: "linear-gradient(180deg, #E6FFF8 0%, #FFFFFF 100%)" }}
       >
-        <div className="h-[44px]" />
 
         <header className="relative flex items-center h-[53px] px-5">
           <button onClick={() => setStep("complete")} className="w-[34px] h-[34px] flex items-center justify-center">
@@ -158,7 +156,6 @@ function MissionResult() {
           style={{ objectPosition: "center" }}
         />
 
-        <div className="h-[44px]" />
 
         <header className="relative flex items-center h-[53px] px-5 z-10">
           <button onClick={() => setStep("complete")} className="w-[34px] h-[34px] flex items-center justify-center">
@@ -222,7 +219,6 @@ function MissionResult() {
   if (step === "fail") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-white">
-        <div className="h-[44px]" />
 
         <header className="relative flex items-center h-[53px] px-5">
           <button onClick={() => navigate("/missions")} className="w-[34px] h-[34px] flex items-center justify-center">

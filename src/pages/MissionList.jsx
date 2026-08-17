@@ -13,7 +13,6 @@ function MissionList() {
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
-      <div className="h-[44px]" />
 
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">

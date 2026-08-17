@@ -38,7 +38,6 @@ function DiaryRecord() {
           backgroundSize: "cover",
         }}
       >
-        <div className="h-[44px]" />
 
         <header className="relative flex items-center h-[53px] px-5 z-10">
           <button onClick={() => navigate("/diary")} className="w-[34px] h-[34px] flex items-center justify-center">
@@ -95,7 +94,6 @@ function DiaryRecord() {
         backgroundSize: "cover",
       }}
     >
-      <div className="h-[44px]" />
 
       <header className="relative flex items-center h-[53px] px-5 z-10">
         <button onClick={() => navigate("/diary")} className="w-[34px] h-[34px] flex items-center justify-center">

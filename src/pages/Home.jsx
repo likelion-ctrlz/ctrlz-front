@@ -27,7 +27,6 @@ function Home() {
       style={{ background: "linear-gradient(180deg, #E6FFF8 0%, #FFFFFF 67.79%)" }}
     >
       {/* Status bar */}
-      <div className="h-[44px]" />
 
       {/* Header — Morrow */}
       <header className="h-[53px] flex items-center px-6">

@@ -77,7 +77,6 @@ function SelfDiagnosis() {
   if (step === "intro") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-white">
-        <div className="h-[44px]" />
 
         {/* Content */}
         <main className="flex-1 flex flex-col px-[34px]">
@@ -118,7 +117,6 @@ function SelfDiagnosis() {
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
-      <div className="h-[44px]" />
 
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">

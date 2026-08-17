@@ -28,7 +28,6 @@ function MissionVerify() {
 
   return (
     <div className={`relative flex min-h-dvh flex-col ${uploading ? "bg-[#00CB93]" : "bg-white"}`}>
-      <div className="h-[44px]" />
 
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5">

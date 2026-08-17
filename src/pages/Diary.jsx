@@ -31,7 +31,6 @@ function Diary() {
       />
 
       {/* Status bar spacer */}
-      <div className="h-[44px]" />
 
       {/* Header */}
       <header className="relative flex items-center h-[53px] px-5 z-10">
