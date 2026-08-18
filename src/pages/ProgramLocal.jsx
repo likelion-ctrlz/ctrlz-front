@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import chevronLeft from "../assets/icon/chevron-left.png";
 import { CATEGORIES, LOCAL_PROGRAMS } from "../data/localPrograms";
+import searchIcon from "../assets/program/Group 246.svg";
 
 function ProgramLocal() {
   const navigate = useNavigate();
@@ -48,28 +49,25 @@ function ProgramLocal() {
 
         {/* Search bar */}
         <div className="relative my-4">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-muted">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <circle cx="11" cy="11" r="7" stroke="var(--color-gray-muted)" strokeWidth="2" />
-              <path d="M20 20L16.5 16.5" stroke="var(--color-gray-muted)" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+          <div className="absolute left-[12px] top-1/2 -translate-y-1/2">
+            <img src={searchIcon} alt="" className="w-[16px] h-[16px]" />
           </div>
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="프로그램 검색"
-            className="w-full h-[39px] rounded-[15px] border border-primary bg-[rgba(255,255,255,0.1)] pl-10 pr-4 text-[14px] outline-none"
+            className="w-[382px] max-w-full h-[39px] rounded-[15px] border border-[#00CB93] bg-[rgba(255,255,255,0.1)] pl-[36px] pr-4 text-[14px] outline-none"
           />
         </div>
 
         {/* Category chips */}
-        <div className="flex gap-2 overflow-x-auto mb-5 scrollbar-hide">
+        <div className="flex gap-[6px] mb-5">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`flex-shrink-0 h-[30px] px-[20px] rounded-[15px] text-[12px] tracking-[-0.3px] border border-primary cursor-pointer ${
+              className={`w-[57px] h-[30px] rounded-[15px] text-[12px] tracking-[-0.3px] border border-primary cursor-pointer whitespace-nowrap ${
                 activeCategory === cat
                   ? "bg-primary text-white font-semibold"
                   : "bg-[rgba(255,255,255,0.1)] text-primary font-medium"
@@ -89,36 +87,36 @@ function ProgramLocal() {
             <div
               key={program.id}
               onClick={() => navigate(`/programs/local/${program.id}`)}
-              className="rounded-[16px] border border-primary bg-[rgba(255,255,255,0.76)] cursor-pointer"
+              className="rounded-[16px] border border-primary bg-[rgba(255,255,255,0.76)] cursor-pointer pb-[20px]"
             >
               {/* Image area with gradient */}
-              <div className="relative h-[194px] rounded-[14px] mx-4 mt-[21px] overflow-hidden">
+              <div className="relative h-[194px] rounded-[14px] mx-4 mt-[16px] overflow-hidden">
                 <img src={program.image} alt={program.title} className="absolute inset-0 w-full h-full object-cover" />
-                <div className="absolute inset-0 rounded-[14px] bg-gradient-to-b from-transparent from-45% to-primary-deep" />
+                <div className="absolute inset-0 rounded-[14px] bg-gradient-to-b from-[#FFFFFF00] to-[#007C57]" />
                 <p className="absolute bottom-4 left-4 text-[24px] font-bold text-white m-0">
                   {program.title}
                 </p>
+              </div>
 
-                {/* Tags — 이미지 하단에 살짝 겹치도록 배치 */}
-                <div className="absolute -bottom-[12px] left-0 flex flex-wrap gap-[6px]">
-                  {program.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="bg-[rgba(255,255,255,0.1)] border border-primary rounded-[15px] px-[19px] h-[23px] flex items-center text-[10px] text-primary tracking-[-0.25px] whitespace-nowrap"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                  {program.available && (
-                    <span className="bg-primary border border-primary rounded-[15px] px-[19px] h-[23px] flex items-center text-[10px] text-white font-semibold whitespace-nowrap">
-                      신청 가능
-                    </span>
-                  )}
-                </div>
+              {/* Tags — 이미지 아래에 배치 */}
+              <div className="flex flex-wrap gap-[6px] px-4 mt-[14px]">
+                {program.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="bg-[rgba(255,255,255,0.1)] border border-primary rounded-[15px] px-[14px] h-[23px] flex items-center text-[10px] text-primary tracking-[-0.25px] whitespace-nowrap"
+                  >
+                    {tag}
+                  </span>
+                ))}
+                {program.available && (
+                  <span className="bg-primary border border-primary rounded-[15px] px-[14px] h-[23px] flex items-center text-[10px] text-white font-semibold whitespace-nowrap">
+                    신청 가능
+                  </span>
+                )}
               </div>
 
               {/* Description */}
-              <p className="px-4 pt-6 pb-4 text-[14px] text-gray-muted tracking-[-0.35px] m-0">
+              <p className="px-4 mt-[12px] text-[14px] text-gray-muted tracking-[-0.35px] m-0">
                 {program.description}
               </p>
             </div>
