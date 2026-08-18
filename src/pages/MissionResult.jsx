@@ -33,7 +33,7 @@ function MissionResult() {
         <main className="flex-1 flex flex-col pb-[130px]">
           {/* 제목 — 파티클 장식 범위 */}
           <div className="relative">
-            <Particles />
+            <Particles height={80} />
             <h2 className="px-5 text-[24px] font-semibold text-black tracking-[-0.6px] leading-[30px] text-center mt-[21px]">
               미션 완료!
             </h2>
@@ -131,7 +131,7 @@ function MissionResult() {
           {/* 캐릭터 — ground와 겹치도록 살짝 내려앉게 배치 */}
           <div className="relative flex-1 flex items-end justify-center pb-[80px] w-full">
             {/* 파티클은 폭 전체, 세로는 이미지 바로 위쪽에서 시작 (이미지 bottom과 맞춤) */}
-            <Particles fallDistance={150} bottom={80} height={310} />
+            <Particles bottom={80} height={310} />
             <img
               src={moroHatch}
               alt="모로"
@@ -203,7 +203,7 @@ function MissionResult() {
           {/* 토큰 이미지 — ground와 겹치도록 살짝 내려앉게 배치 */}
           <div className="relative flex-1 flex items-end justify-center pb-[35px] w-full">
             {/* 파티클은 폭 전체, 세로는 이미지 바로 위쪽에서 시작 (이미지 bottom과 맞춤) */}
-            <Particles fallDistance={150} bottom={35} height={310} />
+            <Particles bottom={35} height={310} />
             <img
               src={tokenImg}
               alt="보너스 토큰"
