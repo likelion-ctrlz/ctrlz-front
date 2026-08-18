@@ -93,7 +93,7 @@ function Home() {
 
   return (
     <div
-      className="relative flex min-h-dvh flex-col overflow-x-hidden"
+      className="relative flex h-dvh flex-col overflow-hidden"
       style={{
         background:
           "linear-gradient(180deg, var(--color-mint-light) 0%, var(--color-bg) 67.79%)",
@@ -102,12 +102,12 @@ function Home() {
       {/* Status bar */}
 
       {/* Header — Morrow */}
-      <header className="relative h-[53px] flex items-center px-6">
+      <header className="relative h-[53px] shrink-0 flex items-center px-6">
         <img src={mainLogo} alt="Morrow" className="h-[19px] w-auto" />
       </header>
 
       {/* 인사 배너 */}
-      <section className="relative mx-5 mt-[34px] gap-[5px] h-[98px] rounded-[16px] bg-[rgba(255,255,255,0.6)] border border-primary shadow-[0px_0px_18.6px_0px_rgba(0,203,147,0.33)] px-6 flex flex-col items-center justify-center text-center">
+      <section className="relative w-[362px] max-w-[calc(100%-40px)] mx-auto mt-[34px] shrink-0 gap-[5px] h-[98px] rounded-[16px] bg-[rgba(255,255,255,0.6)] border border-primary shadow-[0px_0px_18.6px_0px_rgba(0,203,147,0.33)] px-6 flex flex-col items-center justify-center text-center">
         <p className="text-[20px] font-semibold text-text-forest tracking-[-0.5px] leading-[25px]">
           {username}님, 극복 할 수 있어요!
         </p>
@@ -139,7 +139,7 @@ function Home() {
 
         {/* 캐릭터 영역 — 레벨별로 이미지·그림자 크기가 다름 (피그마 실측값) */}
         <section
-          className="relative mx-5 flex flex-col items-center cursor-pointer"
+          className="relative mx-5 shrink-0 flex flex-col items-center cursor-pointer"
           onClick={() => setLevel((prev) => (prev % 5) + 1)}
         >
           <div
@@ -170,7 +170,7 @@ function Home() {
         <div className="flex-1" />
 
         {/* 레벨 프로그레스 */}
-        <section className="relative z-10 mx-[27px]">
+        <section className="relative z-10 mx-[27px] shrink-0">
           <div className="flex justify-between items-center">
             <span className="text-[14px] leading-[25px] font-semibold text-primary-deep tracking-[-0.35px]">
               LEVEL {level}
@@ -195,7 +195,7 @@ function Home() {
 
         {/* 오늘의 미션 카드 */}
         <section
-          className="relative z-10 mx-5 mt-[18px] mb-[102px] h-[160px] rounded-[16px] bg-white border border-primary px-6 py-[17px] cursor-pointer"
+          className="relative z-10 mx-5 mt-[18px] mb-[102px] h-[160px] shrink-0 rounded-[16px] bg-white border border-primary px-6 py-[17px] cursor-pointer"
           onClick={() => navigate("/missions")}
         >
           {/* 상단 */}
