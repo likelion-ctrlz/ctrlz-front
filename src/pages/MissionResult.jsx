@@ -10,7 +10,8 @@ import chevronLeft from "../assets/icon/chevron-left.png";
 function MissionResult() {
   const navigate = useNavigate();
   const location = useLocation();
-  const isSuccess = location.state?.success !== false;
+  const result = location.state || {};
+  const isSuccess = result.ai_verdict !== false;
   const [step, setStep] = useState(isSuccess ? "complete" : "fail");
 
   // 미션 완료
@@ -60,7 +61,7 @@ function MissionResult() {
                 경험치
               </span>
               <span className="text-[12px] font-medium text-primary tracking-[-0.3px]">
-                + 20P
+                + {result.xp_earned} XP
               </span>
             </div>
             <div className="flex justify-between items-center mt-[4px]">
@@ -68,7 +69,7 @@ function MissionResult() {
                 토큰
               </span>
               <span className="text-[12px] font-medium text-primary tracking-[-0.3px]">
-                + 30 XP
+                + {result.token_earned}P
               </span>
             </div>
           </div>
@@ -82,13 +83,15 @@ function MissionResult() {
             >
               캐릭터 성장 확인하기
             </button>
-            <button
-              onClick={() => setStep("bonus")}
-              className="flex-1 h-[65px] rounded-[14px] border border-primary text-[16px] font-semibold text-primary-text tracking-[-0.4px]"
-              style={{ backgroundColor: "rgba(255,255,255,0.76)" }}
-            >
-              보너스 보상 받기
-            </button>
+            {result.bonus_token > 0 && (
+              <button
+                onClick={() => setStep("bonus")}
+                className="flex-1 h-[65px] rounded-[14px] border border-primary text-[16px] font-semibold text-primary-text tracking-[-0.4px]"
+                style={{ backgroundColor: "rgba(255,255,255,0.76)" }}
+              >
+                보너스 보상 받기
+              </button>
+            )}
           </div>
         </main>
 
@@ -142,14 +145,14 @@ function MissionResult() {
           {/* 보상 정보 */}
           <div className="w-full h-[122px] rounded-[16px] bg-white border border-primary px-4 pt-[17px] mb-[100px]">
             <p className="text-[16px] font-semibold text-primary-text tracking-[-0.4px] leading-[25px]">
-              LV 5 달성
+              LV {result.character_level_after} 달성
             </p>
             <div className="flex justify-between items-center mt-[14px]">
               <span className="text-[12px] font-medium text-primary tracking-[-0.3px]">
                 획득 경험치
               </span>
               <span className="text-[12px] font-medium text-primary tracking-[-0.3px]">
-                + 30 XP
+                + {result.xp_earned} XP
               </span>
             </div>
             <div className="flex justify-between items-center mt-[4px]">
@@ -157,7 +160,7 @@ function MissionResult() {
                 앞으로 남은 경험치
               </span>
               <span className="text-[12px] font-medium text-primary tracking-[-0.3px]">
-                300 XP
+                {result.next_level_xp} XP
               </span>
             </div>
           </div>
@@ -221,7 +224,7 @@ function MissionResult() {
                 획득 토큰
               </span>
               <span className="text-[12px] font-medium text-primary tracking-[-0.3px]">
-                + 5P
+                + {result.bonus_token}P
               </span>
             </div>
             <div className="flex justify-between items-center mt-[4px]">
@@ -229,7 +232,7 @@ function MissionResult() {
                 현재 보유 토큰
               </span>
               <span className="text-[12px] font-medium text-primary tracking-[-0.3px]">
-                35P
+                {result.token_balance}P
               </span>
             </div>
           </div>

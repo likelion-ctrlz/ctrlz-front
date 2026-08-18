@@ -93,6 +93,15 @@ body {
   transform-origin: 50% 85%;
 }
 
+/* 가로 스크롤 영역에서 브라우저 스크롤바 대신 모바일 터치 슬라이드처럼 보이게 함 */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* 녹음 중 마이크 주변 파동 — 원이 커지면서 옅어지길 반복 */
 @keyframes ripple {
   0% {

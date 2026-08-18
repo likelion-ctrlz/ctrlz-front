@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import chevronLeft from "../assets/icon/chevron-left.png";
-import MISSIONS, { getMissionImage } from "../data/missions";
+import { getMissionImage } from "../data/missions";
+import { getRecommendedMissions } from "../api/missionsApi";
 
 // 피그마 미션 카드별 아이콘 실측 크기(1,2번 카드=75px, 3,4번 카드=82px)
 const ICON_SIZES = [75, 75, 82, 82];
@@ -10,6 +12,25 @@ const GLOW_SIZE = 120;
 
 function MissionList() {
   const navigate = useNavigate();
+  const [missions, setMissions] = useState([]);
+  const [status, setStatus] = useState("loading"); // loading | error | done
+
+  useEffect(() => {
+    let cancelled = false;
+    setStatus("loading");
+    getRecommendedMissions()
+      .then((data) => {
+        if (cancelled) return;
+        setMissions(data);
+        setStatus("done");
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
@@ -31,11 +52,25 @@ function MissionList() {
 
       {/* Mission Cards */}
       <main className="flex-1 px-5 pt-4 pb-[130px]">
+        {status === "loading" && (
+          <p className="text-[14px] text-gray-muted text-center mt-10">미션을 불러오는 중이에요...</p>
+        )}
+        {status === "error" && (
+          <p className="text-[14px] text-gray-muted text-center mt-10">
+            미션을 불러오지 못했어요. 잠시 후 다시 시도해주세요.
+          </p>
+        )}
+        {status === "done" && missions.length === 0 && (
+          <p className="text-[14px] text-gray-muted text-center mt-10">
+            오늘 추천할 미션이 없어요. 내일 다시 확인해주세요!
+          </p>
+        )}
+
         <div className="flex flex-col gap-[19px]">
-          {MISSIONS.map((mission, i) => (
+          {missions.map((mission, i) => (
             <button
-              key={mission.id}
-              onClick={() => navigate(`/missions/${mission.id}`)}
+              key={mission.mission_id}
+              onClick={() => navigate(`/missions/${mission.mission_id}`)}
               className="relative w-full h-[122px] rounded-[16px] border border-primary text-left px-4"
               style={{ backgroundColor: "rgba(255,255,255,0.76)" }}
             >
@@ -57,7 +92,7 @@ function MissionList() {
                 className="absolute left-[27px] top-[20px] flex items-center justify-center"
                 style={{ width: ICON_SIZES[i % ICON_SIZES.length], height: ICON_SIZES[i % ICON_SIZES.length] }}
               >
-                <img src={getMissionImage(mission)} alt="" className="max-w-full max-h-full object-contain" />
+                <img src={getMissionImage({ id: mission.mission_id })} alt="" className="max-w-full max-h-full object-contain" />
               </div>
 
               {/* 내용 */}
@@ -65,13 +100,15 @@ function MissionList() {
                 {mission.title}
               </p>
               <p className="absolute left-[148px] top-[45px] whitespace-nowrap text-[10px] font-medium text-gray-icon tracking-[-0.25px] leading-[25px]">
-                {mission.desc}
+                {mission.description}
               </p>
 
               {/* 포인트/XP */}
               <div className="absolute right-4 bottom-[16px] flex gap-3">
-                <span className="text-[16px] font-semibold text-primary tracking-[-0.4px]">+ {mission.token}P</span>
-                <span className="text-[16px] font-semibold text-primary tracking-[-0.4px]">+ {mission.xp} XP</span>
+                <span className="text-[16px] font-semibold text-primary tracking-[-0.4px]">
+                  + {mission.token_reward + mission.bonus_token}P
+                </span>
+                <span className="text-[16px] font-semibold text-primary tracking-[-0.4px]">+ {mission.xp_reward} XP</span>
               </div>
             </button>
           ))}
