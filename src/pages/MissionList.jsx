@@ -1,51 +1,85 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Layout from "../components/Layout";
+import BottomTabBar from "../components/BottomTabBar";
+import chevronLeft from "../assets/icon/chevron-left.png";
+import MISSIONS, { getMissionImage } from "../data/missions";
 
-const MISSIONS = [
-  { id: 1, title: "창문 열고 3분 바람 쐬기", level: "난이도 하", token: "+10" },
-  { id: 2, title: "편의점 다녀오기", level: "난이도 하", token: "+20" },
-  { id: 3, title: "근처 공원 다녀오기", level: "난이도 하", token: "+20" },
-  { id: 4, title: "동네 카페에서 15분 머물기", level: "난이도 하", token: "+20" },
-];
-
-const FILTERS = ["전체", "오늘", "난이도 별"];
+// 피그마 미션 카드별 아이콘 실측 크기(1,2번 카드=75px, 3,4번 카드=82px)
+const ICON_SIZES = [75, 75, 82, 82];
+// 아이콘 뒤 은은한 그라데이션 글로우 — 아이콘 중심에 맞춰 배치
+const GLOW_SIZE = 120;
 
 function MissionList() {
-  const [filter, setFilter] = useState("전체");
   const navigate = useNavigate();
 
   return (
-    <Layout title="미션" showBack={false}>
-      <div className="flex gap-2 pb-4">
-        {FILTERS.map((f) => (
-          <span
-            key={f}
-            onClick={() => setFilter(f)}
-            className={`px-3.5 py-1.5 rounded-2xl text-[13px] cursor-pointer ${
-              filter === f ? "bg-black text-white" : "bg-[#f2f2f2] text-[#333]"
-            }`}
-          >
-            {f}
-          </span>
-        ))}
-      </div>
+    <div className="relative flex min-h-dvh flex-col bg-white">
 
-      {MISSIONS.map((m) => (
-        <div
-          key={m.id}
-          onClick={() => navigate(`/missions/${m.id}`)}
-          className="flex gap-3 py-3 border-b border-[#f0f0f0] cursor-pointer"
-        >
-          <div className="w-14 h-14 bg-[#f2f2f2] rounded-lg shrink-0" />
-          <div>
-            <p className="text-[15px] mb-1">{m.title}</p>
-            <p className="text-xs text-[#999]">{m.level}</p>
-          </div>
-          <span className="ml-auto text-[13px] text-[#666] self-center">{m.token}</span>
+      {/* Header */}
+      <header className="relative flex items-center h-[53px] px-5">
+        <button onClick={() => navigate("/home")} className="w-[34px] h-[34px] flex items-center justify-center">
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
+        </button>
+        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
+          미션
+        </p>
+      </header>
+
+      {/* 부제 */}
+      <p className="px-5 text-[16px] font-semibold text-black tracking-[-0.4px] leading-[30px] mt-[35px]">
+        나에게 맞는 미션을 골라보세요
+      </p>
+
+      {/* Mission Cards */}
+      <main className="flex-1 px-5 pt-4 pb-[130px]">
+        <div className="flex flex-col gap-[19px]">
+          {MISSIONS.map((mission, i) => (
+            <button
+              key={mission.id}
+              onClick={() => navigate(`/missions/${mission.id}`)}
+              className="relative w-full h-[122px] rounded-[16px] border border-primary text-left px-4"
+              style={{ backgroundColor: "rgba(255,255,255,0.76)" }}
+            >
+              {/* 아이콘 뒤 글로우 */}
+              <div
+                className="absolute rounded-full pointer-events-none"
+                style={{
+                  left: 27 + ICON_SIZES[i % ICON_SIZES.length] / 2 - GLOW_SIZE / 2,
+                  top: 20 + ICON_SIZES[i % ICON_SIZES.length] / 2 - GLOW_SIZE / 2,
+                  width: GLOW_SIZE,
+                  height: GLOW_SIZE,
+                  background:
+                    "radial-gradient(circle, rgba(0,203,147,0.45) 0%, rgba(0,203,147,0.15) 45%, rgba(0,203,147,0) 75%)",
+                }}
+              />
+
+              {/* 미션 아이콘 */}
+              <div
+                className="absolute left-[27px] top-[20px] flex items-center justify-center"
+                style={{ width: ICON_SIZES[i % ICON_SIZES.length], height: ICON_SIZES[i % ICON_SIZES.length] }}
+              >
+                <img src={getMissionImage(mission)} alt="" className="max-w-full max-h-full object-contain" />
+              </div>
+
+              {/* 내용 */}
+              <p className="absolute left-[148px] top-[20px] whitespace-nowrap text-[16px] font-semibold text-black tracking-[-0.4px] leading-[25px]">
+                {mission.title}
+              </p>
+              <p className="absolute left-[148px] top-[45px] whitespace-nowrap text-[10px] font-medium text-gray-icon tracking-[-0.25px] leading-[25px]">
+                {mission.desc}
+              </p>
+
+              {/* 포인트/XP */}
+              <div className="absolute right-4 bottom-[16px] flex gap-3">
+                <span className="text-[16px] font-semibold text-primary tracking-[-0.4px]">+ {mission.token}P</span>
+                <span className="text-[16px] font-semibold text-primary tracking-[-0.4px]">+ {mission.xp} XP</span>
+              </div>
+            </button>
+          ))}
         </div>
-      ))}
-    </Layout>
+      </main>
+
+      <BottomTabBar />
+    </div>
   );
 }
 

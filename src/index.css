@@ -4,26 +4,103 @@
 @theme {
   --font-sans: "Pretendard", sans-serif;
 
-  /* TODO: 디자인 확정되면 실제 컬러로 교체 */
-  --color-primary: #4f46e5;
-  --color-primary-light: #818cf8;
+  /* Main Color */
+  --color-primary: #00cb93;
+  --color-primary-dark: #00b584;
+  --color-primary-sub1: #39d7ab;
+  --color-primary-sub2: #71e2c3;
+  --color-primary-sub3: #aaeedb;
+  --color-primary-sub4: #c6f3e7;
+  --color-mint-light: #e6fff8;
+  --color-mint-pale: #e8fff8;
+  --color-mint-pale2: #effffb;
+
+  /* Primary(green) 계열 텍스트 — 밝은 배경 위 진한 초록 텍스트에 씀 */
+  --color-primary-text: #00946b;
+  --color-primary-text-dark: #003d2b;
+  --color-primary-text-darker: #152923;
+  --color-primary-deep: #007c57;
+  --color-text-forest: #1e322c;
+
+  /* Status */
+  --color-danger: #ff627e;
+  --color-danger-strong: #ff4444;
+
+  /* Neutral */
   --color-bg: #ffffff;
   --color-text: #111111;
-  --color-border: #e5e5e5;
+  --color-text-secondary: #666666;
+  --color-text-tertiary: #999999;
+  --color-border: #f0f0f0;
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #eeeeee;
+  --color-gray-300: #e0e0e0;
+  --color-gray-400: #bdbdbd;
+  --color-gray-500: #9e9e9e;
+  --color-gray-muted: #949494;
+  --color-gray-icon: #cacaca;
+  --color-gray-detail: #74767a;
+  --color-gray-dot: #e8e8e8;
+  --color-gray-input: #d5d5d5;
+  --color-gray-panel: #f6f6f6;
 
-  /*
-   * TODO: 페이지별 배경 그라데이션. 디자인 확정되면 여기에 추가.
-   * Tailwind v4는 config 파일이 아니라 --background-image-* 토큰으로 등록하면
-   * bg-{이름} 유틸리티가 자동 생성됨 (예: --background-image-gradient-onboarding
-   * 를 추가하면 bg-gradient-onboarding 클래스를 바로 쓸 수 있음).
-   * 등록 후 페이지에서 <Layout bg="bg-gradient-onboarding"> 처럼 넘기면 적용됨.
-   *
-   * --background-image-gradient-main: linear-gradient(135deg, #4ECFAA, #2DB88A);
-   * --background-image-gradient-onboarding: linear-gradient(180deg, #6EDBB8, #2DB88A);
-   */
+  /* Background gradients */
+  --background-image-mint-fade: linear-gradient(
+    180deg,
+    #e6fff8 0%,
+    #ffffff 100%
+  );
 }
 
 body {
   font-family: var(--font-sans);
   background-color: #f5f5f5;
+}
+
+/* 달그락 모션 — 알 흔들리기 */
+@keyframes wobble {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(-12deg);
+  }
+  30% {
+    transform: rotate(10deg);
+  }
+  45% {
+    transform: rotate(-8deg);
+  }
+  60% {
+    transform: rotate(6deg);
+  }
+  75% {
+    transform: rotate(-3deg);
+  }
+}
+
+.animate-wobble {
+  animation: wobble 1.2s ease-in-out infinite;
+  /* 알은 무게중심이 아래에 있어서 아래쪽을 축으로 흔들려야 자연스러움 (위쪽이 더 크게 움직임) */
+  transform-origin: 50% 85%;
+}
+
+/* 페이지 진입 시 두어 번만 흔들리고 멈추는 버전 */
+.animate-wobble-once {
+  animation: wobble 2s ease-in-out 2;
+  transform-origin: 50% 85%;
+}
+
+/* 녹음 중 마이크 주변 파동 — 원이 커지면서 옅어지길 반복 */
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
 }

@@ -1,33 +1,108 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Layout from "../components/Layout";
-import PrimaryButton from "../components/PrimaryButton";
+import BottomTabBar from "../components/BottomTabBar";
+import chevronLeft from "../assets/icon/chevron-left.png";
+import MISSIONS, { getMissionImage } from "../data/missions";
 
 function MissionDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const mission = MISSIONS.find((m) => String(m.id) === id) || MISSIONS[0];
 
   return (
-    <Layout title="미션 상세" showTabBar={false}>
-      <div>
-        <div className="h-44 bg-gray-100 rounded-xl mb-4" />
+    <div className="relative flex min-h-dvh flex-col bg-white">
+      {/* Header */}
+      <header className="relative flex items-center h-[53px] px-5">
+        <button
+          onClick={() => navigate(-1)}
+          className="w-[34px] h-[34px] flex items-center justify-center"
+        >
+          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
+        </button>
+        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
+          미션
+        </p>
+      </header>
 
-        <h2 className="text-lg mb-3">근처 공원 다녀오기</h2>
-        <div className="flex gap-2 mb-6">
-          <span className="text-xs bg-gray-100 px-3 py-1 rounded-full">난이도 중</span>
-          <span className="text-xs bg-gray-100 px-3 py-1 rounded-full">토큰 +20</span>
+      <main className="flex-1 flex flex-col px-5 pt-[35px] pb-[110px]">
+        {/* 미션 카드 */}
+        <div className="w-full h-[122px] rounded-[16px] border border-primary relative flex items-center px-6">
+          <div className="relative w-[75px] h-[75px] flex items-center justify-center shrink-0">
+            {/* 아이콘 뒤 글로우 */}
+            <div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] rounded-full pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(0,203,147,0.45) 0%, rgba(0,203,147,0.15) 45%, rgba(0,203,147,0) 75%)",
+              }}
+            />
+            <img
+              src={getMissionImage(mission)}
+              alt=""
+              className="relative max-w-full max-h-full object-contain"
+            />
+          </div>
+          <div className="ml-10">
+            <p className="text-[16px] font-semibold text-black tracking-[-0.4px] leading-[25px]">
+              {mission.title}
+            </p>
+            <p className="text-[10px] font-medium text-gray-icon tracking-[-0.25px] leading-[25px]">
+              {mission.desc}
+            </p>
+          </div>
         </div>
 
-        <div className="bg-gray-50 rounded-xl p-5 mb-6 min-h-[100px]">
-          <p className="text-xs text-gray-400">실시간으로 인증하고있다고 안내</p>
-          <p className="text-sm mt-2">근처 공원 산책이 얼마나 도움이 되는지 설명</p>
+        {/* 미션 안내 */}
+        <p className="text-[12px] font-medium text-gray-icon tracking-[-0.3px] leading-[25px] mt-[25px]">
+          미션 안내
+        </p>
+        <p className="text-[14px] text-primary-text-dark tracking-[-0.35px] leading-[25px] mt-[6px] whitespace-pre-line">
+          {mission.guide}
+        </p>
+
+        {/* 뱃지 */}
+        <div className="flex gap-[15px] mt-[20px]">
+          <span className="px-4 h-[30px] rounded-[15px] border border-primary bg-[rgba(255,255,255,0.1)] text-[12px] font-medium text-primary tracking-[-0.3px] flex items-center">
+            난이도 {mission.difficulty}
+          </span>
+          <span className="px-4 h-[30px] rounded-[15px] border border-primary bg-[rgba(255,255,255,0.1)] text-[12px] font-medium text-primary tracking-[-0.3px] flex items-center">
+            토큰 {mission.token}+
+          </span>
+          <span className="px-4 h-[30px] rounded-[15px] border border-primary bg-[rgba(255,255,255,0.1)] text-[12px] font-medium text-primary tracking-[-0.3px] flex items-center">
+            + {mission.xp} XP
+          </span>
         </div>
 
-        <PrimaryButton
-          text="미션 시작하기"
+        {/* 인증 조건 */}
+        <div
+          className="w-full rounded-[16px] mt-[48px] px-5 py-[13px]"
+          style={{ backgroundColor: "rgba(184,184,184,0.08)" }}
+        >
+          <p className="text-[12px] font-medium text-gray-icon tracking-[-0.3px] mb-2">
+            인증 조건 확인
+          </p>
+          {mission.conditions.map((cond, i) => (
+            <p
+              key={i}
+              className="text-[14px] font-medium text-primary tracking-[-0.35px] leading-[25px]"
+            >
+              ✓ {cond}
+            </p>
+          ))}
+        </div>
+
+        <div className="flex-1" />
+
+        {/* 사진 촬영 버튼 */}
+        <button
           onClick={() => navigate(`/missions/${id}/verify`)}
-        />
-      </div>
-    </Layout>
+          className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mt-[20px]"
+        >
+          사진 촬영하기
+        </button>
+      </main>
+
+      <BottomTabBar />
+    </div>
   );
 }
 
