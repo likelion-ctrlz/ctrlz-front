@@ -25,6 +25,14 @@ function SelfDiagnosis() {
     }
   };
 
+  const handleGuideBack = () => {
+    if (skipIntro) {
+      navigate(-1);
+    } else {
+      setStep("intro");
+    }
+  };
+
   const handleBack = () => {
     if (currentQ > 0) {
       setCurrentQ(currentQ - 1);
@@ -79,7 +87,7 @@ function SelfDiagnosis() {
         {/* Header */}
         <header className="relative flex items-center h-[53px] px-5">
           <button
-            onClick={() => setStep("intro")}
+            onClick={handleGuideBack}
             className="w-[34px] h-[34px] flex items-center justify-center"
           >
             <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
