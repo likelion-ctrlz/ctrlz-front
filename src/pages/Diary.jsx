@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import chevronLeft from "../assets/icon/chevron-left.png";
+import { getDiaryEntries } from "../api/diaryApi";
 
 const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -30,12 +31,6 @@ function buildMonthWeeks() {
 
 const monthWeeks = buildMonthWeeks();
 
-// 예시 기록 데이터 — 실제 백엔드 연동 전까지는 오늘 기준 최근 며칠로 채워서
-// 연속 기록 캡슐이 항상 오늘 근처에 자연스럽게 보이도록 함
-const RECORDED_DAYS = [-11, -10, -9, -6, -5, -4, -2]
-  .map((offset) => TODAY + offset)
-  .filter((day) => day >= 1 && day <= DAYS_IN_MONTH);
-
 const CURRENT_WEEK_INDEX = monthWeeks.findIndex((week) => week.includes(TODAY));
 const WEEKS_BEFORE = monthWeeks.slice(0, CURRENT_WEEK_INDEX);
 const CURRENT_WEEK = monthWeeks[CURRENT_WEEK_INDEX];
@@ -43,11 +38,11 @@ const WEEKS_AFTER = monthWeeks.slice(CURRENT_WEEK_INDEX + 1);
 
 // 한 주(week) 안에서 연속으로 기록된 날짜들을 찾아 [시작 index, 끝 index] 묶음으로 반환
 // 연속된 날짜는 하나의 이어진 초록 캡슐로, 혼자 있는 날짜는 그대로 하나짜리 캡슐로 그려짐
-function getStreakRuns(week) {
+function getStreakRuns(week, recordedDays) {
   const runs = [];
   let start = null;
   week.forEach((day, i) => {
-    const active = day != null && RECORDED_DAYS.includes(day);
+    const active = day != null && recordedDays.includes(day);
     if (active) {
       if (start === null) start = i;
     } else if (start !== null) {
@@ -59,8 +54,8 @@ function getStreakRuns(week) {
   return runs;
 }
 
-function WeekRow({ week }) {
-  const runs = getStreakRuns(week);
+function WeekRow({ week, recordedDays }) {
+  const runs = getStreakRuns(week, recordedDays);
 
   return (
     <div className="relative grid grid-cols-7 items-center h-[26px] px-[1px]">
@@ -77,7 +72,7 @@ function WeekRow({ week }) {
       {week.map((day, i) => {
         if (!day) return <span key={i} />;
         const isToday = day === TODAY;
-        const isRecorded = RECORDED_DAYS.includes(day);
+        const isRecorded = recordedDays.includes(day);
         return (
           <span
             key={i}
@@ -99,7 +94,28 @@ function WeekRow({ week }) {
 
 function Diary() {
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [recordedDays, setRecordedDays] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let cancelled = false;
+    // 이번 달 전체를 커버할 만큼 넉넉히 가져와서 이번 달에 해당하는 날짜만 뽑음
+    getDiaryEntries(DAYS_IN_MONTH)
+      .then((entries) => {
+        if (cancelled) return;
+        const days = entries
+          .map((e) => new Date(e.created_at))
+          .filter((d) => d.getFullYear() === NOW.getFullYear() && d.getMonth() === NOW.getMonth())
+          .map((d) => d.getDate());
+        setRecordedDays([...new Set(days)]);
+      })
+      .catch(() => {
+        // 실패해도 캘린더 자체는 보여줘야 하니 조용히 무시(오늘 기록만 못 뜨는 정도)
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
@@ -151,14 +167,14 @@ function Diary() {
                 <div className="overflow-hidden">
                   <div className="flex flex-col gap-[12px] pb-[12px]">
                     {WEEKS_BEFORE.map((week, wi) => (
-                      <WeekRow key={`before-${wi}`} week={week} />
+                      <WeekRow key={`before-${wi}`} week={week} recordedDays={recordedDays} />
                     ))}
                   </div>
                 </div>
               </div>
             )}
 
-            <WeekRow week={CURRENT_WEEK} />
+            <WeekRow week={CURRENT_WEEK} recordedDays={recordedDays} />
 
             {WEEKS_AFTER.length > 0 && (
               <div
@@ -169,7 +185,7 @@ function Diary() {
                 <div className="overflow-hidden">
                   <div className="flex flex-col gap-[12px] pt-[12px]">
                     {WEEKS_AFTER.map((week, wi) => (
-                      <WeekRow key={`after-${wi}`} week={week} />
+                      <WeekRow key={`after-${wi}`} week={week} recordedDays={recordedDays} />
                     ))}
                   </div>
                 </div>

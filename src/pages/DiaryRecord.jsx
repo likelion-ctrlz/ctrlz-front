@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import chevronLeft from "../assets/icon/chevron-left.png";
 import micIcon from "../assets/mic.png";
@@ -7,6 +7,7 @@ import ellipse444 from "../assets/diary/ellipse-444.svg";
 import ellipse443 from "../assets/diary/ellipse-443.svg";
 import ellipse445 from "../assets/diary/ellipse-445.svg";
 import ellipse442 from "../assets/diary/ellipse-442.svg";
+import { createDiaryEntry } from "../api/diaryApi";
 
 const BG_STYLE = {
   backgroundImage: `url("data:image/svg+xml;utf8,<svg viewBox='0 0 402 874' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='1'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(7.9137e-15 42.4 -42.4 7.3313e-15 201 386)'><stop stop-color='rgba(0,203,147,1)' offset='0'/><stop stop-color='rgba(12,206,152,1)' offset='0.0625'/><stop stop-color='rgba(25,208,158,1)' offset='0.125'/><stop stop-color='rgba(50,213,168,1)' offset='0.25'/><stop stop-color='rgba(74,218,179,1)' offset='0.375'/><stop stop-color='rgba(99,223,189,1)' offset='0.5'/><stop stop-color='rgba(149,233,210,1)' offset='0.75'/><stop stop-color='rgba(198,243,231,1)' offset='1'/></radialGradient></defs></svg>")`,
@@ -52,12 +53,41 @@ const RECORD_PROMPTS = [
 function DiaryRecord() {
   const [status, setStatus] = useState("idle");
   const [seconds, setSeconds] = useState(0);
+  const [micReady, setMicReady] = useState(false);
+  const [error, setError] = useState("");
   const [prompt] = useState(
     () => RECORD_PROMPTS[Math.floor(Math.random() * RECORD_PROMPTS.length)]
   );
   // 멘트가 길면 한 줄로는 다 안 보여서 아래 작은 안내 문구를 빼고 멘트 자체가 줄바꿈되게 함
   const isLongPrompt = prompt.length > 15;
   const navigate = useNavigate();
+
+  const streamRef = useRef(null);
+  const recorderRef = useRef(null);
+  const chunksRef = useRef([]);
+
+  // 페이지 진입 시 마이크 권한을 미리 받아둬서, 시작 버튼을 누르면 바로 녹음이 시작되게 함
+  useEffect(() => {
+    let cancelled = false;
+    navigator.mediaDevices
+      ?.getUserMedia({ audio: true })
+      .then((stream) => {
+        if (cancelled) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+        streamRef.current = stream;
+        setMicReady(true);
+      })
+      .catch(() => {
+        if (!cancelled) setError("마이크를 사용할 수 없어요. 마이크 권한을 허용한 뒤 다시 시도해주세요.");
+      });
+
+    return () => {
+      cancelled = true;
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+    };
+  }, []);
 
   // 녹음 타이머
   useEffect(() => {
@@ -73,11 +103,36 @@ function DiaryRecord() {
     return () => clearTimeout(timer);
   }, [status, navigate]);
 
-  const handleStart = () => setStatus("recording");
+  const handleStart = () => {
+    if (!streamRef.current) return;
+    setError("");
+    chunksRef.current = [];
+
+    const recorder = new MediaRecorder(streamRef.current);
+    recorder.ondataavailable = (e) => {
+      if (e.data.size > 0) chunksRef.current.push(e.data);
+    };
+    recorder.onstop = async () => {
+      const blob = new Blob(chunksRef.current, { type: recorder.mimeType || "audio/webm" });
+      setStatus("analyzing");
+      try {
+        await createDiaryEntry({ audio: new File([blob], "diary.webm", { type: blob.type }) });
+        setStatus("done");
+      } catch {
+        setStatus("idle");
+        setSeconds(0);
+        setError("기록에 실패했어요. 네트워크 상태를 확인하고 다시 시도해주세요.");
+      }
+    };
+
+    recorderRef.current = recorder;
+    recorder.start();
+    setSeconds(0);
+    setStatus("recording");
+  };
+
   const handleStop = () => {
-    setStatus("analyzing");
-    // 분석 시뮬레이션 3초
-    setTimeout(() => setStatus("done"), 3000);
+    recorderRef.current?.stop();
   };
 
   const formatTime = (s) => {
@@ -161,7 +216,8 @@ function DiaryRecord() {
           {/* 중앙 버튼 */}
           <button
             onClick={status === "idle" ? handleStart : status === "recording" ? handleStop : undefined}
-            className="absolute inset-0 m-auto w-[161px] h-[161px] rounded-full flex items-center justify-center"
+            disabled={status === "idle" && !micReady}
+            className="absolute inset-0 m-auto w-[161px] h-[161px] rounded-full flex items-center justify-center disabled:opacity-40"
           >
             {status === "recording" ? (
               <>
@@ -182,6 +238,10 @@ function DiaryRecord() {
             )}
           </button>
         </PulseRings>
+
+        {error && (
+          <p className="text-[13px] font-medium text-white text-center mt-[20px] px-5">{error}</p>
+        )}
       </main>
 
       <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
