@@ -90,12 +90,12 @@ function ProgramList() {
         </div>
 
         {/* Category chips */}
-        <div className="flex gap-[6px] mb-5 overflow-x-auto">
+        <div className="no-scrollbar flex gap-[6px] mb-5 overflow-x-auto snap-x snap-proximity scroll-px-5 touch-pan-x overscroll-x-contain">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`shrink-0 min-w-[57px] h-[30px] px-3 flex items-center justify-center rounded-[15px] text-[12px] tracking-[-0.3px] border border-primary cursor-pointer whitespace-nowrap ${
+              className={`snap-start shrink-0 min-w-[57px] h-[30px] px-3 flex items-center justify-center rounded-[15px] text-[12px] tracking-[-0.3px] border border-primary cursor-pointer whitespace-nowrap ${
                 activeCategory === cat
                   ? "bg-primary text-white font-semibold"
                   : "bg-[rgba(255,255,255,0.1)] text-primary font-medium"
