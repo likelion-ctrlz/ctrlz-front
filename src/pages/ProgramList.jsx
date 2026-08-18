@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
+import ProgramTabToggle from "../components/ProgramTabToggle";
 import chevronLeft from "../assets/icon/chevron-left.png";
 import { CATEGORIES, ACTIVITIES } from "../data/programs";
 import searchIcon from "../assets/program/Group 246.svg";
@@ -31,16 +32,8 @@ function ProgramList() {
             <br />
             원하는 취미 프로그램을 신청해봐요!
           </p>
-          <div className="flex items-center gap-2 shrink-0 mt-1">
-            <span className="bg-primary text-white text-[12px] font-semibold tracking-[-0.3px] rounded-full px-3 py-1">
-              취미
-            </span>
-            <button
-              onClick={() => navigate("/programs/local")}
-              className="text-gray-icon text-[12px] font-medium tracking-[-0.3px] bg-transparent border-none cursor-pointer"
-            >
-              지역연계
-            </button>
+          <div className="mt-1">
+            <ProgramTabToggle active="hobby" />
           </div>
         </div>
 
@@ -58,7 +51,7 @@ function ProgramList() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="활동 검색"
-            className="w-[382px] max-w-full h-[39px] rounded-[15px] border border-[#00CB93] bg-[rgba(255,255,255,0.1)] pl-[36px] pr-4 text-[14px] outline-none"
+            className="w-full h-[39px] rounded-[15px] border border-[#00CB93] bg-[rgba(255,255,255,0.1)] pl-[36px] pr-4 text-[14px] outline-none"
           />
         </div>
 
@@ -68,7 +61,7 @@ function ProgramList() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`w-[57px] h-[30px] rounded-[15px] text-[12px] tracking-[-0.3px] border border-primary cursor-pointer whitespace-nowrap ${
+              className={`w-[57px] h-[30px] flex items-center justify-center rounded-[15px] text-[12px] tracking-[-0.3px] border border-primary cursor-pointer whitespace-nowrap ${
                 activeCategory === cat
                   ? "bg-primary text-white font-semibold"
                   : "bg-[rgba(255,255,255,0.1)] text-primary font-medium"
