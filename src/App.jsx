@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import Login from "./pages/Login";
 import Onboarding from "./pages/Onboarding";
 import ProfileSetup from "./pages/ProfileSetup";
@@ -13,6 +14,7 @@ import HobbyList from "./pages/HobbyList";
 import HobbyDetail from "./pages/HobbyDetail";
 import Diary from "./pages/Diary";
 import DiaryRecord from "./pages/DiaryRecord";
+import ComingSoon from "./components/ComingSoon";
 import DiaryReport from "./pages/DiaryReport";
 import DiaryHelp from "./pages/DiaryHelp";
 import ProgramList from "./pages/ProgramList";
@@ -30,6 +32,7 @@ import TokenInsufficient from "./pages/TokenInsufficient";
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="mx-auto min-h-dvh w-full max-w-[430px] bg-white">
         <Routes>
           {/* Auth */}
@@ -57,6 +60,10 @@ function App() {
           {/* Diary */}
           <Route path="/diary" element={<Diary />} />
           <Route path="/diary/record" element={<DiaryRecord />} />
+          <Route
+            path="/diary/write"
+            element={<ComingSoon title="일기" backTo="/diary" message="직접 기록하기는 곧 만나보실 수 있어요" />}
+          />
           <Route path="/diary/report" element={<DiaryReport />} />
           <Route path="/diary/help" element={<DiaryHelp />} />
 
@@ -73,6 +80,10 @@ function App() {
           <Route path="/mypage/improvement" element={<ImprovementPlan />} />
           <Route path="/mypage/privacy" element={<PrivacySettings />} />
           <Route path="/mypage/edit" element={<ProfileEdit />} />
+          <Route
+            path="/mypage/notifications"
+            element={<ComingSoon title="알림 설정" backTo="/mypage" />}
+          />
           <Route path="/token-insufficient" element={<TokenInsufficient />} />
         </Routes>
       </div>

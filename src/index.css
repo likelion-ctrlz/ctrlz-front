@@ -93,6 +93,18 @@ body {
   transform-origin: 50% 85%;
 }
 
+/* 녹음 중 마이크 주변 파동 — 원이 커지면서 옅어지길 반복 */
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
 /* 축하 컨페티 — 종이가 뒤집히듯 팔랑거리며 아래로 떨어짐.
    낙하(translateY)와 팔랑임(rotateY/rotate/scaleX)이 둘 다 transform을 쓰기 때문에
    별개 애니메이션 두 개로 나누면 나중 애니메이션이 앞의 걸 덮어써서 제자리 회전만 남음 —

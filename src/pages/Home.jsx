@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import moroLv1 from "../assets/moro-lv1.png";
@@ -82,7 +81,7 @@ const GROUND_FILL_TOP_FROM_SHADOW = 400;
 
 function Home() {
   const navigate = useNavigate();
-  const [level, setLevel] = useState(1);
+  const level = 1;
 
   const xpPercent = 10;
   const username = "사용자1";
@@ -138,10 +137,7 @@ function Home() {
         />
 
         {/* 캐릭터 영역 — 레벨별로 이미지·그림자 크기가 다름 (피그마 실측값) */}
-        <section
-          className="relative mx-5 shrink-0 flex flex-col items-center cursor-pointer"
-          onClick={() => setLevel((prev) => (prev % 5) + 1)}
-        >
+        <section className="relative mx-5 shrink-0 flex flex-col items-center">
           <div
             className="relative"
             style={{ width: config.charW, height: config.charH }}
