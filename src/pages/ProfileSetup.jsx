@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import chevronLeft from "../assets/icon/chevron-left.png";
+import { loginWithNickname } from "../api/authApi";
 
 // 완성 음절(가-힣)뿐 아니라 타이핑 중간에 생기는 한글 낱자(ㄱ-ㅎ, ㅏ-ㅣ)도 허용,
 // 영문/숫자만 허용하고 특수문자·공백·이모지는 제외
@@ -8,6 +9,7 @@ const NICKNAME_PATTERN = /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]*$/;
 
 function ProfileSetup() {
   const [nickname, setNickname] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const hasInvalidChars = nickname.length > 0 && !NICKNAME_PATTERN.test(nickname);
@@ -23,6 +25,19 @@ function ProfileSetup() {
   } else if (isTooLong) {
     errorMessage = "12글자 이하로 입력해주세요";
   }
+
+  const handleSubmit = async () => {
+    if (!isValid || submitting) return;
+    setSubmitting(true);
+    try {
+      await loginWithNickname(nickname);
+      navigate("/diagnosis");
+    } catch (err) {
+      alert(err.message || "로그인에 실패했어요. 다시 시도해주세요.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
@@ -79,15 +94,15 @@ function ProfileSetup() {
 
         {/* 버튼 */}
         <button
-          onClick={() => navigate("/diagnosis")}
-          disabled={!isValid}
+          onClick={handleSubmit}
+          disabled={!isValid || submitting}
           className={`w-full h-[68px] rounded-[16px] border text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px] transition-all ${
-            isValid
+            isValid && !submitting
               ? "bg-white border-primary text-primary"
               : "bg-white border-gray-300 text-gray-400"
           }`}
         >
-          자가진단 시작하기
+          {submitting ? "로그인 중..." : "자가진단 시작하기"}
         </button>
       </main>
     </div>

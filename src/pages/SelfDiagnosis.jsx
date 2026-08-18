@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import chevronLeft from "../assets/icon/chevron-left.png";
 import QUESTIONS from "../data/selfDiagnosisQuestions";
+import { submitAssessment } from "../api/diagnosisApi";
 
 function SelfDiagnosis() {
   const [searchParams] = useSearchParams();
@@ -10,9 +11,10 @@ function SelfDiagnosis() {
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState({});
   const [selected, setSelected] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selected === null) return;
     const newAnswers = { ...answers, [currentQ]: selected };
     setAnswers(newAnswers);
@@ -21,7 +23,17 @@ function SelfDiagnosis() {
     if (currentQ < QUESTIONS.length - 1) {
       setCurrentQ(currentQ + 1);
     } else {
-      navigate("/diagnosis/result");
+      // 마지막 문항 — API로 답변 제출
+      setSubmitting(true);
+      try {
+        const answerArray = QUESTIONS.map((_, i) => newAnswers[i]);
+        await submitAssessment(answerArray);
+        navigate("/diagnosis/result");
+      } catch (err) {
+        alert(err.message || "제출에 실패했어요. 다시 시도해주세요.");
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
 
@@ -202,14 +214,14 @@ function SelfDiagnosis() {
         {/* 다음 버튼 */}
         <button
           onClick={handleNext}
-          disabled={selected === null}
+          disabled={selected === null || submitting}
           className={`w-full h-[68px] rounded-[16px] border text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px] transition-all ${
-            selected !== null
+            selected !== null && !submitting
               ? "bg-white border-primary text-primary"
               : "bg-white border-gray-300 text-gray-400"
           }`}
         >
-          다음
+          {submitting ? "제출 중..." : "다음"}
         </button>
       </main>
     </div>
