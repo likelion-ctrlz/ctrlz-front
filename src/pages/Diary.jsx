@@ -54,7 +54,7 @@ function getStreakRuns(week, recordedDays) {
   return runs;
 }
 
-function WeekRow({ week, recordedDays }) {
+function WeekRow({ week, recordedDays, onDayClick }) {
   const runs = getStreakRuns(week, recordedDays);
 
   return (
@@ -74,8 +74,9 @@ function WeekRow({ week, recordedDays }) {
         const isToday = day === TODAY;
         const isRecorded = recordedDays.includes(day);
         return (
-          <span
+          <button
             key={i}
+            onClick={() => onDayClick(day)}
             className={`relative z-10 justify-self-center w-[31px] h-[26px] rounded-[17px] flex items-center justify-center text-[14px] tracking-[-0.35px] ${
               isToday
                 ? "bg-primary text-white font-semibold"
@@ -85,7 +86,7 @@ function WeekRow({ week, recordedDays }) {
             }`}
           >
             {day}
-          </span>
+          </button>
         );
       })}
     </div>
@@ -96,6 +97,11 @@ function Diary() {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [recordedDays, setRecordedDays] = useState([]);
   const navigate = useNavigate();
+
+  const handleDayClick = (day) => {
+    const date = new Date(NOW.getFullYear(), NOW.getMonth(), day);
+    navigate("/diary/report", { state: { date: date.toISOString().slice(0, 10) } });
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -159,14 +165,14 @@ function Diary() {
                 <div className="overflow-hidden">
                   <div className="flex flex-col gap-[12px] pb-[12px]">
                     {WEEKS_BEFORE.map((week, wi) => (
-                      <WeekRow key={`before-${wi}`} week={week} recordedDays={recordedDays} />
+                      <WeekRow key={`before-${wi}`} week={week} recordedDays={recordedDays} onDayClick={handleDayClick} />
                     ))}
                   </div>
                 </div>
               </div>
             )}
 
-            <WeekRow week={CURRENT_WEEK} recordedDays={recordedDays} />
+            <WeekRow week={CURRENT_WEEK} recordedDays={recordedDays} onDayClick={handleDayClick} />
 
             {WEEKS_AFTER.length > 0 && (
               <div
@@ -177,7 +183,7 @@ function Diary() {
                 <div className="overflow-hidden">
                   <div className="flex flex-col gap-[12px] pt-[12px]">
                     {WEEKS_AFTER.map((week, wi) => (
-                      <WeekRow key={`after-${wi}`} week={week} recordedDays={recordedDays} />
+                      <WeekRow key={`after-${wi}`} week={week} recordedDays={recordedDays} onDayClick={handleDayClick} />
                     ))}
                   </div>
                 </div>
@@ -223,17 +229,6 @@ function Diary() {
             </p>
           </button>
         </div>
-
-        {/* 감정 리포트 진입점 */}
-        <button
-          onClick={() => navigate("/diary/report")}
-          className="w-full h-[68px] rounded-[16px] bg-primary mt-[15px] px-5 flex items-center justify-between"
-        >
-          <p className="text-[16px] font-bold text-white tracking-[-0.4px]">나의 감정 리포트 보기</p>
-          <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-            <path d="M1 1L7 7.5L1 14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
       </main>
 
       <BottomTabBar />

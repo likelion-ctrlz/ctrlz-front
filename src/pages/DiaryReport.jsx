@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import Header from "../components/Header";
 import { getDiarySummary } from "../api/diaryApi";
@@ -93,7 +93,9 @@ const EMOTION_COLOR = { 편안함: "primary", 설렘: "primary", 불안: "danger
 
 function DiaryReport() {
   const navigate = useNavigate();
-  const [period, setPeriod] = useState(PERIODS[1]); // 기본: 1주일
+  const { state } = useLocation();
+  // 달력에서 특정 날짜를 눌러 들어온 경우 "오늘" 기준으로, 그 외(예: 바텀탭 등)에는 "1주일" 기본
+  const [period, setPeriod] = useState(state?.date ? PERIODS[0] : PERIODS[1]);
   const [summary, setSummary] = useState(null);
   const [status, setStatus] = useState("loading"); // loading | error | done
 
@@ -191,9 +193,11 @@ function DiaryReport() {
                 {summary.ai_summary && (
                   <p className="text-[14px] text-primary tracking-[-0.35px]">✓ {summary.ai_summary}</p>
                 )}
-                <p className="text-[14px] text-primary tracking-[-0.35px]">
-                  ✓ 꾸준히 기록한 것만으로도 충분히 잘하고 있어요
-                </p>
+                {summary.most_frequent_emotion && (
+                  <p className="text-[14px] text-primary tracking-[-0.35px]">
+                    ✓ 꾸준히 기록한 것만으로도 충분히 잘하고 있어요
+                  </p>
+                )}
               </div>
             </div>
 
