@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import moroLv1 from "../assets/moro-lv1.png";
@@ -8,6 +9,7 @@ import moroLv5 from "../assets/moro-lv5.png";
 import mainLogo from "../assets/logo/main_logo.png";
 import groundBg from "../assets/home/ground.png";
 import characterShadow from "../assets/character-shadow.svg";
+import { getMe } from "../api/userApi";
 
 // 레벨별 캐릭터 이미지 크기 + 그림자 크기/위치(캐릭터 박스 기준 상대좌표)는
 // 피그마의 Home 레벨별 프레임(1~5) 실측값을 그대로 반영함
@@ -81,11 +83,35 @@ const GROUND_FILL_TOP_FROM_SHADOW = 400;
 
 function Home() {
   const navigate = useNavigate();
-  const level = 1;
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const xpPercent = 10;
-  const username = "사용자1";
-  const streak = 5;
+  useEffect(() => {
+    getMe()
+      .then(setUser)
+      .catch(() => {
+        // 세션 만료 시 로그인으로
+        navigate("/", { replace: true });
+      })
+      .finally(() => setLoading(false));
+  }, [navigate]);
+
+  if (loading || !user) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center">
+        <p className="text-[16px] text-primary font-medium">로딩 중...</p>
+      </div>
+    );
+  }
+
+  const level = user.character_level || 1;
+  const xpPercent = user.character_xp_next_level
+    ? Math.round((user.character_xp / user.character_xp_next_level) * 100)
+    : 0;
+  const username = user.nickname;
+  const streak = user.mission_streak_days;
+  const tokenBalance = user.token_balance;
+  const mission = user.today_recommended_mission;
   const config = LEVEL_CONFIG[level - 1];
   const groundTop = config.shadowTop + GROUND_TOP_FROM_SHADOW;
   const groundFillTop = config.shadowTop + GROUND_FILL_TOP_FROM_SHADOW;
@@ -111,7 +137,9 @@ function Home() {
           {username}님, 극복 할 수 있어요!
         </p>
         <p className="text-[14px] font-medium text-primary tracking-[-0.35px] leading-[25px]">
-          모로와 함께 {streak}일 연속 미션 실천 중
+          {streak > 0
+            ? `모로와 함께 ${streak}일 연속 미션 실천 중`
+            : "모로와 함께 미션을 시작해봐요!"}
         </p>
       </section>
 
@@ -192,7 +220,7 @@ function Home() {
         {/* 오늘의 미션 카드 */}
         <section
           className="relative z-10 mx-5 mt-[18px] mb-[102px] h-[160px] shrink-0 rounded-[16px] bg-white border border-primary px-6 py-[17px] cursor-pointer"
-          onClick={() => navigate("/missions")}
+          onClick={() => mission && navigate(`/missions/${mission.mission_id}`)}
         >
           {/* 상단 */}
           <div className="flex items-center justify-between">
@@ -206,31 +234,34 @@ function Home() {
               </span>
               <div className="relative w-[19px] h-[19px] rounded-full bg-primary flex items-center justify-center">
                 <span className="text-[10px] text-white font-semibold tracking-[-0.25px]">
-                  10
+                  {tokenBalance}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* 미션 제목 */}
-          <p className="text-[20px] font-semibold text-primary-text-dark tracking-[-0.5px] leading-[25px] mt-[14px]">
-            근처에서 즉석 복권 구매해보기
-          </p>
+          {mission ? (
+            <>
+              {/* 미션 제목 */}
+              <p className="text-[20px] font-semibold text-primary-text-dark tracking-[-0.5px] leading-[25px] mt-[14px]">
+                {mission.title}
+              </p>
 
-          {/* 설명 */}
-          <p className="text-[12px] text-gray-muted tracking-[-0.3px] leading-[25px] mt-[2px]">
-            혹시 알아요? 오늘 당신에게 행운이 찾아올지
-          </p>
-
-          {/* XP / 토큰 */}
-          <div className="flex gap-3 mt-[12px]">
-            <span className="text-[12px] font-semibold text-primary tracking-[-0.3px]">
-              + 30 xp
-            </span>
-            <span className="text-[12px] font-semibold text-primary tracking-[-0.3px]">
-              + 2 토큰
-            </span>
-          </div>
+              {/* XP / 토큰 */}
+              <div className="flex gap-3 mt-[12px]">
+                <span className="text-[12px] font-semibold text-primary tracking-[-0.3px]">
+                  + {mission.xp_reward} xp
+                </span>
+                <span className="text-[12px] font-semibold text-primary tracking-[-0.3px]">
+                  + {mission.token_reward} 토큰
+                </span>
+              </div>
+            </>
+          ) : (
+            <p className="text-[16px] font-medium text-gray-muted tracking-[-0.4px] mt-[14px]">
+              오늘의 미션이 아직 없어요
+            </p>
+          )}
         </section>
       </div>
 

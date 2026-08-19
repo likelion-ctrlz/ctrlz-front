@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import moroLv1 from "../assets/moro-lv1.png";
 import characterShadow from "../assets/character-shadow.svg";
 import chevronLeft from "../assets/icon/chevron-left.png";
 import RESULT_CONTENT from "../data/diagnosisResultContent";
 import IMPROVEMENT_CONTENT from "../data/improvementContent";
+import { getAssessmentResult } from "../api/diagnosisApi";
 
 // Figma 원본 벡터 경로 (점수 게이지) — Vector 44/46(웨지), Vector 45(물결 캡), Polygon 1(포인터)
 const GAUGE_WEDGE_PATH =
@@ -13,13 +14,7 @@ const GAUGE_WAVE_PATH =
   "M209 49.6579L166.588 92C114.469 33.3322 60.9219 67.5551 40.6632 92L0 49.6579C84.8243 -42.0094 179.705 14.7365 209 49.6579Z";
 const GAUGE_POINTER_PATH = "M9.95929 0L19.9186 17.25H0L9.95929 0Z";
 
-// TODO: API 연동 후 GET /assessment/result 응답으로 교체
-// (assessment_type, assessment_level, assessment_score)
-const MOCK_ASSESSMENT = {
-  type: "은둔형", // 은둔형 | 고립형 | 관찰군 | 복합형
-  level: 2, // 1~4 (1=가장 심각). 관찰군은 항상 4
-  score: 6, // 0~10, 높을수록 심각(위험 쪽)
-};
+// TODO: 추후 score → 게이지 포인터 위치 매핑은 API 점수 범위에 맞춰 조정 필요할 수 있음
 
 // 게이지 배지 문구 — 유형이 아니라 점수(0~10, 높을수록 위험) 구간별로 분기
 function getBadgeByScore(score) {
@@ -109,14 +104,43 @@ function getPointerTransform(score) {
 
 function DiagnosisResult() {
   const [step, setStep] = useState("result"); // result | improvement | character | character2
+  const [assessment, setAssessment] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const content = getResultContent(MOCK_ASSESSMENT);
-  const improvement = getImprovementContent(MOCK_ASSESSMENT.type);
+
+  useEffect(() => {
+    getAssessmentResult()
+      .then((data) => {
+        setAssessment({
+          type: data.assessment_type,
+          level: data.assessment_level,
+          score: data.assessment_score,
+        });
+      })
+      .catch(() => {
+        // 결과가 없으면 진단 페이지로 돌려보냄
+        navigate("/diagnosis", { replace: true });
+      })
+      .finally(() => setLoading(false));
+  }, [navigate]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-mint-light">
+        <p className="text-[16px] text-primary font-medium">결과를 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  if (!assessment) return null;
+
+  const content = getResultContent(assessment);
+  const improvement = getImprovementContent(assessment.type);
   const {
     x: pointerX,
     y: pointerY,
     rotationDeg: pointerRotationDeg,
-  } = getPointerTransform(MOCK_ASSESSMENT.score);
+  } = getPointerTransform(assessment.score);
 
   // 진단 결과
   if (step === "result") {
@@ -163,20 +187,20 @@ function DiagnosisResult() {
                   <path
                     d={GAUGE_POINTER_PATH}
                     transform="translate(-9.96,-8.625)"
-                    fill={MOCK_ASSESSMENT.score < 5 ? "var(--color-primary)" : "var(--color-danger)"}
+                    fill={assessment.score < 5 ? "var(--color-primary)" : "var(--color-danger)"}
                   />
                 </g>
               </svg>
 
               {/* 배지 — 점수 구간별 문구, 글자수와 무관하게 항상 가운데 정렬 */}
               <p className="absolute left-[163px] top-[21px] -translate-x-1/2 text-[16px] font-semibold text-white tracking-[-0.4px] whitespace-nowrap">
-                {getBadgeByScore(MOCK_ASSESSMENT.score)}
+                {getBadgeByScore(assessment.score)}
               </p>
 
               {/* 점수 — 자릿수와 무관하게 항상 가운데 정렬 */}
               <p className="absolute left-[163px] top-[97px] -translate-x-1/2 whitespace-nowrap">
                 <span className="text-[40px] font-semibold text-primary">
-                  {MOCK_ASSESSMENT.score}
+                  {assessment.score}
                 </span>
                 <span className="text-[16px] text-[#606060]">점</span>
               </p>
