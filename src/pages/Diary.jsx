@@ -38,11 +38,13 @@ const WEEKS_AFTER = monthWeeks.slice(CURRENT_WEEK_INDEX + 1);
 
 // 한 주(week) 안에서 연속으로 기록된 날짜들을 찾아 [시작 index, 끝 index] 묶음으로 반환
 // 연속된 날짜는 하나의 이어진 초록 캡슐로, 혼자 있는 날짜는 그대로 하나짜리 캡슐로 그려짐
+// 오늘 날짜는 이미 버튼 자체가 진한 초록(bg-primary)으로 표시되므로, 오늘 기록이 있어도
+// 연한 초록 캡슐 배경에는 포함시키지 않음 (겹치면 디자인이 지저분해짐)
 function getStreakRuns(week, recordedDays) {
   const runs = [];
   let start = null;
   week.forEach((day, i) => {
-    const active = day != null && recordedDays.includes(day);
+    const active = day != null && day !== TODAY && recordedDays.includes(day);
     if (active) {
       if (start === null) start = i;
     } else if (start !== null) {

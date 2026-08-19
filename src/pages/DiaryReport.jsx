@@ -33,6 +33,21 @@ function withPeriodTitle(period, suffix) {
   return period.label === "오늘" ? `오늘의 ${suffix}` : `${period.label} ${suffix}`;
 }
 
+// "2026-08-17" 같은 날짜 문자열을 "오늘"/"1일 전"/"N일 전"으로 변환 ("나의 감정 돌아보기" 표시용)
+function daysAgoLabel(dateStr) {
+  if (!dateStr) return "-";
+  const target = new Date(dateStr);
+  if (Number.isNaN(target.getTime())) return dateStr;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.round((today - target) / (1000 * 60 * 60 * 24));
+  if (diffDays <= 0) return "오늘";
+  return `${diffDays}일 전`;
+}
+
 function MoodBarChart({ percentages, mostFrequent }) {
   return (
     <div className="relative">
@@ -108,6 +123,7 @@ function DiaryReport() {
   useEffect(() => {
     let cancelled = false;
     setStatus("loading");
+    setSummaryOpen(false); // 기간을 바꾸면 이전 기간에서 펼쳐뒀던 원문 카드는 접어줌
     getDiarySummary(period.days)
       .then((data) => {
         if (cancelled) return;
@@ -245,12 +261,12 @@ function DiaryReport() {
             <div className="border border-[rgba(170,238,219,0.87)] bg-mint-pale2 rounded-[16px] p-5">
               {recentTrend.length > 0 ? (
                 <div className="space-y-5">
-                  {recentTrend.slice(0, 5).map((item, i) => {
+                  {recentTrend.slice(0, 3).map((item, i) => {
                     const color = EMOTION_COLOR[item.primary] || "primary";
                     return (
                       <div key={`${item.date}-${i}`}>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-[12px] text-gray-icon tracking-[-0.3px]">{item.date}</span>
+                          <span className="text-[12px] text-gray-icon tracking-[-0.3px]">{daysAgoLabel(item.date)}</span>
                           <span
                             className={`text-[12px] font-semibold tracking-[-0.3px] ${
                               color === "primary" ? "text-primary" : "text-danger"
