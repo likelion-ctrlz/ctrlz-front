@@ -3,12 +3,17 @@ import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import Header from "../components/Header";
 import ellipseBg from "../assets/mypage/Ellipse.svg";
-import intersectIcon from "../assets/mypage/Intersect.svg";
+import moroLv1 from "../assets/moro-lv1.png";
+import moroLv2 from "../assets/moro-lv2.png";
+import moroLv3 from "../assets/moro-lv3.png";
+import moroLv4 from "../assets/moro-lv4.png";
 import iconScore from "../assets/mypage/Frame 32.svg";
 import iconDiagnosis from "../assets/mypage/Frame 33.svg";
 import iconImprove from "../assets/mypage/Frame 34.svg";
 import iconNotify from "../assets/mypage/Frame 35.svg";
 import { getMe } from "../api/usersApi";
+
+const CHARACTER_IMAGES = [moroLv1, moroLv2, moroLv3, moroLv4];
 
 function MyPage() {
   const navigate = useNavigate();
@@ -47,10 +52,14 @@ function MyPage() {
       <main className="flex-1 flex flex-col px-5 pb-[130px]">
         {/* 프로필 영역 */}
         <div className="flex items-center mt-[22px]">
-          {/* 아바타 */}
+          {/* 아바타 — 내 캐릭터 레벨에 맞는 모로 이미지 */}
           <div className="relative w-[70px] h-[70px] shrink-0">
             <img src={ellipseBg} alt="" className="w-full h-full" />
-            <img src={intersectIcon} alt="프로필" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[65px] h-[65px]" />
+            <img
+              src={CHARACTER_IMAGES[(user.character_level || 1) - 1]}
+              alt={`모로 레벨 ${user.character_level}`}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[52px] h-[52px] object-contain"
+            />
           </div>
 
           {/* 이름 + 상태 */}

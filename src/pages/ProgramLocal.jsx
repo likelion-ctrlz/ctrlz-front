@@ -53,7 +53,7 @@ function ProgramLocal() {
           <div className="flex items-center gap-[15px]">
             <img src={locateIcon} alt="" className="w-[21px] h-[26px]" />
             <span className="text-[16px] font-semibold text-primary underline decoration-primary underline-offset-4">
-              {region || "지역 미설정"}
+              {region || "서울 강서구"}
             </span>
           </div>
           <ProgramTabToggle active="local" />

@@ -219,12 +219,12 @@ function Home() {
 
         {/* 오늘의 미션 카드 */}
         <section
-          className="relative z-10 mx-5 mt-[18px] mb-[102px] h-[160px] shrink-0 rounded-[16px] bg-white border border-primary px-6 py-[17px] cursor-pointer"
+          className="relative z-10 mx-5 mt-[18px] mb-[102px] h-[160px] shrink-0 rounded-[16px] bg-white border border-primary pl-6 pr-[14px] pt-[11px] pb-[15px] cursor-pointer"
           onClick={() => mission && navigate(`/missions/${mission.mission_id}`)}
         >
           {/* 상단 */}
-          <div className="flex items-center justify-between">
-            <span className="text-[16px] font-semibold text-primary tracking-[-0.4px]">
+          <div className="flex justify-between">
+            <span className="text-[16px] font-semibold text-primary tracking-[-0.4px] mt-[7px]">
               오늘의 미션
             </span>
             {/* 토큰 뱃지 */}
@@ -247,8 +247,15 @@ function Home() {
                 {mission.title}
               </p>
 
+              {/* 설명 */}
+              {mission.description && (
+                <p className="text-[12px] text-gray-muted tracking-[-0.3px] leading-[25px]">
+                  {mission.description}
+                </p>
+              )}
+
               {/* XP / 토큰 */}
-              <div className="flex gap-3 mt-[12px]">
+              <div className="flex gap-3 mt-[13px]">
                 <span className="text-[12px] font-semibold text-primary tracking-[-0.3px]">
                   + {mission.xp_reward} xp
                 </span>

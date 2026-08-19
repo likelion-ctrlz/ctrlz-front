@@ -5,17 +5,22 @@ import ProgramTabToggle from "../components/ProgramTabToggle";
 import Header from "../components/Header";
 import searchIcon from "../assets/program/Group 246.svg";
 import { getRecommendedHobbies } from "../api/hobbiesApi";
+import { getCached } from "../api/client";
+
+const RECOMMENDED_PATH = "/hobbies/recommended";
 
 function ProgramList() {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("전체");
   const [search, setSearch] = useState("");
-  const [hobbies, setHobbies] = useState([]);
-  const [status, setStatus] = useState("loading"); // loading | error | done
+  const cached = getCached(RECOMMENDED_PATH);
+  const [hobbies, setHobbies] = useState(cached ?? []);
+  // 캐시가 있으면 로딩 화면 없이 바로 보여주고 뒤에서 조용히 새로고침
+  const [status, setStatus] = useState(cached ? "done" : "loading"); // loading | error | done
 
   useEffect(() => {
     let cancelled = false;
-    setStatus("loading");
+    if (!cached) setStatus("loading");
     getRecommendedHobbies()
       .then((data) => {
         if (cancelled) return;
@@ -23,11 +28,13 @@ function ProgramList() {
         setStatus("done");
       })
       .catch(() => {
-        if (!cancelled) setStatus("error");
+        // 캐시로 이미 보여주고 있던 중이면 에러로 덮어쓰지 않고 조용히 무시
+        if (!cancelled && !cached) setStatus("error");
       });
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 실제 백엔드 카테고리 값 기준으로 칩을 만들어서(하드코딩 목록과 어긋나 다 안 보이는 일이 없게 함)

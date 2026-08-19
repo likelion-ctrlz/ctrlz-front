@@ -161,6 +161,13 @@ function DiagnosisResult() {
                 viewBox="0 0 326 145"
                 className="absolute inset-0 w-full h-full"
               >
+                {/* 중앙 물결 캡 (초록) — 웨지보다 먼저 그려서 뒤에 깔리게 함.
+                    나중에 그리면(웨지보다 위 레이어) 오른쪽 웨지(위험, 빨강) 대부분을
+                    덮어버려서 점수 5~8점대에서 화살표가 빨간색이어도 배경이 초록으로
+                    보이는 문제가 있었음 — 웨지가 항상 위에 오도록 순서를 바꿈 */}
+                <g transform="translate(59,0)">
+                  <path d={GAUGE_WAVE_PATH} fill="var(--color-primary)" />
+                </g>
                 {/* 왼쪽 웨지 (정상, 연초록) — 오른쪽 웨지를 좌우 반전 */}
                 <g transform="translate(98,55) scale(-1,1)">
                   <path d={GAUGE_WEDGE_PATH} fill="var(--color-primary-sub3)" />
@@ -169,18 +176,14 @@ function DiagnosisResult() {
                 <g transform="translate(228,55)">
                   <path d={GAUGE_WEDGE_PATH} fill="var(--color-danger)" />
                 </g>
-                {/* 중앙 물결 캡 (초록) */}
-                <g transform="translate(59,0)">
-                  <path d={GAUGE_WAVE_PATH} fill="var(--color-primary)" />
-                </g>
-                {/* 포인터 — 점수(0~10)에 따라 작은 원을 따라 위치·각도·색이 바뀜 */}
+                {/* 포인터 — 점수(0~10)에 따라 위치·각도만 바뀌고 색은 항상 빨강으로 고정 */}
                 <g
                   transform={`translate(${pointerX},${pointerY}) rotate(${pointerRotationDeg})`}
                 >
                   <path
                     d={GAUGE_POINTER_PATH}
                     transform="translate(-9.96,-8.625)"
-                    fill={assessment.score < 5 ? "var(--color-primary)" : "var(--color-danger)"}
+                    fill="var(--color-danger)"
                   />
                 </g>
               </svg>
@@ -321,7 +324,7 @@ function DiagnosisResult() {
 
         <main className="flex-1 flex flex-col px-[37px] pt-[146px]">
           {/* 제목 */}
-          <h2 className="text-[20px] font-extrabold text-white leading-normal">
+          <h2 className="text-[20px] font-extrabold text-white text-center leading-normal">
             {content.title}
           </h2>
 

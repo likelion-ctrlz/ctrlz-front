@@ -4,20 +4,25 @@ import BottomTabBar from "../components/BottomTabBar";
 import Header from "../components/Header";
 import { getMissionImage } from "../data/missions";
 import { getRecommendedMissions } from "../api/missionsApi";
+import { getCached } from "../api/client";
 
 // 피그마 미션 카드별 아이콘 실측 크기(1,2번 카드=75px, 3,4번 카드=82px)
 const ICON_SIZES = [75, 75, 82, 82];
 // 아이콘 뒤 은은한 그라데이션 글로우 — 아이콘 중심에 맞춰 배치
 const GLOW_SIZE = 120;
 
+const RECOMMENDED_PATH = "/missions/recommended";
+
 function MissionList() {
   const navigate = useNavigate();
-  const [missions, setMissions] = useState([]);
-  const [status, setStatus] = useState("loading"); // loading | error | done
+  const cached = getCached(RECOMMENDED_PATH);
+  const [missions, setMissions] = useState(cached ?? []);
+  // 캐시가 있으면 로딩 화면 없이 바로 보여주고 뒤에서 조용히 새로고침
+  const [status, setStatus] = useState(cached ? "done" : "loading"); // loading | error | done
 
   useEffect(() => {
     let cancelled = false;
-    setStatus("loading");
+    if (!cached) setStatus("loading");
     getRecommendedMissions()
       .then((data) => {
         if (cancelled) return;
@@ -25,11 +30,13 @@ function MissionList() {
         setStatus("done");
       })
       .catch(() => {
-        if (!cancelled) setStatus("error");
+        // 캐시로 이미 보여주고 있던 중이면 에러로 덮어쓰지 않고 조용히 무시
+        if (!cancelled && !cached) setStatus("error");
       });
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
