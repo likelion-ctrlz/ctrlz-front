@@ -55,7 +55,7 @@ function MissionDetail() {
                 }}
               />
               <img
-                src={getMissionImage({ id: mission.mission_id })}
+                src={getMissionImage({ id: mission.mission_id, title: mission.title, is_wow: mission.is_wow })}
                 alt=""
                 className="relative max-w-full max-h-full object-contain"
               />

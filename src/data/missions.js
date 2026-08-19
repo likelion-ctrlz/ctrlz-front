@@ -3,16 +3,38 @@ import icecream from "../assets/mission/icecream.png";
 import conv from "../assets/mission/conv.png";
 import shop from "../assets/mission/shop.png";
 
-// 미션 카드 아이콘. 정적 미션은 아래에서 직접 매칭하고,
+// 미션 카드 아이콘. 일반 미션은 이 중 하나로 랜덤(해시 기반) 배정되고,
 // API에서 목록에 없는 미션이 내려오면 getMissionImage()가 이 중 하나로 매칭함
 export const MISSION_IMAGES = [lotto, icecream, conv, shop];
 
-// API에서 아직 이미지가 지정되지 않은 미션이 들어왔을 때 쓸 이미지를 고름.
-// id 기반으로 고정 매칭해서 같은 미션이면 매번 같은 이미지가 나오게 함.
+// 와우포인트 미션은 실제 내용과 맞는 아이콘으로 고정 (seed_missions.py의 와우 미션 4개와 1:1 매칭)
+const WOW_MISSION_ICONS = {
+  "베라에서 이달의 맛 시도하기": shop,
+  "즉석복권 사기": lotto,
+  "무인아이스크림 털기": icecream,
+  "편의점 신상 리뷰": conv,
+};
+
+// 문자열(UUID 포함)을 안정적인 정수로 해시 — 같은 id는 항상 같은 값이 나옴
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) | 0;
+  }
+  return Math.abs(hash);
+}
+
+// 미션 카드 아이콘 결정.
+// - 와우포인트 미션(is_wow)은 실제 내용과 맞는 고정 아이콘을 씀
+// - 그 외는 id를 해시해서 4개 아이콘 중 하나로 배정 (미션마다 다르게 보이되, 같은 미션은 새로고침해도 항상 같은 아이콘)
 export function getMissionImage(mission) {
   if (mission?.image) return mission.image;
-  const id = Number(mission?.id) || 0;
-  return MISSION_IMAGES[Math.abs(id) % MISSION_IMAGES.length];
+  if (mission?.is_wow) {
+    const wowIcon = WOW_MISSION_ICONS[mission.title];
+    if (wowIcon) return wowIcon;
+  }
+  const id = String(mission?.id ?? "");
+  return MISSION_IMAGES[hashString(id) % MISSION_IMAGES.length];
 }
 
 const MISSIONS = [

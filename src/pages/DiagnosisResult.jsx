@@ -14,6 +14,10 @@ const GAUGE_WAVE_PATH =
   "M209 49.6579L166.588 92C114.469 33.3322 60.9219 67.5551 40.6632 92L0 49.6579C84.8243 -42.0094 179.705 14.7365 209 49.6579Z";
 const GAUGE_POINTER_PATH = "M9.95929 0L19.9186 17.25H0L9.95929 0Z";
 
+// 화살표가 따라가는 안쪽 라인(GAUGE_INNER_ARC_POINTS)을 화면에 겹쳐 그려서 눈으로 확인하기 위한 디버그 스위치.
+// 확인 끝나면 false로 끄거나 이 블록 통째로 지우면 됨.
+const SHOW_DEBUG_ARC = true;
+
 // TODO: 추후 score → 게이지 포인터 위치 매핑은 API 점수 범위에 맞춰 조정 필요할 수 있음
 
 // 게이지 배지 문구 — 유형이 아니라 점수(0~10, 높을수록 위험) 구간별로 분기
@@ -37,12 +41,10 @@ function getImprovementContent(type) {
 // 게이지 밴드의 "안쪽" 경계선(점수 숫자와 맞닿는 쪽) 좌표를 실제 렌더링 결과에서 픽셀 단위로
 // 측정한 값 (좌우 대칭이라 왼쪽만 측정하고 오른쪽은 반사). 웨지 구간은 평평(y≈134), 중앙 물결
 // 캡 구간은 부드러운 곡선으로 y≈58까지 올라옴 — 포인터가 이 선을 그대로 따라가게 함.
+// 원래 27개 점 중 양 끝 5개씩(x=0~80, x=246~326)은 웨지 시작점 이전 구간이라 굴곡이 있어
+// 제외하고, 실제로 웨지 도형 안쪽인 구간(88~238)만 0~10점에 매핑한다 — 첫 점=0점, 마지막
+// 점=10점, 정중앙(163,58 정점)=5점.
 const GAUGE_INNER_ARC_POINTS = [
-  [0, 124],
-  [20, 121],
-  [40, 134],
-  [60, 134],
-  [80, 134],
   [88, 126],
   [92, 108],
   [100, 91],
@@ -60,11 +62,6 @@ const GAUGE_INNER_ARC_POINTS = [
   [226, 91],
   [234, 108],
   [238, 126],
-  [246, 134],
-  [266, 134],
-  [286, 134],
-  [306, 121],
-  [326, 124],
 ];
 
 // GAUGE_INNER_ARC_POINTS를 선형보간해서 임의의 x에서의 y를 구함
@@ -82,17 +79,36 @@ function interpolateInnerArcY(x) {
   return y1 + (y2 - y1) * localT;
 }
 
-// score(0~10) → 밴드 안쪽 경계선 위 좌표(선형보간) + 그 지점의 접선 방향 회전각.
+// 정수 점수 0~10이 안쪽 라인의 몇 번째 점에 위치하는지 손으로 지정한 값.
+// 균등 간격이 아니라 5점(정중앙, idx8)을 기준으로 좌우 대칭이 되도록 골랐음
+// (0~3점/7~10점은 완만한 구간이라 점 간격이 넓고, 4점·6점은 급하게 꺾이는
+// 중앙 부근이라 점 간격이 좁음).
+const SCORE_ANCHOR_INDICES = [0, 1, 2, 3, 6, 8, 10, 13, 14, 15, 16];
+const SCORE_X_ANCHORS = SCORE_ANCHOR_INDICES.map((i) => GAUGE_INNER_ARC_POINTS[i][0]);
+
+// score(0~10, 정수가 아니면 인접 정수 앵커 사이를 선형보간) → x 좌표
+function xForScore(score) {
+  const clamped = Math.min(Math.max(score, 0), 10);
+  const lo = Math.floor(clamped);
+  const hi = Math.ceil(clamped);
+  if (lo === hi) return SCORE_X_ANCHORS[lo];
+  const t = clamped - lo;
+  return SCORE_X_ANCHORS[lo] + t * (SCORE_X_ANCHORS[hi] - SCORE_X_ANCHORS[lo]);
+}
+
+// score → 밴드 안쪽 경계선 위 좌표 + 그 지점의 접선 방향 회전각.
 // 접선은 x 좌우로 같은 거리(±5px) 떨어진 두 점(centered difference)으로 계산 —
 // 한쪽 구간의 기울기만 쓰면 정중앙(5점)처럼 대칭인 지점에서도 살짝 기울어져 보이는 문제가 있었음.
+const ARC_X_START = GAUGE_INNER_ARC_POINTS[0][0];
+const ARC_X_END = GAUGE_INNER_ARC_POINTS[GAUGE_INNER_ARC_POINTS.length - 1][0];
+
 function getPointerTransform(score) {
-  const t = Math.min(Math.max(score / 10, 0), 1);
-  const x = t * 326;
+  const x = xForScore(score);
   const y = interpolateInnerArcY(x);
 
   const delta = 5;
-  const xLo = Math.max(x - delta, 0);
-  const xHi = Math.min(x + delta, 326);
+  const xLo = Math.max(x - delta, ARC_X_START);
+  const xHi = Math.min(x + delta, ARC_X_END);
   const dx = xHi - xLo;
   const dy = interpolateInnerArcY(xHi) - interpolateInnerArcY(xLo);
   const normalX = dy;

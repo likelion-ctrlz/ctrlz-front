@@ -80,7 +80,7 @@ function DiaryRecord() {
         setMicReady(true);
       })
       .catch(() => {
-        if (!cancelled) setError("마이크를 사용할 수 없어요. 마이크 권한을 허용한 뒤 다시 시도해주세요.");
+        if (!cancelled) setError("마이크 권한을 허용한 뒤 다시 시도해주세요.");
       });
 
     return () => {

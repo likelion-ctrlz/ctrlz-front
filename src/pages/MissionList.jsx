@@ -91,7 +91,11 @@ function MissionList() {
                 className="absolute left-[27px] top-[20px] flex items-center justify-center"
                 style={{ width: ICON_SIZES[i % ICON_SIZES.length], height: ICON_SIZES[i % ICON_SIZES.length] }}
               >
-                <img src={getMissionImage({ id: mission.mission_id })} alt="" className="max-w-full max-h-full object-contain" />
+                <img
+                  src={getMissionImage({ id: mission.mission_id, title: mission.title, is_wow: mission.is_wow })}
+                  alt=""
+                  className="max-w-full max-h-full object-contain"
+                />
               </div>
 
               {/* 내용 */}
