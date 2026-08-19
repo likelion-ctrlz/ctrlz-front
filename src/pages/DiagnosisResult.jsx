@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import moroLv1 from "../assets/moro-lv1.png";
 import characterShadow from "../assets/character-shadow.svg";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import RESULT_CONTENT from "../data/diagnosisResultContent";
 import IMPROVEMENT_CONTENT from "../data/improvementContent";
 import { getAssessmentResult } from "../api/diagnosisApi";
@@ -146,18 +146,11 @@ function DiagnosisResult() {
   if (step === "result") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-mint-light">
-        {/* Header */}
-        <header className="relative flex items-center h-[53px] px-5">
-          <button
-            onClick={() => navigate(-1)}
-            className="w-[34px] h-[34px] flex items-center justify-center"
-          >
-            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-          </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-primary tracking-[-0.45px] leading-[44px]">
-            내 진단 확인
-          </p>
-        </header>
+        <Header
+          title="내 진단 확인"
+          onBack={() => navigate(-1)}
+          titleClassName="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-primary tracking-[-0.45px] leading-[44px] whitespace-nowrap"
+        />
 
         {/* 카드 */}
         <main className="flex-1 flex flex-col px-5 pt-[49px]">
@@ -247,17 +240,11 @@ function DiagnosisResult() {
   if (step === "improvement") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-mint-light">
-        <header className="relative flex items-center h-[53px] px-5">
-          <button
-            onClick={() => setStep("result")}
-            className="w-[34px] h-[34px] flex items-center justify-center"
-          >
-            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-          </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-primary tracking-[-0.45px] leading-[44px]">
-            나를 위한 개선 방안
-          </p>
-        </header>
+        <Header
+          title="나를 위한 개선 방안"
+          onBack={() => setStep("result")}
+          titleClassName="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-primary tracking-[-0.45px] leading-[44px] whitespace-nowrap"
+        />
 
         <main className="flex-1 flex flex-col px-5 pt-[49px]">
           <div className="relative w-full h-[544px] bg-white rounded-[12px] px-4 pt-[30px] pb-6 overflow-hidden">
@@ -330,18 +317,7 @@ function DiagnosisResult() {
   if (step === "character") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-primary">
-        <header className="relative flex items-center h-[53px] px-5">
-          <button
-            onClick={() => setStep("improvement")}
-            className="w-[34px] h-[34px] flex items-center justify-center"
-          >
-            <img
-              src={chevronLeft}
-              alt=""
-              className="w-[34px] h-[34px] brightness-0 invert"
-            />
-          </button>
-        </header>
+        <Header onBack={() => setStep("improvement")} invert />
 
         <main className="flex-1 flex flex-col px-[37px] pt-[146px]">
           {/* 제목 */}
@@ -391,18 +367,7 @@ function DiagnosisResult() {
   if (step === "character2") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-primary">
-        <header className="relative flex items-center h-[53px] px-5">
-          <button
-            onClick={() => setStep("character")}
-            className="w-[34px] h-[34px] flex items-center justify-center"
-          >
-            <img
-              src={chevronLeft}
-              alt=""
-              className="w-[34px] h-[34px] brightness-0 invert"
-            />
-          </button>
-        </header>
+        <Header onBack={() => setStep("character")} invert />
 
         <main className="flex-1 flex flex-col items-center px-5 pt-[143px]">
           {/* 제목 */}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import { loginWithNickname } from "../api/authApi";
 
 // 완성 음절(가-힣)뿐 아니라 타이핑 중간에 생기는 한글 낱자(ㄱ-ㅎ, ㅏ-ㅣ)도 허용,
@@ -43,15 +43,11 @@ function ProfileSetup() {
     <div className="relative flex min-h-dvh flex-col bg-white">
       {/* Status bar */}
 
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-bold text-primary tracking-[-0.35px] leading-[44px]">
-          닉네임 설정
-        </p>
-      </header>
+      <Header
+        title="닉네임 설정"
+        onBack={() => navigate(-1)}
+        titleClassName="absolute left-1/2 -translate-x-1/2 text-[14px] font-bold text-primary tracking-[-0.35px] leading-[44px] whitespace-nowrap"
+      />
 
       {/* Content */}
       <main className="flex-1 flex flex-col px-5">

@@ -44,12 +44,12 @@ src/
 ## 환경변수
 `.env.example` 참고. `.env` 파일은 절대 커밋하지 않습니다.
 
+소셜 로그인은 없음(닉네임 입력만으로 세션 시작). AI 기능(미션 사진 인증, 일기 감정분석)은
+프론트가 아니라 백엔드가 OpenAI를 호출하는 구조라, 프론트는 아래 값만 있으면 됩니다.
+
 | 변수명 | 설명 | 예시 |
 |---|---|---|
-| `VITE_API_BASE_URL` | 백엔드 서버 주소 | `http://localhost:8000` |
-| `VITE_KAKAO_CLIENT_ID` | 카카오 REST API 키 | 카카오 디벨로퍼스에서 발급 |
-| `VITE_KAKAO_REDIRECT_URI` | 카카오 로그인 리다이렉트 URI | `http://localhost:5173/auth/kakao/callback` |
-| `VITE_GOOGLE_CLIENT_ID` | 구글 OAuth 클라이언트 ID | 구글 클라우드 콘솔에서 발급 |
+| `VITE_API_BASE_URL` | 백엔드 서버 주소 (이 서버에 `OPENAI_API_KEY`가 설정돼 있어야 AI 기능이 동작) | `http://localhost:8000` |
 
 ## 브랜치 · 커밋 규칙
 - 브랜치: `feat/frontend/기능명` (예: `feat/frontend/mission-card`)

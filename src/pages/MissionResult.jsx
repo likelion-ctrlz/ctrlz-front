@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
+import Header from "../components/Header";
 import Particles from "../components/Particles";
 import moroHatch from "../assets/mission/mission-hatch.png";
 import bgTokenScene from "../assets/home/ground.png";
 import tokenImg from "../assets/mission/token.png";
-import chevronLeft from "../assets/icon/chevron-left.png";
 
 function MissionResult() {
   const navigate = useNavigate();
@@ -14,22 +14,19 @@ function MissionResult() {
   const isSuccess = result.ai_verdict !== false;
   const [step, setStep] = useState(isSuccess ? "complete" : "fail");
 
+  // 캡처 직후 만든 objectURL은 화면을 벗어나면 더 이상 필요 없으므로 정리
+  useEffect(() => {
+    return () => {
+      if (result.photoUrl) URL.revokeObjectURL(result.photoUrl);
+    };
+  }, [result.photoUrl]);
+
   // 미션 완료
   if (step === "complete") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-mint-fade">
         {/* Header */}
-        <header className="relative flex items-center h-[53px] px-5">
-          <button
-            onClick={() => navigate("/missions")}
-            className="w-[34px] h-[34px] flex items-center justify-center"
-          >
-            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-          </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-            미션
-          </p>
-        </header>
+        <Header title="미션" onBack={() => navigate("/missions")} />
 
         <main className="flex-1 flex flex-col pb-[130px]">
           {/* 제목 — 파티클 장식 범위 */}
@@ -39,13 +36,17 @@ function MissionResult() {
               미션 완료!
             </h2>
             <p className="px-5 text-[16px] font-medium text-gray-muted tracking-[-0.4px] leading-[30px] text-center">
-              오늘도 한 걸음 나아갔어요
+              {result.ai_feedback || "오늘도 한 걸음 나아갔어요"}
             </p>
           </div>
 
           {/* 인증 사진 영역 — 화면 폭 전체 */}
-          <div className="w-full h-[202px] mt-[25px] rounded-none bg-[rgba(0,0,0,0.5)] border-t border-b border-primary flex items-center justify-center">
-            <p className="text-[24px] font-semibold text-primary">인증 사진</p>
+          <div className="w-full h-[202px] mt-[25px] rounded-none bg-[rgba(0,0,0,0.5)] border-t border-b border-primary flex items-center justify-center overflow-hidden">
+            {result.photoUrl ? (
+              <img src={result.photoUrl} alt="인증 사진" className="w-full h-full object-cover" />
+            ) : (
+              <p className="text-[24px] font-semibold text-primary">인증 사진</p>
+            )}
           </div>
 
           {/* 보상 카드 */}
@@ -53,9 +54,16 @@ function MissionResult() {
             className="mx-5 h-[122px] rounded-[16px] border border-primary mt-[24px] px-4 pt-[17px]"
             style={{ backgroundColor: "rgba(255,255,255,0.76)" }}
           >
-            <p className="text-[16px] font-semibold text-primary-text tracking-[-0.4px] leading-[25px]">
-              오늘의 보상
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-[16px] font-semibold text-primary-text tracking-[-0.4px] leading-[25px]">
+                오늘의 보상
+              </p>
+              {result.streak_bonus_applied && (
+                <span className="text-[11px] font-semibold text-primary bg-primary-sub4 rounded-[10px] px-2 py-[2px]">
+                  연속 3일 보너스 +50%
+                </span>
+              )}
+            </div>
             <div className="flex justify-between items-center mt-[14px]">
               <span className="text-[12px] font-medium text-primary tracking-[-0.3px]">
                 경험치
@@ -104,17 +112,7 @@ function MissionResult() {
   if (step === "levelup") {
     return (
       <div className="relative flex min-h-dvh flex-col overflow-hidden bg-mint-fade">
-        <header className="relative flex items-center h-[53px] px-5 z-10">
-          <button
-            onClick={() => setStep("complete")}
-            className="w-[34px] h-[34px] flex items-center justify-center"
-          >
-            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-          </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-            미션
-          </p>
-        </header>
+        <Header title="미션" onBack={() => setStep("complete")} />
 
         {/* 배경 이미지 — 헤더 아래 남은 화면을 꽉 채움 */}
         <img
@@ -175,17 +173,7 @@ function MissionResult() {
   if (step === "bonus") {
     return (
       <div className="relative flex min-h-dvh flex-col overflow-hidden bg-mint-fade">
-        <header className="relative flex items-center h-[53px] px-5 z-10">
-          <button
-            onClick={() => setStep("complete")}
-            className="w-[34px] h-[34px] flex items-center justify-center"
-          >
-            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-          </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-            미션
-          </p>
-        </header>
+        <Header title="미션" onBack={() => setStep("complete")} />
 
         {/* 배경 이미지 — 헤더 아래 남은 화면을 꽉 채움 */}
         <img
@@ -247,17 +235,7 @@ function MissionResult() {
   if (step === "fail") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-white">
-        <header className="relative flex items-center h-[53px] px-5">
-          <button
-            onClick={() => navigate("/missions")}
-            className="w-[34px] h-[34px] flex items-center justify-center"
-          >
-            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-          </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-            미션
-          </p>
-        </header>
+        <Header title="미션" onBack={() => navigate("/missions")} />
 
         <main className="flex-1 flex flex-col px-5 pb-[110px]">
           {/* 제목 */}

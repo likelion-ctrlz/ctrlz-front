@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import { getDiaryEntries } from "../api/diaryApi";
 
 const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
@@ -128,15 +128,7 @@ function Diary() {
 
       {/* Status bar spacer */}
 
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5 z-10">
-        <button onClick={() => navigate("/home")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px] brightness-0 invert" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-white tracking-[-0.5px] leading-[44px]">
-          일기
-        </p>
-      </header>
+      <Header title="일기" onBack={() => navigate("/home")} invert />
 
       <main className="flex-1 flex flex-col px-5 pb-[130px] z-10">
         {/* Calendar card */}
@@ -231,6 +223,17 @@ function Diary() {
             </p>
           </button>
         </div>
+
+        {/* 감정 리포트 진입점 */}
+        <button
+          onClick={() => navigate("/diary/report")}
+          className="w-full h-[68px] rounded-[16px] bg-primary mt-[15px] px-5 flex items-center justify-between"
+        >
+          <p className="text-[16px] font-bold text-white tracking-[-0.4px]">나의 감정 리포트 보기</p>
+          <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
+            <path d="M1 1L7 7.5L1 14" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
       </main>
 
       <BottomTabBar />

@@ -1,26 +1,39 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import ellipseBg from "../assets/mypage/Ellipse.svg";
 import IMPROVEMENT_CONTENT from "../data/improvementContent.js";
+import { getAssessmentResult } from "../api/diagnosisApi";
 
 function ImprovementPlan() {
   const navigate = useNavigate();
+  const [type, setType] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // 기본값: 은둔형 (추후 사용자 진단 유형에 따라 분기 가능)
-  const type = "은둔형";
-  const content = IMPROVEMENT_CONTENT[type];
+  useEffect(() => {
+    getAssessmentResult()
+      .then((data) => setType(data.assessment_type))
+      .catch(() => setType("은둔형")) // 자가진단 이력이 없으면 기본 콘텐츠로 대체
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center">
+        <p className="text-[16px] text-primary font-medium">로딩 중...</p>
+      </div>
+    );
+  }
+
+  const content = IMPROVEMENT_CONTENT[type] ?? IMPROVEMENT_CONTENT["은둔형"];
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-mint-light">
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-primary tracking-[-0.45px] leading-[44px]">
-          나를 위한 개선 방안
-        </p>
-      </header>
+      <Header
+        title="나를 위한 개선 방안"
+        onBack={() => navigate(-1)}
+        titleClassName="absolute left-1/2 -translate-x-1/2 text-[18px] font-semibold text-primary tracking-[-0.45px] leading-[44px] whitespace-nowrap"
+      />
 
       <main className="flex-1 flex flex-col px-5 pb-[40px]">
         {/* 콘텐츠 카드 */}

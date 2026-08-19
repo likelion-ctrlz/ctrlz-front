@@ -1,18 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
+import { getMe, updateMe } from "../api/usersApi";
 
 const INTEREST_OPTIONS = ["음악", "문화", "스포츠", "상담", "그림", "요리"];
+const CITY_OPTIONS = ["서울", "부산", "대구", "인천", "광주", "대전", "울산"];
+const DISTRICT_OPTIONS = ["강동구", "강남구", "강서구", "강북구", "마포구"];
 
 function ProfileEdit() {
   const navigate = useNavigate();
   const [nickname, setNickname] = useState("");
   const [interests, setInterests] = useState(["음악"]);
-  const [city, setCity] = useState("서울");
-  const [district, setDistrict] = useState("강동구");
+  const [city, setCity] = useState(CITY_OPTIONS[0]);
+  const [district, setDistrict] = useState(DISTRICT_OPTIONS[0]);
   const [birthdate, setBirthdate] = useState("");
   const [gender, setGender] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    getMe()
+      .then((user) => {
+        setNickname(user.nickname || "");
+        // region은 "서울 마포구"처럼 "시/도 구/군"으로 저장돼요 — 알려진 옵션이면 드롭다운에 반영
+        const [regionCity, ...rest] = (user.region || "").split(" ").filter(Boolean);
+        const regionDistrict = rest.join(" ");
+        if (CITY_OPTIONS.includes(regionCity)) setCity(regionCity);
+        if (DISTRICT_OPTIONS.includes(regionDistrict)) setDistrict(regionDistrict);
+      })
+      .catch(() => {
+        navigate("/", { replace: true });
+      })
+      .finally(() => setLoading(false));
+  }, [navigate]);
 
   const toggleInterest = (item) => {
     setInterests((prev) =>
@@ -20,17 +42,31 @@ function ProfileEdit() {
     );
   };
 
+  const handleSave = async () => {
+    if (saving) return;
+    setSaving(true);
+    setError("");
+    try {
+      await updateMe({ region: `${city} ${district}` });
+      navigate(-1);
+    } catch (err) {
+      setError(err.message || "저장에 실패했어요. 다시 시도해주세요.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center">
+        <p className="text-[16px] text-primary font-medium">로딩 중...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          프로필 편집
-        </p>
-      </header>
+      <Header title="프로필 편집" onBack={() => navigate(-1)} />
 
       {/* 구분선 */}
       <div className="w-full h-[1px] bg-border" />
@@ -45,9 +81,9 @@ function ProfileEdit() {
             <input
               type="text"
               value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              disabled
               placeholder="이름을 입력하세요"
-              className="w-full text-[14px] font-medium tracking-[-0.35px] leading-[25px] text-black placeholder-[#d5d5d5] outline-none bg-transparent"
+              className="w-full text-[14px] font-medium tracking-[-0.35px] leading-[25px] text-black placeholder-[#d5d5d5] outline-none bg-transparent disabled:opacity-60"
             />
           </div>
           <p className="mt-[10px] text-[12px] font-medium text-[#949494] tracking-[-0.3px] leading-[20px]">
@@ -188,9 +224,16 @@ function ProfileEdit() {
           <p className="text-[14px] font-medium text-[#949494] tracking-[-0.35px] leading-[25px] text-center">
             프로필 정보는 비공개로 관리되며 취미활동 추천에만 사용돼요
           </p>
-          <button className="mt-[16px] w-full h-[68px] rounded-[16px] border border-primary flex items-center justify-center">
+          {error && (
+            <p className="mt-[8px] text-[12px] font-medium text-danger tracking-[-0.3px] text-center">{error}</p>
+          )}
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="mt-[16px] w-full h-[68px] rounded-[16px] border border-primary flex items-center justify-center disabled:opacity-60"
+          >
             <span className="text-[20px] font-semibold text-primary tracking-[-0.5px]">
-              저장하기
+              {saving ? "저장 중..." : "저장하기"}
             </span>
           </button>
         </div>

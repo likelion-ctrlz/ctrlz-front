@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import { CRISIS_LINES, ONLINE_COUNSELING } from "../data/crisisSupport";
 
 function DiaryHelp() {
@@ -10,15 +10,7 @@ function DiaryHelp() {
     <div className="relative flex min-h-dvh flex-col bg-white">
       {/* Status bar spacer */}
 
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate("/diary/report")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          전문 도움 요청하기
-        </p>
-      </header>
+      <Header title="전문 도움 요청하기" onBack={() => navigate("/diary/report")} />
 
       {/* Main content */}
       <main className="flex-1 px-5 pb-[130px]">

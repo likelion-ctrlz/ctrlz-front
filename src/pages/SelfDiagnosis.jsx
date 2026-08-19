@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import QUESTIONS from "../data/selfDiagnosisQuestions";
 import { submitAssessment } from "../api/diagnosisApi";
 
@@ -96,18 +96,11 @@ function SelfDiagnosis() {
   if (step === "guide") {
     return (
       <div className="relative flex min-h-dvh flex-col bg-white">
-        {/* Header */}
-        <header className="relative flex items-center h-[53px] px-5">
-          <button
-            onClick={handleGuideBack}
-            className="w-[34px] h-[34px] flex items-center justify-center"
-          >
-            <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-          </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-bold text-primary tracking-[-0.35px] leading-[44px]">
-            자가진단 전 안내사항
-          </p>
-        </header>
+        <Header
+          title="자가진단 전 안내사항"
+          onBack={handleGuideBack}
+          titleClassName="absolute left-1/2 -translate-x-1/2 text-[14px] font-bold text-primary tracking-[-0.35px] leading-[44px] whitespace-nowrap"
+        />
 
         {/* Content */}
         <main className="flex-1 flex flex-col px-5">
@@ -166,21 +159,16 @@ function SelfDiagnosis() {
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button
-          onClick={handleBack}
-          className="w-[34px] h-[34px] flex items-center justify-center"
-        >
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[14px] font-medium text-primary tracking-[-0.35px] leading-[44px]">
-          총 8문항이에요!
-        </p>
-        <p className="absolute left-[calc(50%+156px)] -translate-x-1/2 text-[14px] font-medium text-primary tracking-[-0.35px] leading-[44px]">
-          {currentQ + 1}/{QUESTIONS.length}
-        </p>
-      </header>
+      <Header
+        title="총 8문항이에요!"
+        onBack={handleBack}
+        titleClassName="absolute left-1/2 -translate-x-1/2 text-[14px] font-medium text-primary tracking-[-0.35px] leading-[44px] whitespace-nowrap"
+        right={
+          <p className="absolute left-[calc(50%+156px)] -translate-x-1/2 text-[14px] font-medium text-primary tracking-[-0.35px] leading-[44px]">
+            {currentQ + 1}/{QUESTIONS.length}
+          </p>
+        }
+      />
 
       {/* Content */}
       <main className="flex-1 flex flex-col px-5">

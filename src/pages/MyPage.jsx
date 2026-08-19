@@ -1,15 +1,26 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import ellipseBg from "../assets/mypage/Ellipse.svg";
 import intersectIcon from "../assets/mypage/Intersect.svg";
 import iconScore from "../assets/mypage/Frame 32.svg";
 import iconDiagnosis from "../assets/mypage/Frame 33.svg";
 import iconImprove from "../assets/mypage/Frame 34.svg";
 import iconNotify from "../assets/mypage/Frame 35.svg";
+import { getMe } from "../api/usersApi";
 
 function MyPage() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getMe()
+      .then(setUser)
+      .catch(() => navigate("/", { replace: true }))
+      .finally(() => setLoading(false));
+  }, [navigate]);
 
   const MENU_ITEMS = [
     { label: "점수 분석", icon: iconScore, path: "/diagnosis/result" },
@@ -18,18 +29,20 @@ function MyPage() {
     { label: "알림 설정", icon: iconNotify, path: "/mypage/notifications" },
   ];
 
+  if (loading || !user) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center">
+        <p className="text-[16px] text-primary font-medium">로딩 중...</p>
+      </div>
+    );
+  }
+
+  const statusLabel = user.assessment_level ? `${user.assessment_type}` : "자가진단 전";
+
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
 
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          마이페이지
-        </p>
-      </header>
+      <Header title="마이페이지" onBack={() => navigate(-1)} />
 
       <main className="flex-1 flex flex-col px-5 pb-[130px]">
         {/* 프로필 영역 */}
@@ -43,10 +56,10 @@ function MyPage() {
           {/* 이름 + 상태 */}
           <div className="ml-[18px]">
             <p className="text-[16px] font-semibold text-black tracking-[-0.4px] leading-[30px]">
-              사용자1
+              {user.nickname}
             </p>
             <p className="text-[10px] font-medium text-gray-muted tracking-[-0.25px] leading-[25px]">
-              진단 레벨 2 ･ 회복 중
+              {user.assessment_level ? `진단 레벨 ${user.assessment_level} ･ ${statusLabel}` : statusLabel}
             </p>
           </div>
 
@@ -60,7 +73,7 @@ function MyPage() {
         <div className="flex h-[111px] mt-[29px] bg-gray-panel rounded-[12px]">
           {/* 누적 경험치 */}
           <div className="flex-1 flex flex-col items-center justify-center">
-            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">550XP</p>
+            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">{user.character_xp}XP</p>
             <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">누적 경험치</p>
           </div>
 
@@ -69,7 +82,7 @@ function MyPage() {
 
           {/* 현재 레벨 */}
           <div className="flex-1 flex flex-col items-center justify-center">
-            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">LV 2</p>
+            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">LV {user.character_level}</p>
             <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">모로 성장 레벨</p>
           </div>
 
@@ -78,7 +91,7 @@ function MyPage() {
 
           {/* 보유 토큰 */}
           <div className="flex-1 flex flex-col items-center justify-center">
-            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">35P</p>
+            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">{user.token_balance}P</p>
             <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">보유 토큰</p>
           </div>
         </div>

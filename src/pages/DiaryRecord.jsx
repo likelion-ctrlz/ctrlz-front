@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import micIcon from "../assets/mic.png";
 import ellipse446 from "../assets/diary/ellipse-446.svg";
 import ellipse444 from "../assets/diary/ellipse-444.svg";
@@ -145,14 +145,7 @@ function DiaryRecord() {
   if (status === "done") {
     return (
       <div className="relative flex min-h-dvh flex-col" style={BG_STYLE_COMPLETE}>
-        <header className="relative flex items-center h-[53px] px-5 z-10">
-          <button onClick={() => navigate("/diary")} className="w-[34px] h-[34px] flex items-center justify-center">
-            <img src={chevronLeft} alt="" className="w-[34px] h-[34px] brightness-0 invert" />
-          </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-white tracking-[-0.5px] leading-[44px]">
-            일기
-          </p>
-        </header>
+        <Header title="일기" onBack={() => navigate("/diary")} invert />
 
         <main className="flex-1 flex flex-col items-center justify-center px-5 z-10">
           <h2 className="text-[24px] font-bold text-white text-center leading-normal mb-[60px]">
@@ -173,14 +166,7 @@ function DiaryRecord() {
   // 녹음 중 / 분석 중 / 대기
   return (
     <div className="relative flex min-h-dvh flex-col" style={BG_STYLE}>
-      <header className="relative flex items-center h-[53px] px-5 z-10">
-        <button onClick={() => navigate("/diary")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px] brightness-0 invert" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-white tracking-[-0.5px] leading-[44px]">
-          일기
-        </p>
-      </header>
+      <Header title="일기" onBack={() => navigate("/diary")} invert />
 
       <main className="flex-1 flex flex-col items-center justify-center px-5 z-10">
         {/* 상태 텍스트 */}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import { getPrograms, applyProgram } from "../api/programsApi";
 
 function ProgramLocalDetail() {
@@ -54,15 +54,7 @@ function ProgramLocalDetail() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-white">
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate("/programs/local")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          지역연계 프로그램
-        </p>
-      </header>
+      <Header title="지역연계 프로그램" onBack={() => navigate("/programs/local")} />
 
       {status === "loading" && (
         <p className="text-[14px] text-gray-muted text-center mt-10">불러오는 중이에요...</p>

@@ -1,23 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import ground from "../assets/home/ground.png";
 import morrowbehind from "../assets/program/morrowbehind.png";
 
 function TokenInsufficient() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const tokenBalance = state?.tokenBalance ?? 0;
+  const requiredTokens = state?.requiredTokens ?? 0;
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-[#E8FBF4] overflow-hidden">
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5 z-10">
-        <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          프로그램
-        </p>
-      </header>
+      <Header title="프로그램" onBack={() => navigate(-1)} />
 
       <main className="flex-1 flex flex-col items-center px-5 pb-[100px] z-10">
         {/* 타이틀 */}
@@ -38,12 +33,12 @@ function TokenInsufficient() {
 
           <div className="mt-[14px] flex justify-between items-center">
             <span className="text-[14px] font-medium text-primary tracking-[-0.35px]">현재 보유 토큰</span>
-            <span className="text-[14px] font-semibold text-primary tracking-[-0.35px]">35P</span>
+            <span className="text-[14px] font-semibold text-primary tracking-[-0.35px]">{tokenBalance}P</span>
           </div>
 
           <div className="mt-[10px] flex justify-between items-center">
             <span className="text-[14px] font-medium text-primary tracking-[-0.35px]">필요 토큰</span>
-            <span className="text-[14px] font-semibold text-primary tracking-[-0.35px]">20P</span>
+            <span className="text-[14px] font-semibold text-primary tracking-[-0.35px]">{requiredTokens}P</span>
           </div>
 
           <p className="mt-[14px] text-[12px] font-medium text-primary tracking-[-0.3px] leading-[20px] m-0">

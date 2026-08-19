@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import { getHobbyDetail, applyHobby } from "../api/hobbiesApi";
 import { getMe } from "../api/usersApi";
 
@@ -34,6 +34,12 @@ function ProgramDetail() {
 
   const handleApply = async () => {
     if (applying) return;
+    if (tokenBalance < hobby.token_cost) {
+      navigate("/token-insufficient", {
+        state: { tokenBalance, requiredTokens: hobby.token_cost },
+      });
+      return;
+    }
     setApplying(true);
     setApplyError("");
     try {
@@ -65,15 +71,7 @@ function ProgramDetail() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-white">
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate("/programs")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          취미 프로그램
-        </p>
-      </header>
+      <Header title="취미 프로그램" onBack={() => navigate("/programs")} />
 
       {status === "loading" && (
         <p className="text-[14px] text-gray-muted text-center mt-10">불러오는 중이에요...</p>
@@ -190,7 +188,7 @@ function ProgramDetail() {
           <div className="px-5 mt-6">
             <button
               onClick={handleApply}
-              disabled={applying || tokenBalance < hobby.token_cost}
+              disabled={applying}
               className="w-full h-[68px] bg-white border border-primary rounded-[16px] text-primary text-[20px] font-semibold tracking-[-0.5px] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {tokenBalance < hobby.token_cost ? "토큰이 부족해요" : applying ? "신청 중..." : "참여 신청하기"}

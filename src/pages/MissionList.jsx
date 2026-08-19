@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import { getMissionImage } from "../data/missions";
 import { getRecommendedMissions } from "../api/missionsApi";
 
@@ -35,15 +35,7 @@ function MissionList() {
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
 
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate("/home")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          미션
-        </p>
-      </header>
+      <Header title="미션" onBack={() => navigate("/home")} />
 
       {/* 부제 */}
       <p className="px-5 text-[16px] font-semibold text-black tracking-[-0.4px] leading-[30px] mt-[35px]">

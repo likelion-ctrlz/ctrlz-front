@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 
 function PrivacySettings() {
   const navigate = useNavigate();
@@ -47,15 +47,7 @@ function PrivacySettings() {
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          개인정보 설정
-        </p>
-      </header>
+      <Header title="개인정보 설정" onBack={() => navigate(-1)} />
 
       {/* 구분선 */}
       <div className="w-full h-[1px] bg-border" />

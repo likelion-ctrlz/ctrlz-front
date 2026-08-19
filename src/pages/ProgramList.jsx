@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import ProgramTabToggle from "../components/ProgramTabToggle";
-import chevronLeft from "../assets/icon/chevron-left.png";
+import Header from "../components/Header";
 import searchIcon from "../assets/program/Group 246.svg";
 import { getRecommendedHobbies } from "../api/hobbiesApi";
 
@@ -47,15 +47,7 @@ function ProgramList() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-white">
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate("/home")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          취미 프로그램
-        </p>
-      </header>
+      <Header title="취미 프로그램" onBack={() => navigate("/home")} />
 
       {/* Content */}
       <main className="flex-1 px-5 pb-[130px] overflow-y-auto">

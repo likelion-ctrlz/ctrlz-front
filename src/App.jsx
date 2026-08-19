@@ -10,10 +10,9 @@ import MissionList from "./pages/MissionList";
 import MissionDetail from "./pages/MissionDetail";
 import MissionVerify from "./pages/MissionVerify";
 import MissionResult from "./pages/MissionResult";
-import HobbyList from "./pages/HobbyList";
-import HobbyDetail from "./pages/HobbyDetail";
 import Diary from "./pages/Diary";
 import DiaryRecord from "./pages/DiaryRecord";
+import DiaryWrite from "./pages/DiaryWrite";
 import ComingSoon from "./components/ComingSoon";
 import DiaryReport from "./pages/DiaryReport";
 import DiaryHelp from "./pages/DiaryHelp";
@@ -53,17 +52,10 @@ function App() {
           <Route path="/missions/:id/verify" element={<MissionVerify />} />
           <Route path="/missions/:id/result" element={<MissionResult />} />
 
-          {/* Hobby */}
-          <Route path="/hobbies" element={<HobbyList />} />
-          <Route path="/hobbies/:id" element={<HobbyDetail />} />
-
           {/* Diary */}
           <Route path="/diary" element={<Diary />} />
           <Route path="/diary/record" element={<DiaryRecord />} />
-          <Route
-            path="/diary/write"
-            element={<ComingSoon title="일기" backTo="/diary" message="직접 기록하기는 곧 만나보실 수 있어요" />}
-          />
+          <Route path="/diary/write" element={<DiaryWrite />} />
           <Route path="/diary/report" element={<DiaryReport />} />
           <Route path="/diary/help" element={<DiaryHelp />} />
 

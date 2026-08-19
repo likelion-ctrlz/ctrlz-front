@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
+import Header from "../components/Header";
 import cardBg from "../assets/card-bg.svg";
 import cardTriangle from "../assets/card-triangle.svg";
 import logoGray from "../assets/logo/logo_gray.png";
-import chevronLeft from "../assets/icon/chevron-left.png";
 
 function ProgramLocalComplete() {
   const navigate = useNavigate();
@@ -16,15 +16,7 @@ function ProgramLocalComplete() {
         backgroundSize: "cover",
       }}
     >
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate("/programs/local")} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px] brightness-0 invert" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-white tracking-[-0.5px] leading-[44px]">
-          프로그램
-        </p>
-      </header>
+      <Header title="프로그램" onBack={() => navigate("/programs/local")} invert />
 
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-5 pb-[130px]">

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
+import Header from "../components/Header";
 import moroLv1 from "../assets/moro-lv1.png";
-import chevronLeft from "../assets/icon/chevron-left.png";
 import { submitMission } from "../api/missionsApi";
 
 // 로딩/완료 화면 배경 — 피그마의 방사형 그라데이션(중심 50%,59% / #00CB93 → 외곽 #C6F3E7)을
@@ -66,38 +66,33 @@ function MissionVerify() {
     }
 
     setStage("loading");
+    const photoUrl = URL.createObjectURL(blob);
 
     try {
       const result = await submitMission(id, {
         photo: new File([blob], "mission.jpg", { type: "image/jpeg" }),
         takenAt: new Date().toISOString(),
       });
+      const resultWithPhoto = { ...result, photoUrl };
 
       if (result.ai_verdict) {
         setStage("done");
         setTimeout(() => {
-          navigate(`/missions/${id}/result`, { state: result });
+          navigate(`/missions/${id}/result`, { state: resultWithPhoto });
         }, 900);
       } else {
-        navigate(`/missions/${id}/result`, { state: result });
+        navigate(`/missions/${id}/result`, { state: resultWithPhoto });
       }
-    } catch {
+    } catch (err) {
       setStage("idle");
-      setError("인증에 실패했어요. 네트워크 상태를 확인하고 다시 시도해주세요.");
+      setError(err.message || "인증에 실패했어요. 네트워크 상태를 확인하고 다시 시도해주세요.");
     }
   };
 
   if (stage === "loading" || stage === "done") {
     return (
       <div className="relative flex min-h-dvh flex-col" style={{ background: RADIAL_BG }}>
-        <header className="relative flex items-center h-[53px] px-5">
-          <button className="w-[34px] h-[34px] flex items-center justify-center">
-            <img src={chevronLeft} alt="" className="w-[34px] h-[34px] brightness-0 invert" />
-          </button>
-          <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-white tracking-[-0.5px] leading-[44px]">
-            미션
-          </p>
-        </header>
+        <Header title="미션" invert />
 
         <main className="flex-1 flex flex-col items-center justify-center">
           <div className="w-[250px] h-[250px] rounded-full border-[3px] border-white/30 flex items-center justify-center">
@@ -117,15 +112,7 @@ function MissionVerify() {
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
-      {/* Header */}
-      <header className="relative flex items-center h-[53px] px-5">
-        <button onClick={() => navigate(-1)} className="w-[34px] h-[34px] flex items-center justify-center">
-          <img src={chevronLeft} alt="" className="w-[34px] h-[34px]" />
-        </button>
-        <p className="absolute left-1/2 -translate-x-1/2 text-[20px] font-medium text-primary tracking-[-0.5px] leading-[44px]">
-          미션
-        </p>
-      </header>
+      <Header title="미션" onBack={() => navigate(-1)} />
 
       <main className="flex-1 flex flex-col pb-[130px]">
         {/* 카메라 영역 — 실시간 카메라를 화면 안에 바로 띄우고, 가운데 버튼으로 촬영 */}

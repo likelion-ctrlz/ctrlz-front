@@ -9,7 +9,7 @@ import moroLv5 from "../assets/moro-lv5.png";
 import mainLogo from "../assets/logo/main_logo.png";
 import groundBg from "../assets/home/ground.png";
 import characterShadow from "../assets/character-shadow.svg";
-import { getMe } from "../api/userApi";
+import { getMe } from "../api/usersApi";
 
 // 레벨별 캐릭터 이미지 크기 + 그림자 크기/위치(캐릭터 박스 기준 상대좌표)는
 // 피그마의 Home 레벨별 프레임(1~5) 실측값을 그대로 반영함
