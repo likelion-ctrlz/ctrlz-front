@@ -186,7 +186,7 @@ function ProfileEdit() {
               type="date"
               value={birthdate}
               onChange={(e) => setBirthdate(e.target.value)}
-              className="w-full text-[14px] font-medium tracking-[-0.35px] leading-[25px] text-black outline-none bg-transparent"
+              className="w-full text-[16px] font-medium tracking-[-0.35px] leading-[25px] text-black outline-none bg-transparent"
             />
           </div>
         </div>

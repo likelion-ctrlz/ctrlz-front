@@ -74,7 +74,7 @@ function ProgramLocal() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="프로그램 검색"
-            className="w-full h-[39px] rounded-[15px] border border-[#00CB93] bg-[rgba(255,255,255,0.1)] pl-[36px] pr-4 text-[14px] outline-none"
+            className="w-full h-[39px] rounded-[15px] border border-[#00CB93] bg-[rgba(255,255,255,0.1)] pl-[36px] pr-4 text-[16px] outline-none"
           />
         </div>
 

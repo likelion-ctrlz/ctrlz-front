@@ -70,7 +70,7 @@ function ProfileSetup() {
           onChange={(e) => setNickname(e.target.value)}
           placeholder="이름을 입력하세요"
           maxLength={12}
-          className={`w-full h-[46px] mt-[26px] px-4 rounded-[12px] border text-[14px] tracking-[-0.35px] placeholder-gray-input outline-none ${
+          className={`w-full h-[46px] mt-[26px] px-4 rounded-[12px] border text-[16px] tracking-[-0.35px] placeholder-gray-input outline-none ${
             errorMessage
               ? "border-danger-strong focus:border-danger-strong"
               : "border-gray-icon focus:border-primary"
