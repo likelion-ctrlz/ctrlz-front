@@ -82,6 +82,10 @@ const GROUND_HEIGHT = 760;
 const GROUND_TOP_FROM_SHADOW = -360;
 const GROUND_FILL_TOP_FROM_SHADOW = 400;
 
+// 캐릭터를 제외한 나머지 영역의 고정 높이 (헤더 53 + 배너 mt34+h98 + 레벨바 ~37 + 미션카드 mt18+h160+mb102)
+// topPadding을 화면 높이에 맞게 clamp로 압축할 때, "화면에 다 들어가려면 topPadding이 몇 px까지 줄어야 하는지" 계산하는 데 씀
+const FIXED_CHROME_HEIGHT = 502;
+
 function Home() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -110,12 +114,17 @@ function Home() {
   const tokenBalance = user.token_balance;
   const mission = user.today_recommended_mission;
   const config = LEVEL_CONFIG[level - 1];
-  const groundTop = config.shadowTop + GROUND_TOP_FROM_SHADOW;
-  const groundFillTop = config.shadowTop + GROUND_FILL_TOP_FROM_SHADOW;
+
+  // 화면이 낮아 다 안 들어가면 캐릭터 위 여백(topPadding)부터 0까지 줄어듦.
+  // 바닥 이미지·그림자도 이 압축분만큼 같이 위로 당겨야 캐릭터와 어긋나지 않아서,
+  // top 계산에 동일한 topSpacer 식을 그대로 더해줌 (캐릭터를 그대로 "따라가는" 방식)
+  const topSpacer = `clamp(0px, calc(100dvh - ${FIXED_CHROME_HEIGHT + config.charH}px), ${config.topPadding}px)`;
+  const groundTop = `calc(${topSpacer} + ${config.shadowTop + GROUND_TOP_FROM_SHADOW}px)`;
+  const groundFillTop = `calc(${topSpacer} + ${config.shadowTop + GROUND_FILL_TOP_FROM_SHADOW}px)`;
 
   return (
     <div
-      className="relative flex h-dvh flex-col overflow-hidden"
+      className="relative flex min-h-dvh flex-col overflow-x-hidden"
       style={{
         background:
           "linear-gradient(180deg, var(--color-mint-light) 0%, var(--color-bg) 67.79%)",
@@ -142,10 +151,10 @@ function Home() {
 
       {/* 캐릭터 + 그라운드 + 레벨/미션을 하나의 상대 컨테이너로 묶어서
           화면 높이(기종)가 달라져도 서로의 상대 위치가 흐트러지지 않게 함 */}
-      <div
-        className="relative flex-1 flex flex-col"
-        style={{ marginTop: config.topPadding }}
-      >
+      <div className="relative flex-1 flex flex-col">
+        {/* 캐릭터 위 여백 — 화면이 낮으면 0까지 압축됨 (아래 ground/캐릭터가 이 값을 그대로 같이 써서 함께 따라 올라감) */}
+        <div className="shrink-0" style={{ height: topSpacer }} />
+
         {/* 배경 이미지 — ground.png는 위쪽 48.76%가 투명이라, 실제 보이는
             땅의 시작점이 그림자 시작 지점(top-142)과 같아지도록 그만큼 위로 올려서 배치.
             기종이 달라져도 그림자·캐릭터와 항상 같은 위치 관계를 유지함 */}

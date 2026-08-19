@@ -15,7 +15,6 @@ const GAUGE_WAVE_PATH =
   "M209 49.6579L166.588 92C114.469 33.3322 60.9219 67.5551 40.6632 92L0 49.6579C84.8243 -42.0094 179.705 14.7365 209 49.6579Z";
 const GAUGE_POINTER_PATH = "M9.95929 0L19.9186 17.25H0L9.95929 0Z";
 
-
 // 게이지 배지 문구 — 유형이 아니라 점수(0~10, 높을수록 위험) 구간별로 분기
 function getBadgeByScore(score) {
   if (score >= 7.5) return "함께 이겨내요!";
@@ -80,7 +79,9 @@ function interpolateInnerArcY(x) {
 // (0~3점/7~10점은 완만한 구간이라 점 간격이 넓고, 4점·6점은 급하게 꺾이는
 // 중앙 부근이라 점 간격이 좁음).
 const SCORE_ANCHOR_INDICES = [0, 1, 2, 3, 6, 8, 10, 13, 14, 15, 16];
-const SCORE_X_ANCHORS = SCORE_ANCHOR_INDICES.map((i) => GAUGE_INNER_ARC_POINTS[i][0]);
+const SCORE_X_ANCHORS = SCORE_ANCHOR_INDICES.map(
+  (i) => GAUGE_INNER_ARC_POINTS[i][0],
+);
 
 // score(0~10, 정수가 아니면 인접 정수 앵커 사이를 선형보간) → x 좌표
 function xForScore(score) {
@@ -238,7 +239,7 @@ function DiagnosisResult() {
           {/* 다음 버튼 */}
           <button
             onClick={() => setStep("improvement")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[32px]"
           >
             다음
           </button>
@@ -281,7 +282,9 @@ function DiagnosisResult() {
               {improvement.steps.map((improvementStep, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <div className="w-[36px] h-[36px] rounded-full bg-primary-sub3 border border-primary flex items-center justify-center shrink-0">
-                    <span className="text-[16px] font-medium text-primary">{i + 1}</span>
+                    <span className="text-[16px] font-medium text-primary">
+                      {i + 1}
+                    </span>
                   </div>
                   <div>
                     <p className="text-[14px] font-medium text-primary tracking-[-0.35px] leading-[25px]">
@@ -315,7 +318,7 @@ function DiagnosisResult() {
 
           <button
             onClick={() => setStep("character")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[32px]"
           >
             다음
           </button>
@@ -362,7 +365,7 @@ function DiagnosisResult() {
         </main>
 
         {/* 버튼 */}
-        <div className="px-5 pb-[66px]">
+        <div className="px-5 pb-[32px]">
           <button
             onClick={() => setStep("character2")}
             className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center"
@@ -410,7 +413,7 @@ function DiagnosisResult() {
         </main>
 
         {/* 버튼 */}
-        <div className="px-5 pb-[66px]">
+        <div className="px-5 pb-[32px]">
           <button
             onClick={() => navigate("/home")}
             className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center"

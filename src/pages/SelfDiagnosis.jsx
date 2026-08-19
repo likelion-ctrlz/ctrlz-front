@@ -83,7 +83,7 @@ function SelfDiagnosis() {
           {/* 시작 버튼 */}
           <button
             onClick={() => setStep("guide")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[32px]"
           >
             자가진단 시작하기
           </button>
@@ -145,7 +145,7 @@ function SelfDiagnosis() {
           {/* 시작 버튼 */}
           <button
             onClick={() => setStep("questions")}
-            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px]"
+            className="w-full h-[68px] rounded-[16px] bg-white border border-primary text-primary text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[32px]"
           >
             자가진단 시작하기
           </button>
@@ -203,7 +203,7 @@ function SelfDiagnosis() {
         <button
           onClick={handleNext}
           disabled={selected === null || submitting}
-          className={`w-full h-[68px] rounded-[16px] border text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px] transition-all ${
+          className={`w-full h-[68px] rounded-[16px] border text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[32px] transition-all ${
             selected !== null && !submitting
               ? "bg-white border-primary text-primary"
               : "bg-white border-gray-300 text-gray-400"

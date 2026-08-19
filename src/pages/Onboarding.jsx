@@ -160,7 +160,7 @@ function Onboarding() {
           </main>
 
           {/* 시작하기 버튼 — 흰색 배경 */}
-          <div className="px-5 pb-[66px]">
+          <div className="px-5 pb-[32px]">
             <button
               onClick={(e) => {
                 e.stopPropagation();

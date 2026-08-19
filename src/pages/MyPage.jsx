@@ -30,7 +30,11 @@ function MyPage() {
 
   const MENU_ITEMS = [
     { label: "점수 분석", icon: iconScore, path: "/diagnosis/result" },
-    { label: "자가진단 다시하기", icon: iconDiagnosis, path: "/diagnosis?skip=intro" },
+    {
+      label: "자가진단 다시하기",
+      icon: iconDiagnosis,
+      path: "/diagnosis?skip=intro",
+    },
     { label: "개선 방안", icon: iconImprove, path: "/mypage/improvement" },
     { label: "알림 설정", icon: iconNotify, path: "/mypage/notifications" },
   ];
@@ -39,11 +43,12 @@ function MyPage() {
     return <LoadingScreen />;
   }
 
-  const statusLabel = user.assessment_level ? `${user.assessment_type}` : "자가진단 전";
+  const statusLabel = user.assessment_level
+    ? `${user.assessment_type}`
+    : "자가진단 전";
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
-
       <Header title="마이페이지" onBack={() => navigate(-1)} />
 
       <main className="flex-1 flex flex-col px-5 pb-[130px]">
@@ -65,12 +70,17 @@ function MyPage() {
               {user.nickname}
             </p>
             <p className="text-[10px] font-medium text-gray-muted tracking-[-0.25px] leading-[25px]">
-              {user.assessment_level ? `진단 레벨 ${user.assessment_level} ･ ${statusLabel}` : statusLabel}
+              {user.assessment_level
+                ? `진단 레벨 ${user.assessment_level} ･ ${statusLabel}`
+                : statusLabel}
             </p>
           </div>
 
           {/* 내 정보 수정 */}
-          <button onClick={() => navigate("/mypage/edit")} className="ml-auto text-[12px] font-medium text-gray-muted tracking-[-0.3px]">
+          <button
+            onClick={() => navigate("/mypage/edit")}
+            className="ml-auto text-[12px] font-medium text-gray-muted tracking-[-0.3px]"
+          >
             내 정보 수정
           </button>
         </div>
@@ -79,8 +89,12 @@ function MyPage() {
         <div className="flex h-[111px] mt-[29px] bg-gray-panel rounded-[12px]">
           {/* 누적 경험치 */}
           <div className="flex-1 flex flex-col items-center justify-center">
-            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">{user.character_xp}XP</p>
-            <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">누적 경험치</p>
+            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">
+              {user.character_xp}XP
+            </p>
+            <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">
+              누적 경험치
+            </p>
           </div>
 
           {/* 구분선 */}
@@ -88,8 +102,12 @@ function MyPage() {
 
           {/* 현재 레벨 */}
           <div className="flex-1 flex flex-col items-center justify-center">
-            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">LV {user.character_level}</p>
-            <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">모로 성장 레벨</p>
+            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">
+              LV {user.character_level}
+            </p>
+            <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">
+              모로 성장 레벨
+            </p>
           </div>
 
           {/* 구분선 */}
@@ -97,8 +115,12 @@ function MyPage() {
 
           {/* 보유 토큰 */}
           <div className="flex-1 flex flex-col items-center justify-center">
-            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">{user.token_balance}P</p>
-            <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">보유 토큰</p>
+            <p className="text-[20px] font-semibold text-primary tracking-[-0.5px] leading-[25px]">
+              {user.token_balance}P
+            </p>
+            <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px] leading-[25px] mt-[6px]">
+              보유 토큰
+            </p>
           </div>
         </div>
 
@@ -110,7 +132,9 @@ function MyPage() {
           onClick={() => navigate("/mypage/privacy")}
           className="h-[66px] bg-gray-panel rounded-[12px] mt-[24px] flex items-center px-[19px] w-full"
         >
-          <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px]">개인정보 설정</p>
+          <p className="text-[14px] font-semibold text-primary-text-darker tracking-[-0.35px]">
+            개인정보 설정
+          </p>
         </button>
 
         {/* 메뉴 리스트 */}
@@ -131,7 +155,13 @@ function MyPage() {
               </div>
               {/* 화살표 */}
               <svg width="8" height="15" viewBox="0 0 8 15" fill="none">
-                <path d="M1 1L7 7.5L1 14" stroke="var(--color-gray-icon)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path
+                  d="M1 1L7 7.5L1 14"
+                  stroke="var(--color-gray-icon)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           ))}

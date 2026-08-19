@@ -12,10 +12,12 @@ function ProfileSetup() {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const hasInvalidChars = nickname.length > 0 && !NICKNAME_PATTERN.test(nickname);
+  const hasInvalidChars =
+    nickname.length > 0 && !NICKNAME_PATTERN.test(nickname);
   const isTooShort = nickname.length > 0 && nickname.length < 2;
   const isTooLong = nickname.length > 12;
-  const isValid = nickname.length >= 2 && nickname.length <= 12 && !hasInvalidChars;
+  const isValid =
+    nickname.length >= 2 && nickname.length <= 12 && !hasInvalidChars;
 
   let errorMessage = "";
   if (hasInvalidChars) {
@@ -69,7 +71,9 @@ function ProfileSetup() {
           placeholder="이름을 입력하세요"
           maxLength={12}
           className={`w-full h-[46px] mt-[26px] px-4 rounded-[12px] border text-[14px] tracking-[-0.35px] placeholder-gray-input outline-none ${
-            errorMessage ? "border-danger-strong focus:border-danger-strong" : "border-gray-icon focus:border-primary"
+            errorMessage
+              ? "border-danger-strong focus:border-danger-strong"
+              : "border-gray-icon focus:border-primary"
           }`}
         />
 
@@ -92,7 +96,7 @@ function ProfileSetup() {
         <button
           onClick={handleSubmit}
           disabled={!isValid || submitting}
-          className={`w-full h-[68px] rounded-[16px] border text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[66px] transition-all ${
+          className={`w-full h-[68px] rounded-[16px] border text-[20px] font-semibold tracking-[-0.5px] flex items-center justify-center mb-[32px] transition-all ${
             isValid && !submitting
               ? "bg-white border-primary text-primary"
               : "bg-white border-gray-300 text-gray-400"
