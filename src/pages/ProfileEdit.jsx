@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import Header from "../components/Header";
+import LoadingScreen from "../components/LoadingScreen";
 import { getMe, updateMe } from "../api/usersApi";
 
 const INTEREST_OPTIONS = ["음악", "문화", "스포츠", "상담", "그림", "요리"];
@@ -57,11 +58,7 @@ function ProfileEdit() {
   };
 
   if (loading) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center">
-        <p className="text-[16px] text-primary font-medium">로딩 중...</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (
@@ -83,7 +80,7 @@ function ProfileEdit() {
               value={nickname}
               disabled
               placeholder="이름을 입력하세요"
-              className="w-full text-[14px] font-medium tracking-[-0.35px] leading-[25px] text-black placeholder-[#d5d5d5] outline-none bg-transparent disabled:opacity-60"
+              className="w-full text-[14px] font-medium tracking-[-0.35px] leading-[25px] text-black placeholder-gray-input outline-none bg-transparent disabled:opacity-60"
             />
           </div>
           <p className="mt-[10px] text-[12px] font-medium text-[#949494] tracking-[-0.3px] leading-[20px]">
@@ -206,9 +203,9 @@ function ProfileEdit() {
             <select
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              className="w-full text-[14px] font-medium tracking-[-0.35px] leading-[25px] text-black outline-none bg-transparent appearance-none placeholder-[#d5d5d5]"
+              className="w-full text-[14px] font-medium tracking-[-0.35px] leading-[25px] text-black outline-none bg-transparent appearance-none placeholder-gray-input"
             >
-              <option value="" disabled className="text-[#d5d5d5]">선택 안 함</option>
+              <option value="" disabled className="text-gray-input">선택 안 함</option>
               <option value="남성">남성</option>
               <option value="여성">여성</option>
               <option value="기타">기타</option>

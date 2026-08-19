@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import moroLv1 from "../assets/moro-lv1.png";
 import characterShadow from "../assets/character-shadow.svg";
 import Header from "../components/Header";
+import LoadingScreen from "../components/LoadingScreen";
 import RESULT_CONTENT from "../data/diagnosisResultContent";
 import IMPROVEMENT_CONTENT from "../data/improvementContent";
 import { getAssessmentResult } from "../api/diagnosisApi";
@@ -14,11 +15,6 @@ const GAUGE_WAVE_PATH =
   "M209 49.6579L166.588 92C114.469 33.3322 60.9219 67.5551 40.6632 92L0 49.6579C84.8243 -42.0094 179.705 14.7365 209 49.6579Z";
 const GAUGE_POINTER_PATH = "M9.95929 0L19.9186 17.25H0L9.95929 0Z";
 
-// 화살표가 따라가는 안쪽 라인(GAUGE_INNER_ARC_POINTS)을 화면에 겹쳐 그려서 눈으로 확인하기 위한 디버그 스위치.
-// 확인 끝나면 false로 끄거나 이 블록 통째로 지우면 됨.
-const SHOW_DEBUG_ARC = true;
-
-// TODO: 추후 score → 게이지 포인터 위치 매핑은 API 점수 범위에 맞춰 조정 필요할 수 있음
 
 // 게이지 배지 문구 — 유형이 아니라 점수(0~10, 높을수록 위험) 구간별로 분기
 function getBadgeByScore(score) {
@@ -141,11 +137,7 @@ function DiagnosisResult() {
   }, [navigate]);
 
   if (loading) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center bg-mint-light">
-        <p className="text-[16px] text-primary font-medium">결과를 불러오는 중...</p>
-      </div>
-    );
+    return <LoadingScreen message="결과를 불러오는 중..." />;
   }
 
   if (!assessment) return null;

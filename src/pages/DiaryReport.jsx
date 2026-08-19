@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import Header from "../components/Header";
-import { getDiarySummary } from "../api/diaryApi";
+import LoadingScreen from "../components/LoadingScreen";
+import { getDiarySummary, getDiaryEntries } from "../api/diaryApi";
 
 const PERIODS = [
   { label: "오늘", days: 1 },
@@ -19,10 +20,17 @@ const EMOTION_BARS = [
   { label: "무기력", color: "danger" },
 ];
 
+const EMOTION_COLOR = { 편안함: "primary", 설렘: "primary", 불안: "danger", 무기력: "danger" };
+
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 function formatKoreanDate(date) {
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 ${WEEKDAYS[date.getDay()]}요일`;
+}
+
+// "오늘"일 때만 "의"를 붙여 자연스럽게("오늘의 감정 요약"), 나머지는 "{기간} 감정 요약"
+function withPeriodTitle(period, suffix) {
+  return period.label === "오늘" ? `오늘의 ${suffix}` : `${period.label} ${suffix}`;
 }
 
 function MoodBarChart({ percentages, mostFrequent }) {
@@ -89,15 +97,13 @@ function MoodBarChart({ percentages, mostFrequent }) {
   );
 }
 
-const EMOTION_COLOR = { 편안함: "primary", 설렘: "primary", 불안: "danger", 무기력: "danger" };
-
 function DiaryReport() {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  // 달력에서 특정 날짜를 눌러 들어온 경우 "오늘" 기준으로, 그 외(예: 바텀탭 등)에는 "1주일" 기본
-  const [period, setPeriod] = useState(state?.date ? PERIODS[0] : PERIODS[1]);
+  const [period, setPeriod] = useState(PERIODS[0]); // Figma 기본 선택 상태: "오늘"
   const [summary, setSummary] = useState(null);
   const [status, setStatus] = useState("loading"); // loading | error | done
+  const [summaryOpen, setSummaryOpen] = useState(false);
+  const [latestEntry, setLatestEntry] = useState(null); // 펼쳤을 때 보여줄 가장 최근 일기 원문
 
   useEffect(() => {
     let cancelled = false;
@@ -115,6 +121,21 @@ function DiaryReport() {
       cancelled = true;
     };
   }, [period]);
+
+  // 최근 일기 원문은 기간 선택과 무관하게 한 번만 가져옴 ("펼쳐서 원문 보기"용)
+  useEffect(() => {
+    let cancelled = false;
+    getDiaryEntries(1)
+      .then((entries) => {
+        if (!cancelled) setLatestEntry(entries[0] || null);
+      })
+      .catch(() => {
+        // 원문을 못 가져와도 요약 카드 자체는 계속 보여줘야 하니 조용히 무시
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const recentTrend = summary ? [...summary.emotion_trend].reverse() : [];
 
@@ -148,9 +169,7 @@ function DiaryReport() {
           ))}
         </div>
 
-        {status === "loading" && (
-          <p className="text-[14px] text-gray-muted text-center mt-10">불러오는 중이에요...</p>
-        )}
+        {status === "loading" && <LoadingScreen fullScreen={false} />}
         {status === "error" && (
           <p className="text-[14px] text-gray-muted text-center mt-10">
             감정 리포트를 불러오지 못했어요. 잠시 후 다시 시도해주세요.
@@ -161,18 +180,18 @@ function DiaryReport() {
           <>
             {/* 감정 추이 차트 */}
             <h2 className="text-[16px] font-semibold text-black tracking-[-0.4px] mt-[32px] mb-[19px]">
-              {period.label} 감정 추이 차트
+              {withPeriodTitle(period, "감정 추이 차트")}
             </h2>
             <MoodBarChart
               percentages={summary.emotion_percentages}
               mostFrequent={summary.most_frequent_emotion}
             />
 
-            {/* 감정 요약 */}
+            {/* 감정 요약 — 접었다 펼 수 있는 카드. 펼치면 가장 최근 일기 원문이 아래에 나타남 */}
             <h2 className="text-[16px] font-semibold text-black tracking-[-0.4px] mt-[38px] mb-3">
-              감정 요약
+              {withPeriodTitle(period, "감정 요약")}
             </h2>
-            <div className="bg-[rgba(184,184,184,0.08)] rounded-[16px] p-4">
+            <div className="bg-[rgba(184,184,184,0.08)] rounded-[16px] px-[22px] pt-[13px] pb-[10px]">
               <p className="text-[12px] text-gray-icon tracking-[-0.3px] mb-3">
                 {formatKoreanDate(new Date())}
               </p>
@@ -190,24 +209,42 @@ function DiaryReport() {
                     ✓ 이 기간에는 기록된 일기가 없어요
                   </p>
                 )}
-                {summary.ai_summary && (
-                  <p className="text-[14px] text-primary tracking-[-0.35px]">✓ {summary.ai_summary}</p>
-                )}
                 {summary.most_frequent_emotion && (
                   <p className="text-[14px] text-primary tracking-[-0.35px]">
                     ✓ 꾸준히 기록한 것만으로도 충분히 잘하고 있어요
                   </p>
                 )}
               </div>
+
+              {summaryOpen && latestEntry?.transcript && (
+                <p className="text-[14px] text-gray-muted tracking-[-0.35px] leading-[25px] mt-4 whitespace-pre-wrap">
+                  {latestEntry.transcript}
+                </p>
+              )}
+
+              <button
+                onClick={() => setSummaryOpen((v) => !v)}
+                aria-label={summaryOpen ? "일기 원문 접기" : "일기 원문 펼치기"}
+                className="w-full flex justify-center pt-5"
+              >
+                <div className="w-[175px] h-[2px] bg-[#CACACA] rounded-full" />
+              </button>
+            </div>
+
+            {/* AI 조언 */}
+            <div className="bg-mint-pale2 border border-[rgba(170,238,219,0.87)] rounded-[16px] p-4 mt-4">
+              <p className="text-[14px] text-primary tracking-[-0.35px] leading-[25px] whitespace-pre-line">
+                {summary.ai_summary || "아직 기록된 일기가 없어요.\n먼저 오늘의 마음을 기록해보시면 그에 맞는 이야기를 들려드릴게요."}
+              </p>
             </div>
 
             {/* 나의 감정 돌아보기 */}
-            {recentTrend.length > 0 && (
-              <>
-                <h2 className="text-[16px] font-semibold text-black tracking-[-0.4px] mt-[27px] mb-3">
-                  나의 감정 돌아보기
-                </h2>
-                <div className="border border-[rgba(170,238,219,0.87)] bg-mint-pale2 rounded-[16px] p-5 space-y-5">
+            <h2 className="text-[16px] font-semibold text-black tracking-[-0.4px] mt-[35px] mb-3">
+              나의 감정 돌아보기
+            </h2>
+            <div className="border border-[rgba(170,238,219,0.87)] bg-mint-pale2 rounded-[16px] p-5">
+              {recentTrend.length > 0 ? (
+                <div className="space-y-5">
                   {recentTrend.slice(0, 5).map((item, i) => {
                     const color = EMOTION_COLOR[item.primary] || "primary";
                     return (
@@ -229,8 +266,20 @@ function DiaryReport() {
                     );
                   })}
                 </div>
-              </>
-            )}
+              ) : (
+                <div className="space-y-5">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i}>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[12px] text-gray-icon tracking-[-0.3px]">-</span>
+                        <span className="text-[12px] font-semibold text-gray-icon tracking-[-0.3px]">기록 없음</span>
+                      </div>
+                      <div className="w-full h-[8px] rounded-full bg-primary-sub4/40" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {/* 반복되는 감정 패턴 */}
             <h2 className="text-[16px] font-semibold text-black tracking-[-0.4px] mt-[38px] mb-3">

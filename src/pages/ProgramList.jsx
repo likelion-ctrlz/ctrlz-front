@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import ProgramTabToggle from "../components/ProgramTabToggle";
 import Header from "../components/Header";
+import LoadingScreen from "../components/LoadingScreen";
 import searchIcon from "../assets/program/Group 246.svg";
 import { getRecommendedHobbies } from "../api/hobbiesApi";
 import { getCached } from "../api/client";
@@ -109,7 +110,7 @@ function ProgramList() {
         <p className="text-[16px] font-semibold text-black mb-3">추천 활동</p>
 
         {status === "loading" && (
-          <p className="text-[14px] text-gray-muted text-center mt-10">불러오는 중이에요...</p>
+          <LoadingScreen fullScreen={false} />
         )}
         {status === "error" && (
           <p className="text-[14px] text-gray-muted text-center mt-10">

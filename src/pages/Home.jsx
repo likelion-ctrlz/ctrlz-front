@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
+import LoadingScreen from "../components/LoadingScreen";
 import moroLv1 from "../assets/moro-lv1.png";
 import moroLv2 from "../assets/moro-lv2.png";
 import moroLv3 from "../assets/moro-lv3.png";
@@ -97,11 +98,7 @@ function Home() {
   }, [navigate]);
 
   if (loading || !user) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center">
-        <p className="text-[16px] text-primary font-medium">로딩 중...</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   const level = user.character_level || 1;

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import ProgramTabToggle from "../components/ProgramTabToggle";
 import Header from "../components/Header";
+import LoadingScreen from "../components/LoadingScreen";
 import searchIcon from "../assets/program/Group 246.svg";
 import locateIcon from "../assets/program/locate.png";
 import { getPrograms } from "../api/programsApi";
@@ -81,7 +82,7 @@ function ProgramLocal() {
         <p className="text-[16px] font-semibold text-black mb-3">나와 맞는 추천 프로그램</p>
 
         {status === "loading" && (
-          <p className="text-[14px] text-gray-muted text-center mt-10">불러오는 중이에요...</p>
+          <LoadingScreen fullScreen={false} />
         )}
         {status === "error" && (
           <p className="text-[14px] text-gray-muted text-center mt-10">

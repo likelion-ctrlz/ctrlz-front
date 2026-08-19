@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import Header from "../components/Header";
+import LoadingScreen from "../components/LoadingScreen";
 import { getMissionImage } from "../data/missions";
 import { getRecommendedMissions } from "../api/missionsApi";
 import { getCached } from "../api/client";
@@ -52,7 +53,7 @@ function MissionList() {
       {/* Mission Cards */}
       <main className="flex-1 px-5 pt-4 pb-[130px]">
         {status === "loading" && (
-          <p className="text-[14px] text-gray-muted text-center mt-10">미션을 불러오는 중이에요...</p>
+          <LoadingScreen message="미션을 불러오는 중이에요..." fullScreen={false} />
         )}
         {status === "error" && (
           <p className="text-[14px] text-gray-muted text-center mt-10">

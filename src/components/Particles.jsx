@@ -23,6 +23,9 @@ function fireRealistic(myConfetti, colors) {
   fire(0.1, { spread: 120, startVelocity: 45 });
 }
 
+// canvas-confetti는 캔버스 fillStyle에 바로 쓸 수 있는 리터럴 색상 문자열이 필요해서
+// var(--color-primary) 같은 CSS 변수 참조를 못 씀 — index.css의 primary/sub1/sub2/sub4 값과
+// 항상 같게 수동으로 맞춰둔 것(index.css 팔레트 바뀌면 여기도 같이 바꿔야 함)
 const DEFAULT_COLORS = ["#00cb93", "#39d7ab", "#71e2c3", "#c6f3e7"];
 
 // top/bottom/height를 주면 inset-0 대신 그 위치(예: 이미지 바로 위)에 맞춰 캔버스를 배치.

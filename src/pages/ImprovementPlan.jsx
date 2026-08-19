@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import LoadingScreen from "../components/LoadingScreen";
 import ellipseBg from "../assets/mypage/Ellipse.svg";
 import IMPROVEMENT_CONTENT from "../data/improvementContent.js";
 import { getAssessmentResult } from "../api/diagnosisApi";
@@ -18,11 +19,7 @@ function ImprovementPlan() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center">
-        <p className="text-[16px] text-primary font-medium">로딩 중...</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   const content = IMPROVEMENT_CONTENT[type] ?? IMPROVEMENT_CONTENT["은둔형"];

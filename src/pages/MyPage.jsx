@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import Header from "../components/Header";
+import LoadingScreen from "../components/LoadingScreen";
 import ellipseBg from "../assets/mypage/Ellipse.svg";
 import moroLv1 from "../assets/moro-lv1.png";
 import moroLv2 from "../assets/moro-lv2.png";
@@ -35,11 +36,7 @@ function MyPage() {
   ];
 
   if (loading || !user) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center">
-        <p className="text-[16px] text-primary font-medium">로딩 중...</p>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   const statusLabel = user.assessment_level ? `${user.assessment_type}` : "자가진단 전";

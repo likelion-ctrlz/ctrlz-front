@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import Header from "../components/Header";
+import LoadingScreen from "../components/LoadingScreen";
 import { getPrograms, applyProgram } from "../api/programsApi";
 
 function ProgramLocalDetail() {
@@ -57,7 +58,7 @@ function ProgramLocalDetail() {
       <Header title="지역연계 프로그램" onBack={() => navigate("/programs/local")} />
 
       {status === "loading" && (
-        <p className="text-[14px] text-gray-muted text-center mt-10">불러오는 중이에요...</p>
+        <LoadingScreen fullScreen={false} />
       )}
       {status === "error" && (
         <p className="text-[14px] text-gray-muted text-center mt-10">
