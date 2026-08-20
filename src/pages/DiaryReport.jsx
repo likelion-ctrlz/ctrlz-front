@@ -119,6 +119,7 @@ function DiaryReport() {
   const [status, setStatus] = useState("loading"); // loading | error | done
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [latestEntry, setLatestEntry] = useState(null); // 펼쳤을 때 보여줄 가장 최근 일기 원문
+  const [weeklySummary, setWeeklySummary] = useState(null); // "오늘" 탭에서도 반복 패턴/감정 돌아보기를 보여주기 위한 1주일치 데이터
 
   useEffect(() => {
     let cancelled = false;
@@ -153,7 +154,25 @@ function DiaryReport() {
     };
   }, []);
 
-  const recentTrend = summary ? [...summary.emotion_trend].reverse() : [];
+  // "오늘"(days=1)은 최신 1건만 조회돼서 반복 패턴(최소 3건 필요)이 항상 비어 보임 —
+  // 반복 패턴·감정 돌아보기 두 섹션만 기간 선택과 무관하게 1주일치로 따로 가져와 채워준다
+  useEffect(() => {
+    let cancelled = false;
+    getDiarySummary(7)
+      .then((data) => {
+        if (!cancelled) setWeeklySummary(data);
+      })
+      .catch(() => {
+        // 실패해도 위쪽 요약 카드는 정상 동작해야 하니 조용히 무시
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // "오늘" 탭일 때만 반복 패턴/감정 돌아보기를 1주일치 데이터로 보여주고, 나머지 탭은 선택된 기간 그대로 사용
+  const patternSource = period.days === 1 ? weeklySummary : summary;
+  const recentTrend = patternSource ? [...patternSource.emotion_trend].reverse() : [];
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-white">
@@ -302,10 +321,10 @@ function DiaryReport() {
               반복되는 감정 패턴
             </h2>
             <div className="space-y-2 mb-[35px]">
-              {summary.pattern ? (
+              {patternSource?.pattern ? (
                 <>
                   <p className="text-[16px] font-semibold text-gray-muted tracking-[-0.4px]">
-                    {summary.pattern.pattern_text}
+                    {patternSource.pattern.pattern_text}
                   </p>
                   <p className="text-[16px] font-semibold text-gray-muted tracking-[-0.4px]">
                     이 패턴을 알아챘다는 것 자체가 변화의 시작이에요
