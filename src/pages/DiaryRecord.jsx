@@ -157,8 +157,6 @@ function DiaryRecord() {
             <img src={micIcon} alt="" className="relative w-[56px] h-[92px] object-contain" />
           </PulseRings>
         </main>
-
-        <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
       </div>
     );
   }
@@ -229,8 +227,6 @@ function DiaryRecord() {
           <p className="text-[13px] font-medium text-white text-center mt-[20px] px-5">{error}</p>
         )}
       </main>
-
-      <div className="absolute bottom-[8px] left-1/2 -translate-x-1/2 w-[134px] h-[5px] bg-black rounded-[100px]" />
     </div>
   );
 }

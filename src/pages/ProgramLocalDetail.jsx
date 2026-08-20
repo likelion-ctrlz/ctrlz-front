@@ -67,7 +67,7 @@ function ProgramLocalDetail() {
       )}
 
       {status === "done" && (
-        <main className="flex-1 overflow-y-auto pb-[130px]">
+        <main className="flex-1 overflow-y-auto pb-[110px]">
           {/* Hero image with gradient and title */}
           <div className="relative h-[245px] w-full overflow-hidden bg-gray-panel">
             {program.image_url && (

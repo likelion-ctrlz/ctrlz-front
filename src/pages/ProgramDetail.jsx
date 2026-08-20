@@ -84,7 +84,7 @@ function ProgramDetail() {
       )}
 
       {status === "done" && (
-        <main className="flex-1 overflow-y-auto pb-[130px]">
+        <main className="flex-1 overflow-y-auto pb-[110px]">
           {/* Hero image with gradient and title — 화면 폭 전체(모서리 없음) */}
           <div className="relative h-[245px] w-full overflow-hidden bg-gray-panel">
             {hobby.image_url && (
