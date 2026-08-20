@@ -43,7 +43,7 @@ function MissionDetail() {
       )}
 
       {status === "done" && (
-        <main className="flex-1 flex flex-col px-5 pt-[35px] pb-[110px]">
+        <main className="flex-1 flex flex-col px-5 pt-[35px] pb-[95px]">
           {/* 미션 카드 */}
           <div className="w-full h-[122px] rounded-[16px] border border-primary relative flex items-center px-6">
             <div className="relative w-[75px] h-[75px] flex items-center justify-center shrink-0">

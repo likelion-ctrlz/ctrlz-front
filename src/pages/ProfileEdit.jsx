@@ -68,7 +68,7 @@ function ProfileEdit() {
       {/* 구분선 */}
       <div className="w-full h-[1px] bg-border" />
 
-      <main className="flex-1 flex flex-col pb-[130px]">
+      <main className="flex-1 flex flex-col pb-[95px]">
         {/* 닉네임 섹션 */}
         <div className="px-[32px] pt-[22px] pb-[24px]">
           <h3 className="text-[16px] font-semibold text-primary-text-darker tracking-[-0.4px] leading-[25px]">

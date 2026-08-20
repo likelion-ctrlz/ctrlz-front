@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import BottomTabBar from "../components/BottomTabBar";
 import Header from "../components/Header";
-import { CRISIS_LINES, ONLINE_COUNSELING } from "../data/crisisSupport";
+import { CRISIS_LINES, ONLINE_COUNSELING, LOCAL_CENTER_LINK } from "../data/crisisSupport";
 
 function DiaryHelp() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function DiaryHelp() {
       <Header title="전문 도움 요청하기" onBack={() => navigate("/diary/report")} />
 
       {/* Main content */}
-      <main className="flex-1 px-5 pb-[130px] mt-[31px]">
+      <main className="flex-1 px-5 pb-[95px] mt-[31px]">
         {/* Intro section */}
         <section className="mb-6">
           <h2 className="text-[16px] font-semibold text-black mb-2">도움을 요청하는 건 용기 있는 일이에요</h2>
@@ -34,9 +34,12 @@ function DiaryHelp() {
                   <p className="text-[16px] font-semibold text-black">{item.title}</p>
                   <p className="text-[12px] text-gray-icon mt-1">{item.desc}</p>
                 </div>
-                <button className="bg-primary text-white text-[13px] font-medium px-4 py-2 rounded-[14px] shrink-0 ml-3">
+                <a
+                  href={`tel:${item.phone}`}
+                  className="bg-primary text-white text-[13px] font-medium px-4 py-2 rounded-[14px] shrink-0 ml-3 text-center"
+                >
                   전화 연결
-                </button>
+                </a>
               </div>
             ))}
           </div>
@@ -53,9 +56,14 @@ function DiaryHelp() {
               >
                 <p className="text-[16px] font-semibold text-black">{item.title}</p>
                 <p className="text-[12px] text-gray-icon mt-1 mb-4">{item.desc}</p>
-                <button className="w-full bg-primary text-white text-[14px] font-medium py-3 rounded-[9px]">
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full text-center bg-primary text-white text-[14px] font-medium py-3 rounded-[9px]"
+                >
                   상담 신청하기
-                </button>
+                </a>
               </div>
             ))}
           </div>
@@ -67,9 +75,14 @@ function DiaryHelp() {
           <div className="border border-primary-sub3 bg-white rounded-[16px] p-4">
             <p className="text-[16px] font-semibold text-black">지역 정신건강복지센터</p>
             <p className="text-[12px] text-gray-icon mt-1 mb-4">시 군 구 단위 운영 ･ 방문 상담 가능</p>
-            <button className="w-full bg-primary text-white text-[14px] font-medium py-3 rounded-[9px]">
+            <a
+              href={LOCAL_CENTER_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full text-center bg-primary text-white text-[14px] font-medium py-3 rounded-[9px]"
+            >
               지역 기관 찾기
-            </button>
+            </a>
           </div>
         </section>
 
