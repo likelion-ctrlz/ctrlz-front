@@ -6,6 +6,11 @@ import LoadingScreen from "../components/LoadingScreen";
 import { getMissionImage } from "../data/missions";
 import { getMissionDetail } from "../api/missionsApi";
 
+// 아이콘 뒤 은은한 그라데이션 글로우 — 피그마 원본: 지름 75px 원(#00CB93, opacity 0.45) +
+// feGaussianBlur stdDeviation 16.2(지름의 약 21.6%) → 단색 원 + CSS blur로 동일하게 구현
+const GLOW_SIZE = 82;
+const GLOW_BLUR = GLOW_SIZE * (16.2 / 75);
+
 function MissionDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -47,12 +52,14 @@ function MissionDetail() {
           {/* 미션 카드 */}
           <div className="w-full h-[122px] rounded-[16px] border border-primary relative flex items-center px-6">
             <div className="relative w-[75px] h-[75px] flex items-center justify-center shrink-0">
-              {/* 아이콘 뒤 글로우 */}
+              {/* 아이콘 뒤 글로우 — 아이콘 중심에 맞춰 배치 */}
               <div
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] rounded-full pointer-events-none"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
                 style={{
-                  background:
-                    "radial-gradient(circle, rgba(0,203,147,0.45) 0%, rgba(0,203,147,0.15) 45%, rgba(0,203,147,0) 75%)",
+                  width: GLOW_SIZE,
+                  height: GLOW_SIZE,
+                  backgroundColor: "rgba(0,203,147,0.45)",
+                  filter: `blur(${GLOW_BLUR}px)`,
                 }}
               />
               <img

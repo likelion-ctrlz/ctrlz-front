@@ -2,17 +2,32 @@ import lotto from "../assets/mission/lotto.png";
 import icecream from "../assets/mission/icecream.png";
 import conv from "../assets/mission/conv.png";
 import shop from "../assets/mission/shop.png";
+import tea from "../assets/mission/tea.png";
+import bed from "../assets/mission/bed.png";
+import cat from "../assets/mission/cat.png";
+import plant from "../assets/mission/plant.png";
+import coinnmic from "../assets/mission/coinnmic.png";
+import bus from "../assets/mission/bus.png";
+import perfume from "../assets/mission/perfume.png";
 
 // 미션 카드 아이콘. 일반 미션은 이 중 하나로 랜덤(해시 기반) 배정되고,
 // API에서 목록에 없는 미션이 내려오면 getMissionImage()가 이 중 하나로 매칭함
 export const MISSION_IMAGES = [lotto, icecream, conv, shop];
 
-// 와우포인트 미션은 실제 내용과 맞는 아이콘으로 고정 (seed_missions.py의 와우 미션 4개와 1:1 매칭)
-const WOW_MISSION_ICONS = {
+// 특정 미션은 실제 내용과 맞는 아이콘으로 고정 (와우 미션 4개 + 개별 지정한 미션들), 나머지는 해시 기반 랜덤.
+// 모든 카드는 아이콘 뒤에 초록 글로우를 깔아서 포인트를 줌(크기는 카드 쪽 ICON_SIZES와 맞춤)
+const FIXED_MISSION_ICONS = {
   "베라에서 이달의 맛 시도하기": shop,
   "즉석복권 사기": lotto,
   "무인아이스크림 털기": icecream,
   "편의점 신상 리뷰": conv,
+  "집에서 캐모마일티 만들어 마시기": tea,
+  "침대와 책상 위치 바꿔보기": bed,
+  "산책하면서 길고양이 찾기": cat,
+  "꽃집 다육이 사고 이름짓기": plant,
+  "코인노래방 90점 이상 받아보기": coinnmic,
+  "집 앞 아무 버스나 타보기": bus,
+  "올리브영 가서 최애 향수 찾기": perfume,
 };
 
 // 문자열(UUID 포함)을 안정적인 정수로 해시 — 같은 id는 항상 같은 값이 나옴
@@ -25,14 +40,12 @@ function hashString(str) {
 }
 
 // 미션 카드 아이콘 결정.
-// - 와우포인트 미션(is_wow)은 실제 내용과 맞는 고정 아이콘을 씀
+// - 제목이 FIXED_MISSION_ICONS에 있으면 실제 내용과 맞는 고정 아이콘을 씀 (와우 여부 무관)
 // - 그 외는 id를 해시해서 4개 아이콘 중 하나로 배정 (미션마다 다르게 보이되, 같은 미션은 새로고침해도 항상 같은 아이콘)
 export function getMissionImage(mission) {
   if (mission?.image) return mission.image;
-  if (mission?.is_wow) {
-    const wowIcon = WOW_MISSION_ICONS[mission.title];
-    if (wowIcon) return wowIcon;
-  }
+  const fixedIcon = FIXED_MISSION_ICONS[mission?.title];
+  if (fixedIcon) return fixedIcon;
   const id = String(mission?.id ?? "");
   return MISSION_IMAGES[hashString(id) % MISSION_IMAGES.length];
 }

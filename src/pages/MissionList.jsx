@@ -10,7 +10,10 @@ import { getCached } from "../api/client";
 // 피그마 미션 카드별 아이콘 실측 크기(1,2번 카드=75px, 3,4번 카드=82px)
 const ICON_SIZES = [75, 75, 82, 82];
 // 아이콘 뒤 은은한 그라데이션 글로우 — 아이콘 중심에 맞춰 배치
-const GLOW_SIZE = 120;
+// 피그마 원본: 지름 75px 원(#00CB93, opacity 0.45) + feGaussianBlur stdDeviation 16.2 (지름의 약 21.6%)
+// → radial-gradient 대신 단색 원 + CSS blur로 동일하게 구현, 블러 반경은 크기에 비례해서 스케일
+const GLOW_SIZE = 75;
+const GLOW_BLUR = GLOW_SIZE * (16.2 / 75);
 
 const RECOMMENDED_PATH = "/missions/recommended";
 
@@ -74,7 +77,7 @@ function MissionList() {
               className="relative w-full h-[122px] rounded-[16px] border border-primary text-left px-4"
               style={{ backgroundColor: "rgba(255,255,255,0.76)" }}
             >
-              {/* 아이콘 뒤 글로우 */}
+              {/* 아이콘 뒤 글로우 — 아이콘 중심에 맞춰 배치 */}
               <div
                 className="absolute rounded-full pointer-events-none"
                 style={{
@@ -82,8 +85,8 @@ function MissionList() {
                   top: 20 + ICON_SIZES[i % ICON_SIZES.length] / 2 - GLOW_SIZE / 2,
                   width: GLOW_SIZE,
                   height: GLOW_SIZE,
-                  background:
-                    "radial-gradient(circle, rgba(0,203,147,0.45) 0%, rgba(0,203,147,0.15) 45%, rgba(0,203,147,0) 75%)",
+                  backgroundColor: "rgba(0,203,147,0.45)",
+                  filter: `blur(${GLOW_BLUR}px)`,
                 }}
               />
 
