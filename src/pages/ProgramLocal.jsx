@@ -23,7 +23,7 @@ function ProgramLocal() {
       .then((me) => {
         if (cancelled) return;
         setRegion(me.region || "");
-        return getPrograms(me.region);
+        return getPrograms();
       })
       .then((data) => {
         if (cancelled || !data) return;

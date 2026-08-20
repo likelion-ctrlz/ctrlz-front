@@ -20,12 +20,24 @@ function Login() {
   const handleStart = () => {
     if (pressed) return;
     setPressed(true);
-    setTimeout(() => navigate("/onboarding"), TRANSITION_MS);
+    // 원래는 그라디언트 전환(TRANSITION_MS)이 끝난 뒤 이동했으나, 전환 애니메이션을
+    // 없앤 지금은 기다릴 이유가 없어 바로 이동함. 되돌리려면 아래 주석을 풀면 됨
+    navigate("/onboarding");
+    // setTimeout(() => navigate("/onboarding"), TRANSITION_MS);
   };
 
   return (
     <div className="relative isolate flex min-h-dvh flex-col overflow-hidden">
-      {/* 그라디언트 모션 배경 — 두 상태를 겹쳐 opacity 크로스페이드 */}
+      {/* 그라디언트 모션 배경 — 원래는 두 상태를 겹쳐 opacity 크로스페이드 했으나
+          지금은 색 전환 없이 처음 화면(BG_BEFORE)으로 고정. 아래 주석을 풀면 복원됨 */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          backgroundImage: BG_BEFORE,
+          backgroundSize: "cover",
+        }}
+      />
+      {/*
       <div
         className="absolute inset-0 -z-10 transition-opacity"
         style={{
@@ -46,6 +58,7 @@ function Login() {
           transitionTimingFunction: TRANSITION_EASE,
         }}
       />
+      */}
 
       {/* Status bar spacer */}
 
@@ -57,8 +70,17 @@ function Login() {
         </p>
       </main>
 
-      {/* 시작하기 버튼 — 흰색(기본) → 초록 그라디언트(누른 후) 컬러 전환 */}
+      {/* 시작하기 버튼 — 원래는 흰색(기본) → 초록 그라디언트(누른 후) 컬러 전환이 있었으나
+          지금은 색 전환 없이 흰 버튼으로 고정. 아래 주석을 풀면 복원됨 */}
       <div className="px-5 pb-[32px]">
+        <button
+          onClick={handleStart}
+          disabled={pressed}
+          className="w-full h-[68px] rounded-[16px] border text-[20px] font-bold tracking-[-0.5px] flex items-center justify-center bg-white border-primary text-primary"
+        >
+          시작하기
+        </button>
+        {/*
         <button
           onClick={handleStart}
           disabled={pressed}
@@ -74,6 +96,7 @@ function Login() {
         >
           시작하기
         </button>
+        */}
       </div>
     </div>
   );
